@@ -8,106 +8,376 @@
 <!-- App Icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="images/icon192x192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="images/icon512x512.png">
+<link rel="apple-touch-icon" sizes="512x512" href="images/icon192x192.png">
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  background:linear-gradient(135deg,#e0f2fe,#bae6fd,#38bdf8);
-  color:#0c4a6e;
-  min-height:100vh
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-header{
-  padding:24px 20px;
-  text-align:center;
-  background:rgba(255,255,255,0.95);
-  border-bottom:3px solid #0ea5e9;
-  box-shadow:0 4px 16px rgba(14,165,233,.25)
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 50%, #7dd3fc 100%);
+  background-attachment: fixed;
+  color: #0c4a6e;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-header img{
-  width:64px;
-  height:64px;
-  margin-bottom:10px
+/* Animated background bubbles */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%),
+              radial-gradient(circle at 40% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
-header h1{font-size:28px;font-weight:700}
-header p{color:#0369a1}
-
-nav{
-  display:flex;
-  background:#fff;
-  border-bottom:2px solid #bae6fd
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
 }
 
-nav button{
-  flex:1;
-  padding:14px;
-  border:none;
-  background:none;
-  font-weight:600;
-  color:#0369a1;
-  cursor:pointer
+header {
+  position: relative;
+  padding: 32px 20px;
+  text-align: center;
+  background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,249,255,0.9));
+  border-bottom: 3px solid rgba(14,165,233,0.5);
+  box-shadow: 0 8px 32px rgba(14,165,233,0.3);
+  backdrop-filter: blur(20px);
+  z-index: 10;
 }
 
-nav button.active{
-  background:#0ea5e9;
-  color:#fff
+header img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 12px rgba(14,165,233,0.3));
+  animation: bounce 2s ease-in-out infinite;
 }
 
-section{display:none;padding:20px}
-section.active{display:block}
-
-.box{
-  background:#fff;
-  border-radius:14px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 6px 20px rgba(14,165,233,.15)
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.btn{
-  width:100%;
-  padding:16px;
-  margin:8px 0;
-  border:none;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer
+header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0c4a6e, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
 }
 
-.btn-primary{
-  background:#0ea5e9;
-  color:#fff
+header p {
+  color: #0369a1;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
-.btn-secondary{
-  background:#fff;
-  border:2px solid #0ea5e9;
-  color:#0369a1
+nav {
+  position: sticky;
+  top: 0;
+  display: flex;
+  background: rgba(255,255,255,0.95);
+  border-bottom: 2px solid rgba(186,230,253,0.5);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.15);
 }
 
-.warning-box{
-  background:#fef2f2;
-  border:2px solid #fca5a5;
-  padding:12px;
-  border-radius:8px;
-  color:#991b1b;
-  margin-bottom:12px
+nav button {
+  flex: 1;
+  padding: 18px 12px;
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0369a1;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-footer{
-  text-align:center;
-  padding:20px;
-  font-size:13px;
-  color:#0369a1
+nav button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+nav button:hover::after {
+  width: 80%;
+}
+
+nav button.active {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: white;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+}
+
+nav button.active::after {
+  width: 100%;
+  background: #fff;
+}
+
+section {
+  display: none;
+  padding: 24px 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section.active {
+  display: block;
+}
+
+.box {
+  background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 40px rgba(14,165,233,0.2),
+              0 4px 12px rgba(14,165,233,0.1),
+              inset 0 1px 0 rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.8);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(14,165,233,0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.box:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(14,165,233,0.3),
+              0 8px 24px rgba(14,165,233,0.2);
+}
+
+.box:hover::before {
+  left: 100%;
+}
+
+.box h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0c4a6e;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.box h2::before {
+  content: '●';
+  color: #0ea5e9;
+  font-size: 12px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.box ul li {
+  padding: 16px 18px;
+  margin: 12px 0;
+  background: linear-gradient(135deg, rgba(240,249,255,0.8), rgba(224,242,254,0.6));
+  border-left: 4px solid #0ea5e9;
+  border-radius: 12px;
+  color: #0c4a6e;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(14,165,233,0.1);
+}
+
+.box ul li:hover {
+  transform: translateX(8px);
+  background: linear-gradient(135deg, rgba(224,242,254,0.9), rgba(186,230,253,0.7));
+  box-shadow: 0 4px 16px rgba(14,165,233,0.2);
+  border-left-width: 6px;
+}
+
+.btn {
+  width: 100%;
+  padding: 20px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 400px;
+  height: 400px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7, #0369a1);
+  background-size: 200% 200%;
+  color: white;
+  box-shadow: 0 8px 24px rgba(14,165,233,0.4),
+              0 4px 12px rgba(14,165,233,0.3);
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(14,165,233,0.5),
+              0 6px 16px rgba(14,165,233,0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.9);
+  border: 3px solid #0ea5e9;
+  color: #0369a1;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(240,249,255,0.95);
+  transform: translateY(-2px);
+  border-width: 4px;
+}
+
+.warning-box {
+  background: linear-gradient(135deg, rgba(254,242,242,0.95), rgba(254,226,226,0.9));
+  border: 2px solid #fca5a5;
+  border-left: 5px solid #ef4444;
+  padding: 16px;
+  border-radius: 12px;
+  color: #991b1b;
+  margin-bottom: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(252,165,165,0.2);
+  animation: warningPulse 2s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% { box-shadow: 0 4px 12px rgba(252,165,165,0.2); }
+  50% { box-shadow: 0 4px 16px rgba(252,165,165,0.4); }
+}
+
+#nowPlaying {
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(240,249,255,0.8), rgba(224,242,254,0.6));
+  border-radius: 10px;
+  color: #0369a1;
+  font-weight: 600;
+  text-align: center;
+  font-size: 15px;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+footer {
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 600;
+  background: linear-gradient(145deg, rgba(14,165,233,0.3), rgba(56,189,248,0.2));
+  backdrop-filter: blur(10px);
+  margin-top: 40px;
+  border-top: 2px solid rgba(255,255,255,0.3);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 600px) {
+  header h1 { font-size: 26px; }
+  header img { width: 64px; height: 64px; }
+  nav button { font-size: 11px; padding: 14px 8px; }
+  .box { padding: 20px; }
+  .btn { padding: 16px; font-size: 15px; }
 }
 </style>
 </head>
@@ -115,60 +385,81 @@ footer{
 <body>
 
 <header>
-  <img src="images/icon192x192.png" alt="CalmDrive Icon">
+  <img src="images/icon192x192.png" alt="CalmDrive">
   <h1>CalmDrive</h1>
-  <p>Arrive calm. Arrive safe.</p>
+  <p>Arrive Calm. Arrive Safe.</p>
 </header>
 
 <nav>
-  <button class="active" onclick="showTab('prepare')">Before Drive</button>
-  <button onclick="showTab('drive')">While Driving</button>
-  <button onclick="showTab('log')">Quick Log</button>
+  <button class="active" onclick="showTab('prepare')">Before</button>
+  <button onclick="showTab('drive')">During</button>
+  <button onclick="showTab('log')">Log</button>
 </nav>
 
 <section id="prepare" class="active">
   <div class="box">
-    <h2>Pre-Drive Calm Check</h2>
+    <h2>Pre-Drive Check</h2>
     <ul>
-      <li>✔ Leave early</li>
-      <li>✔ Calm audio ready</li>
-      <li>✔ Breathe slowly</li>
-      <li>✔ Getting there safely matters</li>
+      <li>✓ Leave 10 minutes early</li>
+      <li>✓ Set calm music ready</li>
+      <li>✓ Take 3 deep breaths</li>
+      <li>✓ Safety over speed</li>
     </ul>
+  </div>
+
+  <div class="box">
+    <strong style="color:#0c4a6e; font-size:16px;">💡 Science Fact</strong><br>
+    <p style="margin-top:8px; color:#0369a1; line-height:1.6;">
+      Anger lasts about 90 seconds if you don't feed it. Breathe through it.
+    </p>
   </div>
 </section>
 
 <section id="drive">
   <div class="box">
-    <h2>Calm Audio Reminders</h2>
+    <h2>Calm Audio</h2>
 
     <div class="warning-box">
-      ⚠️ Audio only. Never interact with your phone while driving.
+      ⚠️ Audio only. Never touch your phone while driving.
     </div>
 
-    <button class="btn btn-primary" onclick="startReminders()">Start Calm Audio</button>
-    <button class="btn btn-secondary" onclick="stopReminders()">Stop</button>
+    <button class="btn btn-primary" onclick="startReminders()">▶ Start Calm Audio</button>
+    <button class="btn btn-secondary" onclick="stopReminders()">⏸ Stop Audio</button>
 
-    <p id="nowPlaying" style="margin-top:10px;color:#0369a1"></p>
+    <p id="nowPlaying"></p>
+  </div>
+
+  <div class="box">
+    <h2>Quick Techniques</h2>
+    <p style="color:#0369a1; margin-bottom:16px; font-weight:600;">Use when safely parked:</p>
+    <ul>
+      <li>Grip & release steering wheel 3x</li>
+      <li>Count backwards from 10</li>
+      <li>Imagine their emergency story</li>
+    </ul>
   </div>
 </section>
 
 <section id="log">
   <div class="box">
     <h2>Quick Log</h2>
-    <button class="btn btn-primary" onclick="saveLog()">Log Calm Drive</button>
+    <p style="color:#0369a1; margin-bottom:20px; font-weight:600;">
+      Track your calm drives to see progress over time.
+    </p>
+    <button class="btn btn-primary" onclick="saveLog()">✓ Log Calm Drive</button>
+    <p id="logCount" style="margin-top:16px; text-align:center; color:#0369a1; font-weight:600;"></p>
   </div>
 </section>
 
 <footer>
-  CalmDrive • Your calm matters
+  CalmDrive • Your Calm Matters
 </footer>
 
 <!-- Hidden audio player -->
 <audio id="calmAudio" preload="auto"></audio>
 
 <script>
-const reminders=[
+const reminders = [
   "audio/reminder1.mp3",
   "audio/reminder2.mp3",
   "audio/reminder3.mp3",
@@ -177,44 +468,72 @@ const reminders=[
   "audio/reminder6.mp3"
 ];
 
-let reminderInterval=null;
-const audio=document.getElementById("calmAudio");
-const nowPlaying=document.getElementById("nowPlaying");
+let reminderInterval = null;
+const audio = document.getElementById("calmAudio");
+const nowPlaying = document.getElementById("nowPlaying");
 
-function playRandom(){
-  const file=reminders[Math.floor(Math.random()*reminders.length)];
-  audio.src=file;
-  audio.volume=0.8;
-  audio.play();
-  nowPlaying.textContent="🎧 Playing calm reminder";
+function playRandom() {
+  const file = reminders[Math.floor(Math.random() * reminders.length)];
+  audio.src = file;
+  audio.volume = 0.85;
+  audio.play().catch(e => {
+    console.log("Audio play failed:", e);
+    nowPlaying.textContent = "⚠️ Tap the button again to start audio";
+  });
+  nowPlaying.textContent = "🎧 Playing calm reminder...";
 }
 
-function startReminders(){
+function startReminders() {
   stopReminders();
   playRandom();
-  reminderInterval=setInterval(playRandom,45000);
+  reminderInterval = setInterval(playRandom, 45000);
 }
 
-function stopReminders(){
+function stopReminders() {
   clearInterval(reminderInterval);
   audio.pause();
-  audio.currentTime=0;
-  nowPlaying.textContent="";
+  audio.currentTime = 0;
+  nowPlaying.textContent = "";
 }
 
-function showTab(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+function showTab(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   event.target.classList.add("active");
+  
+  if (id === 'log') updateLogCount();
 }
 
-function saveLog(){
-  const logs=JSON.parse(localStorage.getItem("calmLogs")||"[]");
-  logs.unshift({date:new Date()});
-  localStorage.setItem("calmLogs",JSON.stringify(logs));
-  alert("Logged. Nice calm drive 👍");
+function saveLog() {
+  const logs = JSON.parse(localStorage.getItem("calmLogs") || "[]");
+  logs.unshift({ date: new Date().toISOString() });
+  localStorage.setItem("calmLogs", JSON.stringify(logs));
+  updateLogCount();
+  
+  // Animate success
+  const btn = event.target;
+  btn.textContent = "✓ Logged!";
+  btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+  setTimeout(() => {
+    btn.textContent = "✓ Log Calm Drive";
+    btn.style.background = "";
+  }, 2000);
 }
+
+function updateLogCount() {
+  const logs = JSON.parse(localStorage.getItem("calmLogs") || "[]");
+  const count = logs.length;
+  const logCountEl = document.getElementById("logCount");
+  if (logCountEl) {
+    logCountEl.textContent = count > 0 
+      ? `🎉 ${count} calm ${count === 1 ? 'drive' : 'drives'} logged!`
+      : "No drives logged yet";
+  }
+}
+
+// Initialize
+updateLogCount();
 </script>
 
 </body>
