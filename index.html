@@ -14,379 +14,108 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
 
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #38bdf8 100%);
-    color: #0c4a6e;
-    min-height: 100vh;
-    background-attachment: fixed;
-  }
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(135deg,#e0f2fe,#bae6fd,#38bdf8);
+  color:#0c4a6e;
+  min-height:100vh
+}
 
-  header {
-    padding: 24px 20px;
-    text-align: center;
-    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(240,249,255,0.95));
-    border-bottom: 3px solid #0ea5e9;
-    box-shadow: 0 4px 16px rgba(14,165,233,0.25);
-    backdrop-filter: blur(10px);
-  }
+header{
+  padding:24px 20px;
+  text-align:center;
+  background:rgba(255,255,255,0.95);
+  border-bottom:3px solid #0ea5e9;
+  box-shadow:0 4px 16px rgba(14,165,233,.25)
+}
 
-  header h1 {
-    color: #0c4a6e;
-    font-size: 28px;
-    margin-bottom: 6px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
+header img{
+  width:64px;
+  height:64px;
+  margin-bottom:10px
+}
 
-  header p {
-    color: #0369a1;
-    font-size: 15px;
-    font-weight: 500;
-  }
+header h1{font-size:28px;font-weight:700}
+header p{color:#0369a1}
 
-  nav {
-    display: flex;
-    background: rgba(255,255,255,0.95);
-    border-bottom: 2px solid #bae6fd;
-    overflow-x: auto;
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+nav{
+  display:flex;
+  background:#fff;
+  border-bottom:2px solid #bae6fd
+}
 
-  nav button {
-    flex: 1;
-    min-width: 80px;
-    padding: 16px 10px;
-    background: transparent;
-    border: none;
-    color: #0369a1;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 13px;
-    white-space: nowrap;
-    position: relative;
-  }
+nav button{
+  flex:1;
+  padding:14px;
+  border:none;
+  background:none;
+  font-weight:600;
+  color:#0369a1;
+  cursor:pointer
+}
 
-  nav button:hover {
-    background: rgba(14,165,233,0.1);
-    transform: translateY(-2px);
-  }
+nav button.active{
+  background:#0ea5e9;
+  color:#fff
+}
 
-  nav button.active {
-    background: linear-gradient(135deg, #0ea5e9, #0284c7);
-    color: white;
-    box-shadow: 0 4px 12px rgba(14,165,233,0.4);
-  }
+section{display:none;padding:20px}
+section.active{display:block}
 
-  nav button.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: #0284c7;
-  }
+.box{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 6px 20px rgba(14,165,233,.15)
+}
 
-  section {
-    display: none;
-    padding: 20px 16px;
-    animation: fadeIn 0.3s ease-in;
-  }
+.btn{
+  width:100%;
+  padding:16px;
+  margin:8px 0;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.btn-primary{
+  background:#0ea5e9;
+  color:#fff
+}
 
-  section.active {
-    display: block;
-  }
+.btn-secondary{
+  background:#fff;
+  border:2px solid #0ea5e9;
+  color:#0369a1
+}
 
-  .box {
-    background: linear-gradient(145deg, #ffffff, #f8fafc);
-    border: 2px solid #bae6fd;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 18px;
-    box-shadow: 0 8px 24px rgba(14,165,233,0.12), 0 2px 8px rgba(14,165,233,0.08);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
+.warning-box{
+  background:#fef2f2;
+  border:2px solid #fca5a5;
+  padding:12px;
+  border-radius:8px;
+  color:#991b1b;
+  margin-bottom:12px
+}
 
-  .box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #0ea5e9, #38bdf8, #0ea5e9);
-    background-size: 200% 100%;
-    animation: shimmer 3s linear infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  .box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(14,165,233,0.18), 0 4px 12px rgba(14,165,233,0.12);
-  }
-
-  .box h2 {
-    color: #0c4a6e;
-    font-size: 21px;
-    margin-bottom: 16px;
-    border-bottom: 2px solid #bae6fd;
-    padding-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-  }
-
-  .box h2::before {
-    content: '◆';
-    color: #0ea5e9;
-    font-size: 16px;
-  }
-
-  .box h3 {
-    color: #0369a1;
-    font-size: 18px;
-    margin: 20px 0 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-  }
-
-  .box ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .box ul li {
-    padding: 14px 16px;
-    margin: 10px 0;
-    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-    border-left: 5px solid #0ea5e9;
-    border-radius: 8px;
-    color: #0c4a6e;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    box-shadow: 0 2px 6px rgba(14,165,233,0.08);
-  }
-
-  .box ul li:hover {
-    transform: translateX(4px);
-    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-    box-shadow: 0 4px 12px rgba(14,165,233,0.15);
-  }
-
-  .btn {
-    width: 100%;
-    padding: 18px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin: 10px 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-  }
-
-  .btn:active::before {
-    width: 300px;
-    height: 300px;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, #0ea5e9, #0284c7);
-    color: white;
-    box-shadow: 0 6px 20px rgba(14,165,233,0.4);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(14,165,233,0.5);
-  }
-
-  .btn-primary:active {
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    background: white;
-    color: #0369a1;
-    border: 2px solid #0ea5e9;
-    box-shadow: 0 4px 12px rgba(14,165,233,0.15);
-  }
-
-  .btn-secondary:hover {
-    background: #f0f9ff;
-    transform: translateY(-2px);
-  }
-
-  .input-group {
-    margin: 16px 0;
-  }
-
-  .input-group label {
-    display: block;
-    color: #0369a1;
-    font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  .input-group select,
-  .input-group input[type="range"] {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #bae6fd;
-    border-radius: 8px;
-    font-size: 15px;
-    background: white;
-    color: #0c4a6e;
-  }
-
-  .input-group input[type="range"] {
-    padding: 0;
-    height: 40px;
-  }
-
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background: #f0f9ff;
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 16px 0;
-  }
-
-  .checkbox-label input[type="checkbox"] {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-  }
-
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 16px 0;
-  }
-
-  .stat-box {
-    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-    border: 2px solid #7dd3fc;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-  }
-
-  .stat-box h3 {
-    font-size: 36px;
-    color: #0c4a6e;
-    margin: 0 0 8px 0;
-  }
-
-  .stat-box p {
-    color: #0369a1;
-    font-size: 13px;
-    margin: 0;
-  }
-
-  .info-box {
-    background: #f0f9ff;
-    border-left: 4px solid #0ea5e9;
-    padding: 16px;
-    border-radius: 8px;
-    margin: 16px 0;
-    font-style: italic;
-    color: #0c4a6e;
-  }
-
-  .range-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #0369a1;
-    margin-top: 4px;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    color: #0369a1;
-    font-size: 13px;
-    background: white;
-    margin-top: 24px;
-    border-top: 2px solid #bae6fd;
-  }
-
-  .warning-box {
-    background: #fef2f2;
-    border: 2px solid #fca5a5;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 12px 0;
-    font-size: 14px;
-    color: #991b1b;
-  }
-
-  @media (max-width: 600px) {
-    header h1 {
-      font-size: 22px;
-    }
-    
-    nav button {
-      font-size: 12px;
-      padding: 12px 6px;
-    }
-
-    .box {
-      padding: 16px;
-    }
-  }
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:13px;
+  color:#0369a1
+}
 </style>
 </head>
 
 <body>
 
 <header>
+  <img src="images/icon192x192.png" alt="CalmDrive Icon">
   <h1>CalmDrive</h1>
   <p>Arrive calm. Arrive safe.</p>
 </header>
@@ -395,111 +124,39 @@
   <button class="active" onclick="showTab('prepare')">Before Drive</button>
   <button onclick="showTab('drive')">While Driving</button>
   <button onclick="showTab('log')">Quick Log</button>
-  <button onclick="showTab('stats')">Stats</button>
 </nav>
 
-<!-- PREPARE -->
 <section id="prepare" class="active">
   <div class="box">
     <h2>Pre-Drive Calm Check</h2>
     <ul>
-      <li>✔ Leave 10 minutes early</li>
-      <li>✔ Set calm music or podcast</li>
-      <li>✔ Take 3 deep breaths</li>
-      <li>✔ Getting there safely matters more than being right</li>
+      <li>✔ Leave early</li>
+      <li>✔ Calm audio ready</li>
+      <li>✔ Breathe slowly</li>
+      <li>✔ Getting there safely matters</li>
     </ul>
-  </div>
-
-  <div class="box">
-    <strong>💡 Science Tip:</strong><br>
-    Anger lasts about 90 seconds if you don't feed it.
   </div>
 </section>
 
-<!-- DRIVE -->
 <section id="drive">
   <div class="box">
-    <h2>Audio Calm Reminders</h2>
-    
+    <h2>Calm Audio Reminders</h2>
+
     <div class="warning-box">
-      ⚠️ Use audio only. Never interact with your phone while driving.
+      ⚠️ Audio only. Never interact with your phone while driving.
     </div>
 
-    <button class="btn btn-primary" onclick="startReminders()">Start Calm Voice</button>
+    <button class="btn btn-primary" onclick="startReminders()">Start Calm Audio</button>
     <button class="btn btn-secondary" onclick="stopReminders()">Stop</button>
 
-    <div class="info-box" id="currentReminder"></div>
-    <p id="voiceInfo" style="font-size:12px; color:#0369a1; margin-top:8px;"></p>
-  </div>
-
-  <div class="box">
-    <h3>Quick Calm Techniques</h3>
-    <p style="font-size:13px; color:#0369a1; margin-bottom:12px;">(Use when safely parked)</p>
-    <ul>
-      <li>Grip & release steering wheel</li>
-      <li>Count backwards from 10</li>
-      <li>Make up a kind story about the other driver</li>
-    </ul>
+    <p id="nowPlaying" style="margin-top:10px;color:#0369a1"></p>
   </div>
 </section>
 
-<!-- LOG -->
 <section id="log">
   <div class="box">
     <h2>Quick Log</h2>
-
-    <div class="input-group">
-      <label>What happened?</label>
-      <select id="trigger">
-        <option value="">Select…</option>
-        <option>Cut off</option>
-        <option>Tailgating</option>
-        <option>Slow driver</option>
-        <option>No signal</option>
-        <option>Traffic jam</option>
-        <option>Parking lot issue</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label>Anger level: <span id="angerValue">5</span></label>
-      <input type="range" min="1" max="10" value="5" id="anger">
-      <div class="range-labels">
-        <span>Annoyed</span>
-        <span>Mad</span>
-        <span>Furious</span>
-      </div>
-    </div>
-
-    <label class="checkbox-label">
-      <input type="checkbox" id="handled">
-      <span>I handled this calmly</span>
-    </label>
-
-    <button class="btn btn-primary" onclick="saveLog()">Save Log Entry</button>
-  </div>
-</section>
-
-<!-- STATS -->
-<section id="stats">
-  <div class="box">
-    <h2>Your Calm Score</h2>
-    
-    <div class="stat-grid">
-      <div class="stat-box">
-        <h3 id="totalLogs">0</h3>
-        <p>Drives Logged</p>
-      </div>
-      <div class="stat-box">
-        <h3 id="calmPercent">0%</h3>
-        <p>Handled Calmly</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="box">
-    <h3>👏 High-Five Moment</h3>
-    <p id="highFive" style="color:#0369a1; margin-top:8px;">Log calm drives to earn your calm streak!</p>
+    <button class="btn btn-primary" onclick="saveLog()">Log Calm Drive</button>
   </div>
 </section>
 
@@ -507,110 +164,57 @@
   CalmDrive • Your calm matters
 </footer>
 
+<!-- Hidden audio player -->
+<audio id="calmAudio" preload="auto"></audio>
+
 <script>
-const reminders = [
-  "You are safe right now",
-  "Getting there calmly is success",
-  "This is not personal",
-  "Breathe slowly",
-  "Let it go, it's not worth it",
-  "Arriving calm is a win"
+const reminders=[
+  "audio/reminder1.mp3",
+  "audio/reminder2.mp3",
+  "audio/reminder3.mp3",
+  "audio/reminder4.mp3",
+  "audio/reminder5.mp3",
+  "audio/reminder6.mp3"
 ];
 
-let reminderInterval = null;
-let selectedVoice = null;
+let reminderInterval=null;
+const audio=document.getElementById("calmAudio");
+const nowPlaying=document.getElementById("nowPlaying");
 
-function findBestVoice() {
-  const voices = speechSynthesis.getVoices();
-  const femaleVoices = voices.filter(v => !v.name.toLowerCase().includes('male'));
-  
-  const priorities = [
-    v => v.lang.includes('en-GB') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha')),
-    v => v.lang.includes('en-GB'),
-    v => v.lang.includes('en-US') && (v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('victoria')),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('female'),
-    v => v.lang.includes('en'),
-    v => true
-  ];
-  
-  for (const filter of priorities) {
-    const voice = femaleVoices.find(filter);
-    if (voice) {
-      selectedVoice = voice;
-      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name}`;
-      return;
-    }
-  }
-  selectedVoice = voices[0];
+function playRandom(){
+  const file=reminders[Math.floor(Math.random()*reminders.length)];
+  audio.src=file;
+  audio.volume=0.8;
+  audio.play();
+  nowPlaying.textContent="🎧 Playing calm reminder";
 }
 
-speechSynthesis.onvoiceschanged = findBestVoice;
-findBestVoice();
-
-function showTab(id) {
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-}
-
-function speak(text) {
-  if ('speechSynthesis' in window) {
-    if (!selectedVoice) findBestVoice();
-    const msg = new SpeechSynthesisUtterance(text);
-    if (selectedVoice) msg.voice = selectedVoice;
-    msg.rate = 0.85;
-    msg.pitch = 1.0;
-    msg.volume = 0.9;
-    speechSynthesis.speak(msg);
-  }
-}
-
-function startReminders() {
+function startReminders(){
   stopReminders();
-  speakRandom();
-  reminderInterval = setInterval(speakRandom, 45000);
+  playRandom();
+  reminderInterval=setInterval(playRandom,45000);
 }
 
-function stopReminders() {
+function stopReminders(){
   clearInterval(reminderInterval);
-  speechSynthesis.cancel();
+  audio.pause();
+  audio.currentTime=0;
+  nowPlaying.textContent="";
 }
 
-function speakRandom() {
-  const text = reminders[Math.floor(Math.random() * reminders.length)];
-  document.getElementById('currentReminder').textContent = `"${text}"`;
-  speak(text);
+function showTab(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  event.target.classList.add("active");
 }
 
-document.getElementById('anger').oninput = e => {
-  document.getElementById('angerValue').textContent = e.target.value;
-};
-
-function saveLog() {
-  const logs = JSON.parse(localStorage.getItem('calmLogs') || '[]');
-  logs.unshift({
-    trigger: trigger.value,
-    anger: anger.value,
-    handled: handled.checked,
-    date: new Date()
-  });
-  localStorage.setItem('calmLogs', JSON.stringify(logs));
-  alert('Saved. Nice job staying aware.');
-  loadStats();
+function saveLog(){
+  const logs=JSON.parse(localStorage.getItem("calmLogs")||"[]");
+  logs.unshift({date:new Date()});
+  localStorage.setItem("calmLogs",JSON.stringify(logs));
+  alert("Logged. Nice calm drive 👍");
 }
-
-function loadStats() {
-  const logs = JSON.parse(localStorage.getItem('calmLogs') || '[]');
-  const calm = logs.filter(l => l.handled).length;
-  totalLogs.textContent = logs.length;
-  calmPercent.textContent = logs.length ? Math.round(calm / logs.length * 100) + '%' : '0%';
-  if (calm >= 3) {
-    highFive.textContent = "🙌 High-five! You stayed calm on multiple drives!";
-  }
-}
-
-loadStats();
 </script>
 
 </body>
