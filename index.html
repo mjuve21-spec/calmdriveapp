@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CalmDriveApp</title>
+<title>CalmDrive</title>
 
 <!-- App Icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png">
@@ -17,39 +17,64 @@
   body {
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #0f766e);
-    color: #fff;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+    color: #0c4a6e;
+    min-height: 100vh;
   }
 
   header {
-    padding: 16px;
+    padding: 24px;
     text-align: center;
-    background: rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    border-bottom: 2px solid #0ea5e9;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.1);
+  }
+
+  header h1 {
+    margin: 0;
+    color: #0c4a6e;
+    font-size: 28px;
+  }
+
+  header p {
+    margin: 8px 0 0 0;
+    color: #0369a1;
+    font-size: 16px;
   }
 
   nav {
     display: flex;
-    background: rgba(0,0,0,0.25);
+    background: rgba(255,255,255,0.9);
+    border-bottom: 1px solid #7dd3fc;
   }
 
   nav button {
     flex: 1;
-    padding: 12px;
+    padding: 16px 12px;
     background: none;
     border: none;
-    color: #fff;
+    color: #0369a1;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+  }
+
+  nav button:hover {
+    background: rgba(186,230,253,0.5);
   }
 
   nav button.active {
-    background: rgba(13,148,136,0.6);
+    background: #0ea5e9;
+    color: white;
+    border-bottom: 3px solid #0284c7;
   }
 
   section {
     display: none;
-    padding: 16px;
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
   section.active {
@@ -57,58 +82,146 @@
   }
 
   .card {
-    background: rgba(0,0,0,0.35);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(14,165,233,0.15);
+    border: 1px solid #bae6fd;
+  }
+
+  .card h2 {
+    margin-top: 0;
+    color: #0c4a6e;
+    font-size: 22px;
+  }
+
+  .card h3 {
+    color: #0369a1;
+    font-size: 18px;
+  }
+
+  .card ul {
+    color: #0c4a6e;
+    line-height: 1.8;
   }
 
   button.primary {
     width: 100%;
-    padding: 12px;
-    background: #0d9488;
+    padding: 16px;
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
     border: none;
-    border-radius: 8px;
-    color: #fff;
+    border-radius: 12px;
+    color: white;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+  }
+
+  button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(14,165,233,0.4);
   }
 
   button.secondary {
     width: 100%;
-    padding: 12px;
-    background: #334155;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    margin-top: 8px;
+    padding: 16px;
+    background: white;
+    border: 2px solid #0ea5e9;
+    border-radius: 12px;
+    color: #0369a1;
+    margin-top: 12px;
     cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  button.secondary:hover {
+    background: #f0f9ff;
   }
 
   select, input[type=range] {
     width: 100%;
-    margin-top: 6px;
+    margin-top: 8px;
+    padding: 12px;
+    border: 2px solid #bae6fd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #0c4a6e;
+    background: white;
+  }
+
+  select:focus, input[type=range]:focus {
+    outline: none;
+    border-color: #0ea5e9;
+  }
+
+  label {
+    display: block;
+    margin: 16px 0 8px 0;
+    color: #0369a1;
+    font-weight: 600;
   }
 
   .stat {
     text-align: center;
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(13,148,136,0.3);
+    padding: 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border: 2px solid #7dd3fc;
+  }
+
+  .stat h3 {
+    margin: 0;
+    font-size: 36px;
+    color: #0c4a6e;
+  }
+
+  .stat p {
+    margin: 8px 0 0 0;
+    color: #0369a1;
+    font-size: 14px;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap: 10px;
+    gap: 16px;
   }
 
   footer {
     text-align: center;
+    font-size: 14px;
+    color: #0369a1;
+    padding: 24px;
+    background: rgba(255,255,255,0.7);
+    margin-top: 40px;
+  }
+
+  #currentReminder {
+    font-style: italic;
+    color: #0c4a6e;
+    background: #f0f9ff;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+    border-left: 4px solid #0ea5e9;
+  }
+
+  #voiceInfo {
     font-size: 12px;
-    opacity: 0.7;
-    padding: 12px;
+    color: #0369a1;
+    margin-top: 8px;
+    opacity: 0.8;
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    cursor: pointer;
   }
 </style>
 </head>
@@ -116,13 +229,8 @@
 <body>
 
 <header>
-  <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-    <img src="images/icon32x32.png" alt="CalmDrive Logo" style="width:48px; height:48px;">
-    <div>
-      <h1 style="margin:0;">CalmDrive</h1>
-      <p style="margin:5px 0 0 0;">Arrive calm. Arrive safe.</p>
-    </div>
-  </div>
+  <h1>CalmDrive</h1>
+  <p>Arrive calm. Arrive safe.</p>
 </header>
 
 <nav>
@@ -159,8 +267,8 @@
     <button class="primary" onclick="startReminders()">Start Calm Voice</button>
     <button class="secondary" onclick="stopReminders()">Stop</button>
 
-    <p id="currentReminder" style="margin-top:10px; font-style:italic;"></p>
-    <p id="voiceInfo" style="margin-top:5px; font-size:12px; opacity:0.7;"></p>
+    <p id="currentReminder"></p>
+    <p id="voiceInfo"></p>
   </div>
 
   <div class="card">
@@ -192,7 +300,7 @@
     <label>Anger level: <span id="angerValue">5</span></label>
     <input type="range" min="1" max="10" value="5" id="anger">
 
-    <label>
+    <label style="display: flex; align-items: center; cursor: pointer;">
       <input type="checkbox" id="handled"> I handled this calmly
     </label>
 
@@ -223,7 +331,7 @@
 </section>
 
 <footer>
-  CalmDriveApp • Your calm matters
+  CalmDrive • Your calm matters
 </footer>
 
 <script>
@@ -239,32 +347,16 @@ const reminders = [
 let reminderInterval = null;
 let selectedVoice = null;
 
-// Find the best available voice (female, preferably British)
 function findBestVoice() {
   const voices = speechSynthesis.getVoices();
-  
-  console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
-  
-  // STRICT: Reject any voice with "male" in the name
   const femaleVoices = voices.filter(v => !v.name.toLowerCase().includes('male'));
   
-  // Priority order for voice selection
   const priorities = [
-    // British English female voices
-    v => v.lang.includes('en-GB') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('kate') || v.name.toLowerCase().includes('karen')),
+    v => v.lang.includes('en-GB') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha')),
     v => v.lang.includes('en-GB'),
-    
-    // US English female voices with names
-    v => v.lang.includes('en-US') && (v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('victoria') || v.name.toLowerCase().includes('allison') || v.name.toLowerCase().includes('ava') || v.name.toLowerCase().includes('susan')),
-    
-    // Any English female
+    v => v.lang.includes('en-US') && (v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('victoria')),
     v => v.lang.includes('en') && v.name.toLowerCase().includes('female'),
     v => v.lang.includes('en'),
-    
-    // Any female voice
-    v => v.name.toLowerCase().includes('female'),
-    
-    // Absolutely last resort
     v => true
   ];
   
@@ -272,18 +364,13 @@ function findBestVoice() {
     const voice = femaleVoices.find(filter);
     if (voice) {
       selectedVoice = voice;
-      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name} (${voice.lang})`;
-      console.log('Selected voice:', voice.name, voice.lang);
+      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name}`;
       return;
     }
   }
-  
-  // If we get here, use first available voice
   selectedVoice = voices[0];
-  document.getElementById('voiceInfo').textContent = `Using voice: ${selectedVoice.name} (default)`;
 }
 
-// Initialize voices when they load
 speechSynthesis.onvoiceschanged = findBestVoice;
 findBestVoice();
 
@@ -296,23 +383,12 @@ function showTab(id) {
 
 function speak(text) {
   if ('speechSynthesis' in window) {
-    // Make sure we have the best voice
-    if (!selectedVoice) {
-      findBestVoice();
-    }
-    
+    if (!selectedVoice) findBestVoice();
     const msg = new SpeechSynthesisUtterance(text);
-    
-    // Use the selected voice
-    if (selectedVoice) {
-      msg.voice = selectedVoice;
-    }
-    
-    // Settings for calmer speech
-    msg.rate = 0.85;  // Slower = more calming
-    msg.pitch = 1.0;  // Normal pitch
-    msg.volume = 0.9; // Slightly softer
-    
+    if (selectedVoice) msg.voice = selectedVoice;
+    msg.rate = 0.85;
+    msg.pitch = 1.0;
+    msg.volume = 0.9;
     speechSynthesis.speak(msg);
   }
 }
@@ -325,7 +401,7 @@ function startReminders() {
 
 function stopReminders() {
   clearInterval(reminderInterval);
-  speechSynthesis.cancel(); // Stop any currently playing speech
+  speechSynthesis.cancel();
 }
 
 function speakRandom() {
@@ -356,7 +432,6 @@ function loadStats() {
   const calm = logs.filter(l => l.handled).length;
   totalLogs.textContent = logs.length;
   calmPercent.textContent = logs.length ? Math.round(calm / logs.length * 100) + '%' : '0%';
-
   if (calm >= 3) {
     highFive.textContent = "🙌 High-five! You stayed calm on multiple drives!";
   }
