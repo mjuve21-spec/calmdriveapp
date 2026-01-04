@@ -243,41 +243,44 @@ let selectedVoice = null;
 function findBestVoice() {
   const voices = speechSynthesis.getVoices();
   
+  console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
+  
+  // STRICT: Reject any voice with "male" in the name
+  const femaleVoices = voices.filter(v => !v.name.toLowerCase().includes('male'));
+  
   // Priority order for voice selection
   const priorities = [
     // British English female voices
-    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('female'),
-    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('samantha'),
-    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('karen'),
-    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('kate'),
-    v => v.lang.includes('en-GB') && !v.name.toLowerCase().includes('male'),
+    v => v.lang.includes('en-GB') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('kate') || v.name.toLowerCase().includes('karen')),
+    v => v.lang.includes('en-GB'),
     
-    // Any English female voice
+    // US English female voices with names
+    v => v.lang.includes('en-US') && (v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('victoria') || v.name.toLowerCase().includes('allison') || v.name.toLowerCase().includes('ava') || v.name.toLowerCase().includes('susan')),
+    
+    // Any English female
     v => v.lang.includes('en') && v.name.toLowerCase().includes('female'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('samantha'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('victoria'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('allison'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('ava'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('susan'),
-    v => v.lang.includes('en') && v.name.toLowerCase().includes('karen'),
-    v => v.lang.includes('en') && !v.name.toLowerCase().includes('male'),
+    v => v.lang.includes('en'),
     
-    // Fallback to any female voice
+    // Any female voice
     v => v.name.toLowerCase().includes('female'),
     
-    // Last resort: first available voice
+    // Absolutely last resort
     v => true
   ];
   
   for (const filter of priorities) {
-    const voice = voices.find(filter);
+    const voice = femaleVoices.find(filter);
     if (voice) {
       selectedVoice = voice;
-      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name}`;
+      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name} (${voice.lang})`;
       console.log('Selected voice:', voice.name, voice.lang);
       return;
     }
   }
+  
+  // If we get here, use first available voice
+  selectedVoice = voices[0];
+  document.getElementById('voiceInfo').textContent = `Using voice: ${selectedVoice.name} (default)`;
 }
 
 // Initialize voices when they load
