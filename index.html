@@ -148,16 +148,6 @@ header {
   overflow: hidden;
 }
 
-header::before {
-  content: '🌊';
-  position: absolute;
-  font-size: 100px;
-  opacity: 0.1;
-  top: -20px;
-  right: 20px;
-  animation: float 6s ease-in-out infinite;
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(10deg); }
@@ -257,19 +247,13 @@ nav button {
   border: none;
   background: transparent;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 14px;
   color: #0369a1;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   text-transform: uppercase;
   letter-spacing: 1px;
-}
-
-nav button .icon {
-  display: block;
-  font-size: 24px;
-  margin-bottom: 4px;
 }
 
 nav button.active {
@@ -609,7 +593,7 @@ footer::before {
 <header>
   <div class="logo-container">
     <div class="logo-circle">
-      <img src="images/icon192x192.png" alt="CalmDrive">
+      <img src="./images/icon192x192.png" alt="CalmDrive" onerror="this.style.display='none'">
     </div>
   </div>
   <h1>CalmDrive</h1>
@@ -618,15 +602,12 @@ footer::before {
 
 <nav>
   <button class="active" onclick="showTab('prepare')">
-    <span class="icon">🧘</span>
     Before
   </button>
   <button onclick="showTab('drive')">
-    <span class="icon">🚗</span>
     During
   </button>
   <button onclick="showTab('log')">
-    <span class="icon">📝</span>
     Log
   </button>
 </nav>
