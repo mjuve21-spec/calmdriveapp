@@ -116,7 +116,7 @@
 <body>
 
 <header>
-  <h1>🚗 CalmDriveApp</h1>
+  <h1><img src="images/icon32x32.png" alt="CalmDrive" style="width:40px; height:40px; vertical-align:middle; margin-right:10px;">CalmDriveApp</h1>
   <p>Arrive calm. Arrive safe.</p>
 </header>
 
@@ -155,6 +155,7 @@
     <button class="secondary" onclick="stopReminders()">Stop</button>
 
     <p id="currentReminder" style="margin-top:10px; font-style:italic;"></p>
+    <p id="voiceInfo" style="margin-top:5px; font-size:12px; opacity:0.7;"></p>
   </div>
 
   <div class="card">
@@ -231,6 +232,52 @@ const reminders = [
 ];
 
 let reminderInterval = null;
+let selectedVoice = null;
+
+// Find the best available voice (female, preferably British)
+function findBestVoice() {
+  const voices = speechSynthesis.getVoices();
+  
+  // Priority order for voice selection
+  const priorities = [
+    // British English female voices
+    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('female'),
+    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('samantha'),
+    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('karen'),
+    v => v.lang.includes('en-GB') && v.name.toLowerCase().includes('kate'),
+    v => v.lang.includes('en-GB') && !v.name.toLowerCase().includes('male'),
+    
+    // Any English female voice
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('female'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('samantha'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('victoria'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('allison'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('ava'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('susan'),
+    v => v.lang.includes('en') && v.name.toLowerCase().includes('karen'),
+    v => v.lang.includes('en') && !v.name.toLowerCase().includes('male'),
+    
+    // Fallback to any female voice
+    v => v.name.toLowerCase().includes('female'),
+    
+    // Last resort: first available voice
+    v => true
+  ];
+  
+  for (const filter of priorities) {
+    const voice = voices.find(filter);
+    if (voice) {
+      selectedVoice = voice;
+      document.getElementById('voiceInfo').textContent = `Using voice: ${voice.name}`;
+      console.log('Selected voice:', voice.name, voice.lang);
+      return;
+    }
+  }
+}
+
+// Initialize voices when they load
+speechSynthesis.onvoiceschanged = findBestVoice;
+findBestVoice();
 
 function showTab(id) {
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
@@ -241,8 +288,23 @@ function showTab(id) {
 
 function speak(text) {
   if ('speechSynthesis' in window) {
+    // Make sure we have the best voice
+    if (!selectedVoice) {
+      findBestVoice();
+    }
+    
     const msg = new SpeechSynthesisUtterance(text);
-    msg.rate = 0.9;
+    
+    // Use the selected voice
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+    
+    // Settings for calmer speech
+    msg.rate = 0.85;  // Slower = more calming
+    msg.pitch = 1.0;  // Normal pitch
+    msg.volume = 0.9; // Slightly softer
+    
     speechSynthesis.speak(msg);
   }
 }
@@ -255,6 +317,7 @@ function startReminders() {
 
 function stopReminders() {
   clearInterval(reminderInterval);
+  speechSynthesis.cancel(); // Stop any currently playing speech
 }
 
 function speakRandom() {
