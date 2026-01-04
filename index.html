@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CalmDriveApp</title>
+<title>CalmDrive</title>
 
 <!-- App Icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png">
@@ -14,206 +14,266 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-  body {
+  * {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%);
-    color: #581c87;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    color: #0c4a6e;
     min-height: 100vh;
   }
 
   header {
-    padding: 24px;
+    padding: 20px;
     text-align: center;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
-    border-bottom: 2px solid #a855f7;
-    box-shadow: 0 2px 8px rgba(168,85,247,0.1);
+    background: white;
+    border-bottom: 3px solid #0ea5e9;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.2);
   }
 
   header h1 {
-    margin: 0;
-    color: #581c87;
-    font-size: 28px;
+    color: #0c4a6e;
+    font-size: 26px;
+    margin-bottom: 5px;
   }
 
   header p {
-    margin: 8px 0 0 0;
-    color: #7e22ce;
-    font-size: 16px;
+    color: #0369a1;
+    font-size: 15px;
   }
 
   nav {
     display: flex;
-    background: rgba(255,255,255,0.9);
-    border-bottom: 1px solid #e9d5ff;
+    background: white;
+    border-bottom: 2px solid #bae6fd;
+    overflow-x: auto;
   }
 
   nav button {
     flex: 1;
-    padding: 16px 12px;
-    background: none;
+    min-width: 80px;
+    padding: 14px 8px;
+    background: white;
     border: none;
-    color: #7e22ce;
+    color: #0369a1;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-  }
-
-  nav button:hover {
-    background: rgba(243,232,255,0.5);
+    transition: all 0.2s;
+    font-size: 13px;
+    white-space: nowrap;
   }
 
   nav button.active {
-    background: #a855f7;
+    background: #0ea5e9;
     color: white;
-    border-bottom: 3px solid #9333ea;
+    border-bottom: 3px solid #0284c7;
   }
 
   section {
     display: none;
-    padding: 24px;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding: 16px;
   }
 
   section.active {
     display: block;
   }
 
-  .card {
+  .box {
     background: white;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(168,85,247,0.15);
-    border: 1px solid #e9d5ff;
+    border: 2px solid #bae6fd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 10px rgba(14,165,233,0.15);
   }
 
-  .card h2 {
-    margin-top: 0;
-    color: #581c87;
-    font-size: 22px;
+  .box h2 {
+    color: #0c4a6e;
+    font-size: 20px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #bae6fd;
+    padding-bottom: 8px;
   }
 
-  .card h3 {
-    color: #7e22ce;
+  .box h3 {
+    color: #0369a1;
     font-size: 18px;
+    margin: 16px 0 8px 0;
   }
 
-  .card ul {
-    color: #581c87;
-    line-height: 1.8;
+  .box ul {
+    list-style: none;
+    padding: 0;
   }
 
-  button.primary {
+  .box ul li {
+    padding: 10px;
+    margin: 8px 0;
+    background: #f0f9ff;
+    border-left: 4px solid #0ea5e9;
+    border-radius: 6px;
+    color: #0c4a6e;
+  }
+
+  .btn {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #a855f7, #9333ea);
     border: none;
-    border-radius: 12px;
-    color: white;
+    border-radius: 10px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(168,85,247,0.3);
+    transition: all 0.3s;
+    margin: 8px 0;
   }
 
-  button.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(168,85,247,0.4);
+  .btn-primary {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: white;
+    box-shadow: 0 4px 12px rgba(14,165,233,0.3);
   }
 
-  button.secondary {
-    width: 100%;
-    padding: 16px;
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary {
     background: white;
-    border: 2px solid #a855f7;
-    border-radius: 12px;
-    color: #7e22ce;
-    margin-top: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    color: #0369a1;
+    border: 2px solid #0ea5e9;
   }
 
-  button.secondary:hover {
-    background: #faf5ff;
+  .btn-secondary:active {
+    background: #f0f9ff;
   }
 
-  select, input[type=range] {
-    width: 100%;
-    margin-top: 8px;
-    padding: 12px;
-    border: 2px solid #e9d5ff;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #581c87;
+  .input-group {
+    margin: 16px 0;
   }
 
-  select:focus, input[type=range]:focus {
-    outline: none;
-    border-color: #a855f7;
-  }
-
-  label {
+  .input-group label {
     display: block;
-    margin: 16px 0 8px 0;
-    color: #7e22ce;
+    color: #0369a1;
     font-weight: 600;
-  }
-
-  .stat {
-    text-align: center;
-    padding: 20px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-    border: 2px solid #e9d5ff;
-  }
-
-  .stat h3 {
-    margin: 0;
-    font-size: 36px;
-    color: #581c87;
-  }
-
-  .stat p {
-    margin: 8px 0 0 0;
-    color: #7e22ce;
+    margin-bottom: 8px;
     font-size: 14px;
   }
 
-  .grid {
+  .input-group select,
+  .input-group input[type="range"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #bae6fd;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    color: #0c4a6e;
+  }
+
+  .input-group input[type="range"] {
+    padding: 0;
+    height: 40px;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 16px 0;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  .stat-grid {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-box {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border: 2px solid #7dd3fc;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .stat-box h3 {
+    font-size: 36px;
+    color: #0c4a6e;
+    margin: 0 0 8px 0;
+  }
+
+  .stat-box p {
+    color: #0369a1;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .info-box {
+    background: #f0f9ff;
+    border-left: 4px solid #0ea5e9;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-style: italic;
+    color: #0c4a6e;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #0369a1;
+    margin-top: 4px;
   }
 
   footer {
     text-align: center;
-    font-size: 14px;
-    color: #7e22ce;
-    padding: 24px;
-    background: rgba(255,255,255,0.7);
-    margin-top: 40px;
+    padding: 20px;
+    color: #0369a1;
+    font-size: 13px;
+    background: white;
+    margin-top: 24px;
+    border-top: 2px solid #bae6fd;
   }
 
-  #currentReminder {
-    font-style: italic;
-    color: #581c87;
-    background: #faf5ff;
-    padding: 16px;
+  .warning-box {
+    background: #fef2f2;
+    border: 2px solid #fca5a5;
     border-radius: 8px;
-    margin-top: 16px;
-    border-left: 4px solid #a855f7;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: #991b1b;
   }
 
-  #voiceInfo {
-    font-size: 12px;
-    color: #7e22ce;
-    margin-top: 8px;
-    opacity: 0.8;
+  @media (max-width: 600px) {
+    header h1 {
+      font-size: 22px;
+    }
+    
+    nav button {
+      font-size: 12px;
+      padding: 12px 6px;
+    }
+
+    .box {
+      padding: 16px;
+    }
   }
 </style>
 </head>
@@ -234,7 +294,7 @@
 
 <!-- PREPARE -->
 <section id="prepare" class="active">
-  <div class="card">
+  <div class="box">
     <h2>Pre-Drive Calm Check</h2>
     <ul>
       <li>✔ Leave 10 minutes early</li>
@@ -244,27 +304,31 @@
     </ul>
   </div>
 
-  <div class="card">
-    <strong>Science Tip:</strong>
+  <div class="box">
+    <strong>💡 Science Tip:</strong><br>
     Anger lasts about 90 seconds if you don't feed it.
   </div>
 </section>
 
 <!-- DRIVE -->
 <section id="drive">
-  <div class="card">
+  <div class="box">
     <h2>Audio Calm Reminders</h2>
-    <p>⚠️ Use audio only. Do not interact while driving.</p>
+    
+    <div class="warning-box">
+      ⚠️ Use audio only. Never interact with your phone while driving.
+    </div>
 
-    <button class="primary" onclick="startReminders()">Start Calm Voice</button>
-    <button class="secondary" onclick="stopReminders()">Stop</button>
+    <button class="btn btn-primary" onclick="startReminders()">Start Calm Voice</button>
+    <button class="btn btn-secondary" onclick="stopReminders()">Stop</button>
 
-    <p id="currentReminder"></p>
-    <p id="voiceInfo"></p>
+    <div class="info-box" id="currentReminder"></div>
+    <p id="voiceInfo" style="font-size:12px; color:#0369a1; margin-top:8px;"></p>
   </div>
 
-  <div class="card">
-    <h3>Quick Calm Techniques (When Parked)</h3>
+  <div class="box">
+    <h3>Quick Calm Techniques</h3>
+    <p style="font-size:13px; color:#0369a1; margin-bottom:12px;">(Use when safely parked)</p>
     <ul>
       <li>Grip & release steering wheel</li>
       <li>Count backwards from 10</li>
@@ -275,55 +339,66 @@
 
 <!-- LOG -->
 <section id="log">
-  <div class="card">
+  <div class="box">
     <h2>Quick Log</h2>
 
-    <label>What happened?</label>
-    <select id="trigger">
-      <option value="">Select…</option>
-      <option>Cut off</option>
-      <option>Tailgating</option>
-      <option>Slow driver</option>
-      <option>No signal</option>
-      <option>Traffic jam</option>
-      <option>Parking lot issue</option>
-    </select>
+    <div class="input-group">
+      <label>What happened?</label>
+      <select id="trigger">
+        <option value="">Select…</option>
+        <option>Cut off</option>
+        <option>Tailgating</option>
+        <option>Slow driver</option>
+        <option>No signal</option>
+        <option>Traffic jam</option>
+        <option>Parking lot issue</option>
+      </select>
+    </div>
 
-    <label>Anger level: <span id="angerValue">5</span></label>
-    <input type="range" min="1" max="10" value="5" id="anger">
+    <div class="input-group">
+      <label>Anger level: <span id="angerValue">5</span></label>
+      <input type="range" min="1" max="10" value="5" id="anger">
+      <div class="range-labels">
+        <span>Annoyed</span>
+        <span>Mad</span>
+        <span>Furious</span>
+      </div>
+    </div>
 
-    <label>
-      <input type="checkbox" id="handled"> I handled this calmly
+    <label class="checkbox-label">
+      <input type="checkbox" id="handled">
+      <span>I handled this calmly</span>
     </label>
 
-    <button class="primary" onclick="saveLog()">Save</button>
+    <button class="btn btn-primary" onclick="saveLog()">Save Log Entry</button>
   </div>
 </section>
 
 <!-- STATS -->
 <section id="stats">
-  <div class="card">
+  <div class="box">
     <h2>Your Calm Score</h2>
-    <div class="grid">
-      <div class="stat">
+    
+    <div class="stat-grid">
+      <div class="stat-box">
         <h3 id="totalLogs">0</h3>
         <p>Drives Logged</p>
       </div>
-      <div class="stat">
+      <div class="stat-box">
         <h3 id="calmPercent">0%</h3>
         <p>Handled Calmly</p>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <p>👏 High-Five Moment</p>
-    <p id="highFive">Log calm drives to earn your calm streak!</p>
+  <div class="box">
+    <h3>👏 High-Five Moment</h3>
+    <p id="highFive" style="color:#0369a1; margin-top:8px;">Log calm drives to earn your calm streak!</p>
   </div>
 </section>
 
 <footer>
-  CalmDriveApp • Your calm matters
+  CalmDrive • Your calm matters
 </footer>
 
 <script>
