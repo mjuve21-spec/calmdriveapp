@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CalmDrive</title>
 
 <link rel="manifest" href="manifest.json">
@@ -10,222 +10,200 @@
 <link rel="apple-touch-icon" href="images/icon512x512.png">
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*{box-sizing:border-box;margin:0;padding:0}
 
-body {
-  isolation: isolate;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  min-height: 100vh;
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  min-height:100vh;
   background:
     radial-gradient(circle at 20% 10%, #7c3aed55, transparent 40%),
     radial-gradient(circle at 80% 30%, #ec489955, transparent 45%),
-    linear-gradient(180deg, #020617, #020617);
-  color: rgba(255,255,255,0.95);
-  overflow-x: hidden;
+    linear-gradient(180deg,#020617,#020617);
+  color:white;
+  overflow-x:hidden;
 }
 
-/* ===== Ambient ===== */
-.ambient-bg {
-  position: fixed;
-  inset: -40%;
+/* Ambient */
+.ambient-bg{
+  position:fixed;
+  inset:-40%;
   background:
-    radial-gradient(circle at 25% 20%, rgba(139,92,246,0.35), transparent 35%),
-    radial-gradient(circle at 75% 50%, rgba(236,72,153,0.3), transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(59,130,246,0.35), transparent 45%);
-  filter: blur(90px);
-  animation: ambientMove 30s ease-in-out infinite alternate;
-  z-index: -2;
+    radial-gradient(circle at 25% 20%,rgba(139,92,246,.35),transparent 35%),
+    radial-gradient(circle at 75% 50%,rgba(236,72,153,.3),transparent 40%),
+    radial-gradient(circle at 50% 80%,rgba(59,130,246,.35),transparent 45%);
+  filter:blur(90px);
+  animation:ambient 30s ease-in-out infinite alternate;
+  z-index:-1;
 }
-@keyframes ambientMove {
-  from { transform: translate(-6%, -6%) scale(1); }
-  to   { transform: translate(6%, 6%) scale(1.2); }
-}
-
-/* ===== Header ===== */
-header {
-  text-align: center;
-  padding: 56px 20px 36px;
+@keyframes ambient{
+  from{transform:translate(-6%,-6%) scale(1)}
+  to{transform:translate(6%,6%) scale(1.2)}
 }
 
-.logo {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 22px;
-  border-radius: 28px;
-  background: linear-gradient(145deg, #4f46e5, #9333ea);
-  box-shadow:
-    0 40px 90px rgba(99,102,241,0.6),
-    inset 0 3px 0 rgba(255,255,255,0.4),
-    inset 0 -3px 0 rgba(0,0,0,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: logoFloat 6s ease-in-out infinite;
-}
-@keyframes logoFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
+/* Header */
+header{
+  text-align:center;
+  padding:56px 20px 36px;
 }
 
-h1 {
-  font-size: 46px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #fff, #c7d2fe);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 6px;
+.logo{
+  width:110px;
+  height:110px;
+  margin:0 auto 20px;
+  border-radius:28px;
+  background:linear-gradient(145deg,#4f46e5,#9333ea);
+  box-shadow:0 40px 90px rgba(99,102,241,.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:float 6s ease-in-out infinite;
+}
+.logo img{
+  width:64px;
+  height:64px;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
 }
 
-.tagline {
-  font-size: 14px;
-  letter-spacing: 2px;
-  opacity: 0.9;
+h1{
+  font-size:46px;
+  font-weight:900;
+  background:linear-gradient(135deg,#fff,#c7d2fe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:6px;
 }
 
-/* ===== Nav ===== */
-nav {
-  position: sticky;
-  top: 0;
-  display: flex;
-  gap: 8px;
-  padding: 14px;
-  background: rgba(2,6,23,0.75);
-  backdrop-filter: blur(30px);
-  z-index: 50;
+.tagline{
+  font-size:14px;
+  letter-spacing:2px;
+  opacity:.9;
 }
 
-nav button {
-  flex: 1;
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  background: rgba(255,255,255,0.08);
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all .3s ease;
+/* Nav */
+nav{
+  position:sticky;
+  top:0;
+  display:flex;
+  gap:8px;
+  padding:14px;
+  background:rgba(2,6,23,.75);
+  backdrop-filter:blur(30px);
+  z-index:10;
+}
+nav button{
+  flex:1;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+nav button.active{
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+  box-shadow:0 10px 30px rgba(139,92,246,.6);
 }
 
-nav button.active {
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  box-shadow: 0 10px 30px rgba(139,92,246,0.6);
+/* Sections */
+section{
+  display:none;
+  padding:28px 18px 100px;
+  max-width:680px;
+  margin:auto;
+}
+section.active{
+  display:block;
+  animation:fade .5s ease;
+}
+@keyframes fade{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
-/* ===== Sections ===== */
-section {
-  display: none;
-  padding: 28px 18px 100px;
-  max-width: 680px;
-  margin: auto;
+/* Cards */
+.card{
+  background:linear-gradient(145deg,rgba(255,255,255,.35),rgba(255,255,255,.18));
+  backdrop-filter:blur(40px) saturate(160%);
+  border-radius:30px;
+  padding:36px;
+  margin-bottom:28px;
+  border:2px solid rgba(255,255,255,.35);
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  animation:cardFloat 7s ease-in-out infinite;
 }
-section.active {
-  display: block;
-  animation: fadeUp .5s ease;
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Cards ===== */
-.card-3d {
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.35),
-    rgba(255,255,255,0.18)
-  );
-  backdrop-filter: blur(40px) saturate(160%);
-  border-radius: 30px;
-  padding: 36px;
-  margin-bottom: 28px;
-  border: 2px solid rgba(255,255,255,0.35);
-  box-shadow:
-    0 30px 80px rgba(0,0,0,0.35),
-    inset 0 2px 0 rgba(255,255,255,0.6);
-  animation: cardFloat 7s ease-in-out infinite;
-}
-@keyframes cardFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@keyframes cardFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
 }
 
-.card-accent {
-  display: inline-block;
-  padding: 8px 16px;
-  font-size: 11px;
-  font-weight: 800;
-  border-radius: 999px;
-  margin-bottom: 16px;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  box-shadow: 0 6px 18px rgba(139,92,246,0.5);
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.accent{
+  display:inline-block;
+  padding:8px 16px;
+  font-size:11px;
+  font-weight:800;
+  border-radius:999px;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+  letter-spacing:1px;
+  text-transform:uppercase;
 }
 
-.card-3d h2 {
-  font-size: 26px;
-  margin-bottom: 14px;
+.card h2{
+  font-size:26px;
+  margin-bottom:14px;
 }
 
-.card-3d ul {
-  list-style: none;
+ul{list-style:none}
+li{
+  padding:14px 0;
+  border-bottom:1px solid rgba(255,255,255,.25);
 }
-.card-3d li {
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
-}
-.card-3d li:last-child { border-bottom: none; }
+li:last-child{border-bottom:none}
 
-/* ===== Buttons ===== */
-.btn-3d {
-  width: 100%;
-  min-height: 56px;
-  margin-top: 16px;
-  border-radius: 18px;
-  border: none;
-  font-size: 16px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
-  color: white;
-  cursor: pointer;
-  box-shadow:
-    0 18px 40px rgba(139,92,246,0.5),
-    inset 0 2px 0 rgba(255,255,255,0.5);
-  transition: transform .25s ease;
+/* Buttons */
+button.primary{
+  width:100%;
+  min-height:56px;
+  margin-top:16px;
+  border-radius:18px;
+  border:none;
+  font-size:16px;
+  font-weight:800;
+  background:linear-gradient(135deg,#8b5cf6,#ec4899,#f97316);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 18px 40px rgba(139,92,246,.5);
 }
-.btn-3d:active {
-  transform: translateY(2px);
-}
+button.primary:active{transform:translateY(2px)}
 
-/* ===== Audio ===== */
-.audio-visualizer {
-  display: none;
-  gap: 6px;
-  height: 60px;
-  margin: 20px 0;
+/* Audio */
+.audio-bars{
+  display:none;
+  gap:6px;
+  height:60px;
+  margin:20px 0;
 }
-.audio-visualizer.active { display: flex; }
-.bar {
-  width: 6px;
-  background: linear-gradient(#8b5cf6,#ec4899);
-  animation: wave .8s infinite ease-in-out;
+.audio-bars.active{display:flex}
+.bar{
+  width:6px;
+  background:linear-gradient(#8b5cf6,#ec4899);
+  animation:wave .8s infinite ease-in-out;
 }
 .bar:nth-child(odd){animation-delay:.2s}
-@keyframes wave {
+@keyframes wave{
   0%,100%{height:18px}
   50%{height:48px}
 }
 
-/* ===== Footer ===== */
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  opacity: 0.8;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
+/* Footer */
+footer{
+  text-align:center;
+  padding:40px 20px;
+  opacity:.8;
 }
 </style>
 </head>
@@ -235,7 +213,9 @@ footer {
 <div class="ambient-bg"></div>
 
 <header>
-  <div class="logo">🚗</div>
+  <div class="logo">
+    <img src="images/icon192x192.png" alt="CalmDrive icon">
+  </div>
   <h1>CalmDrive</h1>
   <p class="tagline">ARRIVE CALM • ARRIVE SAFE</p>
 </header>
@@ -247,12 +227,12 @@ footer {
 </nav>
 
 <section id="before" class="active">
-  <div class="card-3d">
-    <div class="card-accent">Mindset</div>
+  <div class="card">
+    <div class="accent">Mindset</div>
     <h2>Pre-Drive Check</h2>
     <ul>
       <li>Leave early</li>
-      <li>Calm music ready</li>
+      <li>Calm audio ready</li>
       <li>Three deep breaths</li>
       <li>Safety over speed</li>
     </ul>
@@ -260,24 +240,27 @@ footer {
 </section>
 
 <section id="during">
-  <div class="card-3d">
-    <div class="card-accent">Audio</div>
+  <div class="card">
+    <div class="accent">Audio</div>
     <h2>Calm Reminders</h2>
+
     <audio id="audio"></audio>
-    <div class="audio-visualizer" id="viz">
+
+    <div class="audio-bars" id="bars">
       <div class="bar"></div><div class="bar"></div><div class="bar"></div>
       <div class="bar"></div><div class="bar"></div>
     </div>
-    <button class="btn-3d" id="play">▶ Start</button>
-    <button class="btn-3d" id="stop">⏸ Stop</button>
+
+    <button class="primary" id="play">▶ Start Audio</button>
+    <button class="primary" id="stop">⏸ Stop Audio</button>
   </div>
 </section>
 
 <section id="log">
-  <div class="card-3d">
-    <div class="card-accent">Progress</div>
+  <div class="card">
+    <div class="accent">Progress</div>
     <h2>Log a Calm Drive</h2>
-    <button class="btn-3d" id="logBtn">✓ Log Drive</button>
+    <button class="primary" id="logBtn">✓ Log Drive</button>
     <p id="streak" style="margin-top:14px;font-weight:700;"></p>
   </div>
 </section>
@@ -285,37 +268,42 @@ footer {
 <footer>CalmDrive • Your Calm Matters</footer>
 
 <script>
-const tabs = document.querySelectorAll("nav button");
-const sections = document.querySelectorAll("section");
-const audio = document.getElementById("audio");
-const viz = document.getElementById("viz");
-const streakEl = document.getElementById("streak");
-
-tabs.forEach(btn=>{
+/* Tabs */
+document.querySelectorAll("nav button").forEach(btn=>{
   btn.onclick=()=>{
-    tabs.forEach(b=>b.classList.remove("active"));
-    sections.forEach(s=>s.classList.remove("active"));
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
-  }
+  };
 });
 
-document.getElementById("play").onclick=()=>{
-  audio.src="reminder1.mp3";
-  audio.play();
-  viz.classList.add("active");
-};
-document.getElementById("stop").onclick=()=>{
-  audio.pause();
-  viz.classList.remove("active");
+/* Audio – USER GESTURE SAFE */
+const audio = document.getElementById("audio");
+const bars = document.getElementById("bars");
+
+document.getElementById("play").onclick = () => {
+  audio.src = "audio/reminder1.mp3";
+  audio.load();
+  audio.play().then(()=>{
+    bars.classList.add("active");
+  }).catch(()=>{});
 };
 
-let streak = Number(localStorage.getItem("streak")||0);
+document.getElementById("stop").onclick = () => {
+  audio.pause();
+  audio.currentTime = 0;
+  bars.classList.remove("active");
+};
+
+/* Streak */
+let streak = Number(localStorage.getItem("streak") || 0);
+const streakEl = document.getElementById("streak");
 streakEl.textContent = `🔥 ${streak} day streak`;
 
-document.getElementById("logBtn").onclick=()=>{
+document.getElementById("logBtn").onclick = () => {
   streak++;
-  localStorage.setItem("streak",streak);
+  localStorage.setItem("streak", streak);
   streakEl.textContent = `🔥 ${streak} day streak`;
 };
 </script>
