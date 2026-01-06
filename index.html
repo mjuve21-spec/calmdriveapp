@@ -5,65 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CalmDrive</title>
 
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="images/icon192x192.png">
-<link rel="apple-touch-icon" href="images/icon512x512.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="images/icon192x192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="images/icon512x512.png">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:linear-gradient(180deg,#020617,#020617);
-  color:#fff;
   min-height:100vh;
+  color:white;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(45,212,191,.35), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(56,189,248,.35), transparent 45%),
+    linear-gradient(180deg,#020617,#020617);
+  overflow-x:hidden;
 }
 
-.ambient{
+.parallax{
   position:fixed;
   inset:-40%;
   background:
-    radial-gradient(circle at 20% 20%,rgba(139,92,246,.35),transparent 40%),
-    radial-gradient(circle at 80% 40%,rgba(236,72,153,.35),transparent 45%),
-    radial-gradient(circle at 50% 80%,rgba(59,130,246,.35),transparent 45%);
-  filter:blur(100px);
+    radial-gradient(circle at 30% 20%, rgba(45,212,191,.6), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(34,211,238,.6), transparent 45%);
+  filter:blur(120px);
+  transform:translateZ(0);
+  animation:float 18s linear infinite;
   z-index:-1;
+}
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-80px)}
+  100%{transform:translateY(0)}
 }
 
 header{
   text-align:center;
-  padding:50px 20px 30px;
+  padding:56px 20px 30px;
 }
 
 .logo{
-  width:120px;
-  height:120px;
-  margin:0 auto 20px;
-  border-radius:28px;
-  background:linear-gradient(145deg,#4f46e5,#9333ea);
+  width:130px;
+  height:130px;
+  margin:0 auto 22px;
+  border-radius:32px;
+  background:linear-gradient(145deg,#2dd4bf,#38bdf8);
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 40px 80px rgba(99,102,241,.6);
+  box-shadow:
+    0 40px 80px rgba(45,212,191,.6),
+    inset 0 1px 0 rgba(255,255,255,.35);
 }
 .logo img{
-  width:72px;
-  height:72px;
+  width:78px;
+  height:78px;
 }
 
 h1{
-  font-size:44px;
+  font-size:46px;
   font-weight:900;
+  letter-spacing:-1px;
 }
 
 nav{
+  position:sticky;
+  top:0;
+  z-index:10;
   display:flex;
   gap:10px;
   padding:14px;
-  position:sticky;
-  top:0;
   background:rgba(2,6,23,.85);
-  backdrop-filter:blur(25px);
+  backdrop-filter:blur(24px);
 }
 
 nav button{
@@ -72,64 +88,82 @@ nav button{
   border:none;
   border-radius:14px;
   background:rgba(255,255,255,.08);
-  color:#fff;
-  font-weight:700;
+  color:white;
+  font-weight:800;
 }
 
 nav button.active{
-  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+  background:linear-gradient(135deg,#2dd4bf,#38bdf8);
 }
 
 section{
   display:none;
-  padding:28px 18px 100px;
-  max-width:680px;
+  max-width:700px;
   margin:auto;
+  padding:32px 18px 110px;
 }
-
 section.active{display:block}
 
 .card{
-  background:linear-gradient(145deg,rgba(255,255,255,.35),rgba(255,255,255,.18));
+  position:relative;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.38),
+    rgba(255,255,255,.18)
+  );
   backdrop-filter:blur(40px);
-  border-radius:30px;
-  padding:36px;
-  margin-bottom:28px;
+  border-radius:34px;
+  padding:38px;
+  margin-bottom:30px;
   border:2px solid rgba(255,255,255,.35);
+  box-shadow:
+    0 50px 120px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.4);
 }
 
-.accent{
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:34px;
+  background:linear-gradient(135deg,#2dd4bf,#38bdf8);
+  opacity:.18;
+  pointer-events:none;
+}
+
+.badge{
   display:inline-block;
   padding:8px 16px;
-  font-size:11px;
-  font-weight:800;
   border-radius:999px;
-  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1px;
+  background:linear-gradient(135deg,#2dd4bf,#38bdf8);
   margin-bottom:16px;
 }
 
 button.primary{
   width:100%;
-  min-height:56px;
-  margin-top:16px;
+  min-height:58px;
   border:none;
   border-radius:18px;
+  margin-top:16px;
   font-size:16px;
-  font-weight:800;
-  background:linear-gradient(135deg,#8b5cf6,#ec4899,#f97316);
-  color:#fff;
+  font-weight:900;
+  background:linear-gradient(135deg,#2dd4bf,#38bdf8,#22d3ee);
+  color:#020617;
 }
 
 .audio-bars{
   display:none;
   gap:6px;
   height:60px;
-  margin:20px 0;
+  margin:24px 0;
 }
 .audio-bars.active{display:flex}
 .bar{
   width:6px;
-  background:linear-gradient(#8b5cf6,#ec4899);
+  background:linear-gradient(#2dd4bf,#38bdf8);
   animation:wave .8s infinite ease-in-out;
 }
 @keyframes wave{
@@ -139,18 +173,18 @@ button.primary{
 
 footer{
   text-align:center;
-  padding:40px 20px;
-  opacity:.8;
+  padding:42px 20px;
+  opacity:.75;
 }
 </style>
 </head>
 
 <body>
-<div class="ambient"></div>
+<div class="parallax"></div>
 
 <header>
   <div class="logo">
-    <img src="images/icon192x192.png" alt="CalmDrive">
+    <img src="images/icon192x192.png" alt="CalmDrive Icon">
   </div>
   <h1>CalmDrive</h1>
 </header>
@@ -163,14 +197,14 @@ footer{
 
 <section id="before" class="active">
   <div class="card">
-    <div class="accent">Mindset</div>
-    <p>Leave early. Breathe slow. Safety first.</p>
+    <div class="badge">Mindset</div>
+    <p>Leave early. Breathe slow. Nothing on the road is personal.</p>
   </div>
 </section>
 
 <section id="during">
   <div class="card">
-    <div class="accent">Calm Audio</div>
+    <div class="badge">Calm Audio</div>
 
     <audio id="audio"></audio>
 
@@ -186,9 +220,9 @@ footer{
 
 <section id="log">
   <div class="card">
-    <div class="accent">Progress</div>
+    <div class="badge">Progress</div>
     <button class="primary" id="logBtn">Log Calm Drive</button>
-    <p id="streak"></p>
+    <p id="streak" style="margin-top:20px;font-weight:800;"></p>
   </div>
 </section>
 
@@ -196,17 +230,17 @@ footer{
 
 <script>
 /* Tabs */
-document.querySelectorAll("nav button").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll("nav button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
     document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-    b.classList.add("active");
-    document.getElementById(b.dataset.tab).classList.add("active");
-  }
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  };
 });
 
 /* AUDIO — ALL 6 FILES */
-const audioFiles = [
+const audioFiles=[
   "audio/reminder1.mp3",
   "audio/reminder2.mp3",
   "audio/reminder3.mp3",
@@ -215,41 +249,38 @@ const audioFiles = [
   "audio/reminder6.mp3"
 ];
 
-let index = 0;
-const audio = document.getElementById("audio");
-const bars = document.getElementById("bars");
+let index=0;
+const audio=document.getElementById("audio");
+const bars=document.getElementById("bars");
 
 function playNext(){
-  audio.src = audioFiles[index];
+  audio.src=audioFiles[index];
   audio.load();
   audio.play();
   bars.classList.add("active");
 }
 
-audio.onended = () => {
-  index = (index + 1) % audioFiles.length;
+audio.onended=()=>{
+  index=(index+1)%audioFiles.length;
   playNext();
 };
 
-document.getElementById("play").onclick = () => {
-  playNext();
-};
-
-document.getElementById("stop").onclick = () => {
+document.getElementById("play").onclick=playNext;
+document.getElementById("stop").onclick=()=>{
   audio.pause();
-  audio.currentTime = 0;
+  audio.currentTime=0;
   bars.classList.remove("active");
 };
 
 /* Log */
-let streak = Number(localStorage.getItem("streak")||0);
-const streakEl = document.getElementById("streak");
-streakEl.textContent = `Streak: ${streak}`;
+let streak=Number(localStorage.getItem("streak")||0);
+const streakEl=document.getElementById("streak");
+streakEl.textContent=`Streak: ${streak}`;
 
-document.getElementById("logBtn").onclick = ()=>{
+document.getElementById("logBtn").onclick=()=>{
   streak++;
   localStorage.setItem("streak",streak);
-  streakEl.textContent = `Streak: ${streak}`;
+  streakEl.textContent=`Streak: ${streak}`;
 };
 </script>
 
