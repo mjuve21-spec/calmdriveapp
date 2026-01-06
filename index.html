@@ -6,138 +6,96 @@
 <title>CalmDrive</title>
 
 <link rel="manifest" href="manifest.json">
-<link rel="icon" sizes="192x192" href="images/icon192x192.png">
+<link rel="icon" href="images/icon192x192.png">
 <link rel="apple-touch-icon" href="images/icon512x512.png">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:linear-gradient(180deg,#020617,#020617);
+  color:#fff;
   min-height:100vh;
-  background:
-    radial-gradient(circle at 20% 10%, #7c3aed55, transparent 40%),
-    radial-gradient(circle at 80% 30%, #ec489955, transparent 45%),
-    linear-gradient(180deg,#020617,#020617);
-  color:white;
-  overflow-x:hidden;
 }
 
-/* Ambient */
-.ambient-bg{
+.ambient{
   position:fixed;
   inset:-40%;
   background:
-    radial-gradient(circle at 25% 20%,rgba(139,92,246,.35),transparent 35%),
-    radial-gradient(circle at 75% 50%,rgba(236,72,153,.3),transparent 40%),
+    radial-gradient(circle at 20% 20%,rgba(139,92,246,.35),transparent 40%),
+    radial-gradient(circle at 80% 40%,rgba(236,72,153,.35),transparent 45%),
     radial-gradient(circle at 50% 80%,rgba(59,130,246,.35),transparent 45%);
-  filter:blur(90px);
-  animation:ambient 30s ease-in-out infinite alternate;
+  filter:blur(100px);
   z-index:-1;
 }
-@keyframes ambient{
-  from{transform:translate(-6%,-6%) scale(1)}
-  to{transform:translate(6%,6%) scale(1.2)}
-}
 
-/* Header */
 header{
   text-align:center;
-  padding:56px 20px 36px;
+  padding:50px 20px 30px;
 }
 
 .logo{
-  width:110px;
-  height:110px;
+  width:120px;
+  height:120px;
   margin:0 auto 20px;
   border-radius:28px;
   background:linear-gradient(145deg,#4f46e5,#9333ea);
-  box-shadow:0 40px 90px rgba(99,102,241,.6);
   display:flex;
   align-items:center;
   justify-content:center;
-  animation:float 6s ease-in-out infinite;
+  box-shadow:0 40px 80px rgba(99,102,241,.6);
 }
 .logo img{
-  width:64px;
-  height:64px;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-14px)}
+  width:72px;
+  height:72px;
 }
 
 h1{
-  font-size:46px;
+  font-size:44px;
   font-weight:900;
-  background:linear-gradient(135deg,#fff,#c7d2fe);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin-bottom:6px;
 }
 
-.tagline{
-  font-size:14px;
-  letter-spacing:2px;
-  opacity:.9;
-}
-
-/* Nav */
 nav{
+  display:flex;
+  gap:10px;
+  padding:14px;
   position:sticky;
   top:0;
-  display:flex;
-  gap:8px;
-  padding:14px;
-  background:rgba(2,6,23,.75);
-  backdrop-filter:blur(30px);
-  z-index:10;
+  background:rgba(2,6,23,.85);
+  backdrop-filter:blur(25px);
 }
+
 nav button{
   flex:1;
   padding:14px;
-  border-radius:14px;
   border:none;
+  border-radius:14px;
   background:rgba(255,255,255,.08);
-  color:white;
+  color:#fff;
   font-weight:700;
-  cursor:pointer;
-}
-nav button.active{
-  background:linear-gradient(135deg,#8b5cf6,#ec4899);
-  box-shadow:0 10px 30px rgba(139,92,246,.6);
 }
 
-/* Sections */
+nav button.active{
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+}
+
 section{
   display:none;
   padding:28px 18px 100px;
   max-width:680px;
   margin:auto;
 }
-section.active{
-  display:block;
-  animation:fade .5s ease;
-}
-@keyframes fade{
-  from{opacity:0;transform:translateY(24px)}
-  to{opacity:1;transform:translateY(0)}
-}
 
-/* Cards */
+section.active{display:block}
+
 .card{
   background:linear-gradient(145deg,rgba(255,255,255,.35),rgba(255,255,255,.18));
-  backdrop-filter:blur(40px) saturate(160%);
+  backdrop-filter:blur(40px);
   border-radius:30px;
   padding:36px;
   margin-bottom:28px;
   border:2px solid rgba(255,255,255,.35);
-  box-shadow:0 30px 80px rgba(0,0,0,.35);
-  animation:cardFloat 7s ease-in-out infinite;
-}
-@keyframes cardFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
 }
 
 .accent{
@@ -146,41 +104,22 @@ section.active{
   font-size:11px;
   font-weight:800;
   border-radius:999px;
-  margin-bottom:16px;
   background:linear-gradient(135deg,#8b5cf6,#ec4899);
-  letter-spacing:1px;
-  text-transform:uppercase;
+  margin-bottom:16px;
 }
 
-.card h2{
-  font-size:26px;
-  margin-bottom:14px;
-}
-
-ul{list-style:none}
-li{
-  padding:14px 0;
-  border-bottom:1px solid rgba(255,255,255,.25);
-}
-li:last-child{border-bottom:none}
-
-/* Buttons */
 button.primary{
   width:100%;
   min-height:56px;
   margin-top:16px;
-  border-radius:18px;
   border:none;
+  border-radius:18px;
   font-size:16px;
   font-weight:800;
   background:linear-gradient(135deg,#8b5cf6,#ec4899,#f97316);
-  color:white;
-  cursor:pointer;
-  box-shadow:0 18px 40px rgba(139,92,246,.5);
+  color:#fff;
 }
-button.primary:active{transform:translateY(2px)}
 
-/* Audio */
 .audio-bars{
   display:none;
   gap:6px;
@@ -193,13 +132,11 @@ button.primary:active{transform:translateY(2px)}
   background:linear-gradient(#8b5cf6,#ec4899);
   animation:wave .8s infinite ease-in-out;
 }
-.bar:nth-child(odd){animation-delay:.2s}
 @keyframes wave{
   0%,100%{height:18px}
   50%{height:48px}
 }
 
-/* Footer */
 footer{
   text-align:center;
   padding:40px 20px;
@@ -209,15 +146,13 @@ footer{
 </head>
 
 <body>
-
-<div class="ambient-bg"></div>
+<div class="ambient"></div>
 
 <header>
   <div class="logo">
-    <img src="images/icon192x192.png" alt="CalmDrive icon">
+    <img src="images/icon192x192.png" alt="CalmDrive">
   </div>
   <h1>CalmDrive</h1>
-  <p class="tagline">ARRIVE CALM • ARRIVE SAFE</p>
 </header>
 
 <nav>
@@ -229,20 +164,13 @@ footer{
 <section id="before" class="active">
   <div class="card">
     <div class="accent">Mindset</div>
-    <h2>Pre-Drive Check</h2>
-    <ul>
-      <li>Leave early</li>
-      <li>Calm audio ready</li>
-      <li>Three deep breaths</li>
-      <li>Safety over speed</li>
-    </ul>
+    <p>Leave early. Breathe slow. Safety first.</p>
   </div>
 </section>
 
 <section id="during">
   <div class="card">
-    <div class="accent">Audio</div>
-    <h2>Calm Reminders</h2>
+    <div class="accent">Calm Audio</div>
 
     <audio id="audio"></audio>
 
@@ -251,17 +179,16 @@ footer{
       <div class="bar"></div><div class="bar"></div>
     </div>
 
-    <button class="primary" id="play">▶ Start Audio</button>
-    <button class="primary" id="stop">⏸ Stop Audio</button>
+    <button class="primary" id="play">Start Calm Audio</button>
+    <button class="primary" id="stop">Stop Audio</button>
   </div>
 </section>
 
 <section id="log">
   <div class="card">
     <div class="accent">Progress</div>
-    <h2>Log a Calm Drive</h2>
-    <button class="primary" id="logBtn">✓ Log Drive</button>
-    <p id="streak" style="margin-top:14px;font-weight:700;"></p>
+    <button class="primary" id="logBtn">Log Calm Drive</button>
+    <p id="streak"></p>
   </div>
 </section>
 
@@ -269,25 +196,43 @@ footer{
 
 <script>
 /* Tabs */
-document.querySelectorAll("nav button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+document.querySelectorAll("nav button").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
     document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.tab).classList.add("active");
-  };
+    b.classList.add("active");
+    document.getElementById(b.dataset.tab).classList.add("active");
+  }
 });
 
-/* Audio – USER GESTURE SAFE */
+/* AUDIO — ALL 6 FILES */
+const audioFiles = [
+  "audio/reminder1.mp3",
+  "audio/reminder2.mp3",
+  "audio/reminder3.mp3",
+  "audio/reminder4.mp3",
+  "audio/reminder5.mp3",
+  "audio/reminder6.mp3"
+];
+
+let index = 0;
 const audio = document.getElementById("audio");
 const bars = document.getElementById("bars");
 
-document.getElementById("play").onclick = () => {
-  audio.src = "audio/reminder1.mp3";
+function playNext(){
+  audio.src = audioFiles[index];
   audio.load();
-  audio.play().then(()=>{
-    bars.classList.add("active");
-  }).catch(()=>{});
+  audio.play();
+  bars.classList.add("active");
+}
+
+audio.onended = () => {
+  index = (index + 1) % audioFiles.length;
+  playNext();
+};
+
+document.getElementById("play").onclick = () => {
+  playNext();
 };
 
 document.getElementById("stop").onclick = () => {
@@ -296,15 +241,15 @@ document.getElementById("stop").onclick = () => {
   bars.classList.remove("active");
 };
 
-/* Streak */
-let streak = Number(localStorage.getItem("streak") || 0);
+/* Log */
+let streak = Number(localStorage.getItem("streak")||0);
 const streakEl = document.getElementById("streak");
-streakEl.textContent = `🔥 ${streak} day streak`;
+streakEl.textContent = `Streak: ${streak}`;
 
-document.getElementById("logBtn").onclick = () => {
+document.getElementById("logBtn").onclick = ()=>{
   streak++;
-  localStorage.setItem("streak", streak);
-  streakEl.textContent = `🔥 ${streak} day streak`;
+  localStorage.setItem("streak",streak);
+  streakEl.textContent = `Streak: ${streak}`;
 };
 </script>
 
