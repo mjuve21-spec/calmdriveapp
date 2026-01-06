@@ -41,32 +41,35 @@ body {
 }
 
 @keyframes ambientMove {
-  0% { 
-    transform: translate(-8%, -8%) scale(1) rotate(-3deg); 
-  }
-  100% { 
-    transform: translate(8%, 8%) scale(1.2) rotate(3deg); 
-  }
+  0% { transform: translate(-8%, -8%) scale(1) rotate(-3deg); }
+  100% { transform: translate(8%, 8%) scale(1.2) rotate(3deg); }
 }
 
 /* ===== HEADER ===== */
 header {
   text-align: center;
-  padding: 60px 20px 30px;
+  padding: 50px 20px 30px;
   position: relative;
 }
 
-.logo {
-  width: 90px;
-  height: 90px;
+.logo-container {
+  position: relative;
+  width: 110px;
+  height: 110px;
   margin: 0 auto 20px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  background: linear-gradient(145deg, #4A5B8C 0%, #2E3F6F 100%);
   box-shadow: 
-    0 25px 60px rgba(139,92,246,0.6),
-    0 0 0 8px rgba(255,255,255,0.1),
-    0 0 0 16px rgba(255,255,255,0.05),
-    inset 0 2px 0 rgba(255,255,255,0.3);
+    0 30px 70px rgba(59,130,246,0.6),
+    0 0 0 8px rgba(255,255,255,0.08),
+    0 0 0 16px rgba(255,255,255,0.04),
+    inset 0 3px 0 rgba(139,180,255,0.4),
+    inset 0 -3px 0 rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,38 +82,86 @@ header {
 
 @keyframes logoFloat {
   0%, 100% { transform: perspective(1000px) rotateX(8deg) translateY(0); }
-  50% { transform: perspective(1000px) rotateX(8deg) translateY(-10px); }
+  50% { transform: perspective(1000px) rotateX(8deg) translateY(-12px); }
 }
 
 .logo:hover {
   transform: perspective(1000px) rotateX(0deg) scale(1.08);
 }
 
-.logo::before {
-  content: "";
-  position: absolute;
-  width: 35px;
-  height: 35px;
-  background: white;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.95;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* Steering wheel icon */
+.steering-wheel {
+  width: 55px;
+  height: 55px;
+  position: relative;
 }
 
-.logo::after {
-  content: "";
+.wheel-outer {
+  width: 100%;
+  height: 100%;
+  border: 5px solid rgba(139,180,255,0.9);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 20px rgba(139,180,255,0.4);
+}
+
+.wheel-center {
+  width: 14px;
+  height: 14px;
+  background: rgba(139,180,255,0.95);
+  border-radius: 50%;
   position: absolute;
-  width: 55px;
-  height: 5px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.wheel-spoke {
+  position: absolute;
+  width: 4px;
+  height: 55%;
+  background: linear-gradient(180deg, rgba(139,180,255,0.9), transparent);
+  top: 50%;
+  left: 50%;
+  transform-origin: center top;
+}
+
+.wheel-spoke:nth-child(2) { transform: translate(-50%, -50%) rotate(0deg); }
+.wheel-spoke:nth-child(3) { transform: translate(-50%, -50%) rotate(120deg); }
+.wheel-spoke:nth-child(4) { transform: translate(-50%, -50%) rotate(240deg); }
+
+/* Speed lines effect */
+.speed-lines {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+.speed-line {
+  width: 25px;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(139,180,255,0.8), transparent);
+  margin: 4px 0;
   border-radius: 2px;
+  animation: speedLine 2s ease-in-out infinite;
+}
+
+.speed-line:nth-child(2) { animation-delay: 0.2s; width: 20px; }
+.speed-line:nth-child(3) { animation-delay: 0.4s; width: 15px; }
+
+@keyframes speedLine {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50% { opacity: 0.8; transform: translateX(-5px); }
+}
+
+.greeting {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 h1 {
@@ -121,15 +172,47 @@ h1 {
   -webkit-text-fill-color: transparent;
   letter-spacing: -1px;
   text-shadow: 0 4px 20px rgba(255,255,255,0.2);
+  margin-bottom: 8px;
 }
 
-header p {
-  margin-top: 10px;
+.tagline {
   font-size: 15px;
   color: rgba(255,255,255,0.9);
   font-weight: 600;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  background: rgba(139,92,246,0.25);
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  display: block;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 /* ===== NAV ===== */
@@ -380,6 +463,44 @@ select option {
   color: white;
 }
 
+/* Audio Visualizer */
+.audio-visualizer {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 60px;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(139,92,246,0.15);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.audio-visualizer.active {
+  display: flex;
+}
+
+.bar {
+  width: 6px;
+  height: 20px;
+  background: linear-gradient(180deg, #8B5CF6, #EC4899);
+  border-radius: 3px;
+  animation: audioWave 0.8s ease-in-out infinite;
+}
+
+.bar:nth-child(2) { animation-delay: 0.1s; }
+.bar:nth-child(3) { animation-delay: 0.2s; }
+.bar:nth-child(4) { animation-delay: 0.3s; }
+.bar:nth-child(5) { animation-delay: 0.4s; }
+.bar:nth-child(6) { animation-delay: 0.2s; }
+.bar:nth-child(7) { animation-delay: 0.1s; }
+
+@keyframes audioWave {
+  0%, 100% { height: 20px; }
+  50% { height: 50px; }
+}
+
 /* ===== 3D BUTTONS ===== */
 .btn-3d {
   position: relative;
@@ -433,10 +554,6 @@ select option {
 
 .btn-3d:active {
   transform: perspective(1000px) translateZ(8px) translateY(-2px);
-  box-shadow: 
-    0 15px 35px rgba(139,92,246,0.5),
-    0 8px 20px rgba(236,72,153,0.4),
-    0 4px 12px rgba(249,115,22,0.3);
 }
 
 .btn-3d.secondary {
@@ -448,11 +565,47 @@ select option {
     inset 0 2px 0 rgba(255,255,255,0.4);
 }
 
-.btn-3d.secondary:hover {
-  box-shadow: 
-    0 18px 45px rgba(139,92,246,0.5),
-    0 10px 25px rgba(236,72,153,0.4),
-    inset 0 2px 0 rgba(255,255,255,0.5);
+/* Success Animation */
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.success-message {
+  display: none;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(16,185,129,0.25));
+  border: 2px solid rgba(34,197,94,0.5);
+  border-radius: 16px;
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 700;
+  animation: successPulse 0.5s ease;
+}
+
+.success-message.active {
+  display: block;
+}
+
+/* Streak Badge */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(249,115,22,0.3), rgba(234,88,12,0.25));
+  border: 2px solid rgba(249,115,22,0.4);
+  border-radius: 20px;
+  margin-top: 16px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(249,115,22,0.3);
+}
+
+.streak-number {
+  font-size: 28px;
+  color: #FFA500;
+  text-shadow: 0 2px 8px rgba(249,115,22,0.5);
 }
 
 /* ===== FOOTER ===== */
@@ -518,9 +671,37 @@ footer {
 <div class="orb orb3"></div>
 
 <header>
-  <div class="logo"></div>
+  <p class="greeting">Welcome back!</p>
+  <div class="logo-container">
+    <div class="logo">
+      <div class="steering-wheel">
+        <div class="wheel-outer">
+          <div class="wheel-spoke"></div>
+          <div class="wheel-spoke"></div>
+          <div class="wheel-spoke"></div>
+          <div class="wheel-center"></div>
+        </div>
+      </div>
+      <div class="speed-lines">
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+      </div>
+    </div>
+  </div>
   <h1>CalmDrive</h1>
-  <p>Arrive Calm • Arrive Safe</p>
+  <p class="tagline">Arrive Calm • Arrive Safe</p>
+  
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" id="totalDrives">0</span>
+      <span class="stat-label">Drives</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="streakDays">0</span>
+      <span class="stat-label">Day Streak</span>
+    </div>
+  </div>
 </header>
 
 <nav>
@@ -536,11 +717,21 @@ footer {
       <h2>Pre-Drive Check</h2>
     </div>
     <ul>
-      <li>Leave early</li>
-      <li>Calm music ready</li>
-      <li>3 deep breaths</li>
-      <li>Safety > Speed</li>
+      <li>Leave early - No rushing needed</li>
+      <li>Calm music ready to play</li>
+      <li>Take 3 deep breaths</li>
+      <li>Remember: Safety > Speed</li>
     </ul>
+  </div>
+  
+  <div class="card-3d">
+    <div class="card-accent">Tip of the Day</div>
+    <div class="card-header">
+      <h2>💡 Daily Reminder</h2>
+    </div>
+    <p style="color: rgba(255,255,255,0.95); font-size: 16px; line-height: 1.7; font-weight: 500;">
+      "Every calm driver makes the roads safer for everyone. Your patience creates a ripple effect of safety."
+    </p>
   </div>
 </section>
 
@@ -556,16 +747,26 @@ footer {
     
     <select id="audioSelect">
       <option value="">Choose Reminder</option>
-      <option value="reminder1.mp3">Reminder 1</option>
-      <option value="reminder2.mp3">Reminder 2</option>
-      <option value="reminder3.mp3">Reminder 3</option>
-      <option value="reminder4.mp3">Reminder 4</option>
-      <option value="reminder5.mp3">Reminder 5</option>
-      <option value="reminder6.mp3">Reminder 6</option>
+      <option value="reminder1.mp3">🎵 Reminder 1</option>
+      <option value="reminder2.mp3">🎵 Reminder 2</option>
+      <option value="reminder3.mp3">🎵 Reminder 3</option>
+      <option value="reminder4.mp3">🎵 Reminder 4</option>
+      <option value="reminder5.mp3">🎵 Reminder 5</option>
+      <option value="reminder6.mp3">🎵 Reminder 6</option>
     </select>
     
+    <div class="audio-visualizer" id="visualizer">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    
     <button class="btn-3d" onclick="playAudio()">▶ Start Audio</button>
-    <button class="btn-3d secondary" onclick="stopAudio()">⏸ Stop</button>
+    <button class="btn-3d secondary" onclick="stopAudio()">⏸ Stop Audio</button>
   </div>
 </section>
 
@@ -576,77 +777,11 @@ footer {
       <h2>Log a Calm Drive</h2>
     </div>
     <p style="color: rgba(255,255,255,0.9); margin-bottom: 18px; font-size: 15px; font-weight: 500;">Track your progress and celebrate each calm journey</p>
-    <button class="btn-3d">✓ Log Drive</button>
-  </div>
-</section>
-
-<footer>
-  CalmDrive • Your Calm Matters
-</footer>
-
-<script>
-const audioPlayer = document.getElementById('audioPlayer');
-const audioSelect = document.getElementById('audioSelect');
-
-function playAudio() {
-  const selectedTrack = audioSelect.value;
-  if (!selectedTrack) {
-    alert('Please select a reminder first');
-    return;
-  }
-  
-  audioPlayer.src = selectedTrack;
-  audioPlayer.play();
-  
-  event.target.textContent = '▶ Playing...';
-  event.target.style.opacity = '0.85';
-}
-
-function stopAudio() {
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
-  
-  const playBtn = document.querySelector('#during .btn-3d:not(.secondary)');
-  if (playBtn) {
-    playBtn.textContent = '▶ Start Audio';
-    playBtn.style.opacity = '1';
-  }
-}
-
-function showTab(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  event.target.classList.add("active");
-  
-  if (id !== 'during') {
-    stopAudio();
-  }
-}
-
-// Enhanced parallax effect
-let mouseX = 0, mouseY = 0;
-let currentX = 0, currentY = 0;
-
-document.addEventListener('mousemove', (e) => {
-  mouseX = (e.clientX - window.innerWidth / 2) * 0.015;
-  mouseY = (e.clientY - window.innerHeight / 2) * 0.015;
-});
-
-function animate() {
-  currentX += (mouseX - currentX) * 0.1;
-  currentY += (mouseY - currentY) * 0.1;
-  
-  const ambient = document.querySelector('.ambient-bg');
-  if (ambient) {
-    ambient.style.transform = `translate(${currentX}px, ${currentY}px)`;
-  }
-  
-  requestAnimationFrame(animate);
-}
-
-animate();
-</script>
-
-</body>
-</html>
+    
+    <div class="streak-badge">
+      <span>🔥</span>
+      <span class="streak-number" id="streakDisplay">0</span>
+      <span>day streak!</span>
+    </div>
+    
+    <button class="btn-3d" onclick="logDrive()">✓
