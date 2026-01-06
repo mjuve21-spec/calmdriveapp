@@ -25,6 +25,29 @@ body {
     radial-gradient(circle at 80% 10%, #a78bfa 0%, transparent 40%),
     linear-gradient(180deg, #020617, #020617);
   color: white;
+  position: relative;
+}
+
+/* Ambient animated background */
+.ambient-bg {
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(96,165,250,0.25), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(167,139,250,0.25), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(236,72,153,0.15), transparent 40%);
+  filter: blur(120px);
+  animation: ambientMove 18s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes ambientMove {
+  0% {
+    transform: translate(-5%, -5%) scale(1);
+  }
+  100% {
+    transform: translate(5%, 5%) scale(1.1);
+  }
 }
 
 /* ===== HEADER ===== */
@@ -71,6 +94,7 @@ nav {
   top: 0;
   background: rgba(2,6,23,0.85);
   backdrop-filter: blur(20px);
+  z-index: 100;
 }
 
 nav button {
@@ -83,6 +107,7 @@ nav button {
   background: rgba(30,41,59,0.8);
   color: #93c5fd;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 nav button.active {
@@ -103,18 +128,51 @@ section.active {
   display: block;
 }
 
-/* ===== CARDS ===== */
-.card {
+/* ===== 3D CARDS ===== */
+.card-3d {
   background: linear-gradient(
-    145deg,
-    rgba(71,85,105,0.95),
-    rgba(30,41,59,0.95)
+    160deg,
+    rgba(30, 41, 59, 0.9),
+    rgba(15, 23, 42, 0.95)
   );
-  border-radius: 26px;
-  padding: 28px;
-  margin-bottom: 26px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
-  border: 1px solid rgba(96,165,250,0.2);
+  backdrop-filter: blur(24px);
+  border-radius: 28px;
+  padding: 36px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+/* subtle floating */
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* gradient accent edge */
+.card-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(96,165,250,0.6),
+    rgba(167,139,250,0.6),
+    rgba(236,72,153,0.4)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Accent pill */
@@ -140,13 +198,31 @@ section.active {
   font-size: 36px;
 }
 
-.card h2 {
+.card-3d h2 {
   font-size: 26px;
   font-weight: 900;
 }
 
-/* ===== BUTTONS ===== */
-button.action {
+.card-3d ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.card-3d ul li {
+  padding: 12px 0;
+  font-size: 16px;
+  color: #cbd5e1;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.card-3d ul li:last-child {
+  border-bottom: none;
+}
+
+/* ===== 3D BUTTONS ===== */
+.btn-3d {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   padding: 22px;
   border-radius: 18px;
@@ -158,11 +234,39 @@ button.action {
   color: white;
   cursor: pointer;
   box-shadow: 0 20px 50px rgba(59,130,246,0.6);
+  transition: all 0.3s ease;
 }
 
-button.secondary {
+.btn-3d::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+  transform: translateX(-100%);
+}
+
+.btn-3d:hover::after {
+  animation: shimmer 1.2s ease;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 60px rgba(59,130,246,0.7);
+}
+
+.btn-3d.secondary {
   background: rgba(30,41,59,0.9);
   border: 2px solid #3b82f6;
+  box-shadow: 0 15px 40px rgba(59,130,246,0.3);
 }
 
 /* ===== FOOTER ===== */
@@ -177,6 +281,8 @@ footer {
 
 <body>
 
+<div class="ambient-bg"></div>
+
 <header>
   <div class="logo">🚗</div>
   <h1>CalmDrive</h1>
@@ -190,7 +296,7 @@ footer {
 </nav>
 
 <section id="before" class="active">
-  <div class="card">
+  <div class="card-3d">
     <div class="card-accent">Mindset</div>
     <div class="card-header">
       <div class="card-icon">🎯</div>
@@ -206,25 +312,25 @@ footer {
 </section>
 
 <section id="during">
-  <div class="card">
+  <div class="card-3d">
     <div class="card-accent">Audio</div>
     <div class="card-header">
       <div class="card-icon">🎧</div>
       <h2>Calm Reminders</h2>
     </div>
-    <button class="action">▶ Start Calm Audio</button>
-    <button class="action secondary">⏸ Stop</button>
+    <button class="btn-3d">▶ Start Calm Audio</button>
+    <button class="btn-3d secondary">⏸ Stop</button>
   </div>
 </section>
 
 <section id="log">
-  <div class="card">
+  <div class="card-3d">
     <div class="card-accent">Progress</div>
     <div class="card-header">
       <div class="card-icon">🏆</div>
       <h2>Log a Calm Drive</h2>
     </div>
-    <button class="action">✓ Log Drive</button>
+    <button class="btn-3d">✓ Log Drive</button>
   </div>
 </section>
 
