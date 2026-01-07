@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CalmDrive</title>
 
 <link rel="manifest" href="./manifest.json">
+<link rel="icon" sizes="32x32" href="./images/icon32x32.png">
 <link rel="icon" sizes="192x192" href="./images/icon192x192.png">
 <link rel="apple-touch-icon" href="./images/icon512x512.png">
 
@@ -15,28 +16,23 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
-  background: linear-gradient(180deg,#0F2557,#1E3A8A,#2563EB,#3B82F6,#60A5FA);
+  background: linear-gradient(180deg, #0F2557, #1E3A8A, #2563EB);
   color: white;
   overflow-x: hidden;
 }
 
+/* Ambient background */
 .ambient-bg {
   position: fixed;
-  inset: -30%;
+  inset: -40%;
   background:
-    radial-gradient(circle at 25% 15%, rgba(139,92,246,0.4), transparent 30%),
-    radial-gradient(circle at 75% 40%, rgba(236,72,153,0.35), transparent 35%),
-    radial-gradient(circle at 50% 70%, rgba(30,58,138,0.5), transparent 40%);
+    radial-gradient(circle at 25% 20%, rgba(139,92,246,.4), transparent 30%),
+    radial-gradient(circle at 75% 60%, rgba(236,72,153,.35), transparent 35%);
   filter: blur(90px);
   z-index: -1;
-  animation: drift 30s alternate infinite;
 }
 
-@keyframes drift {
-  from { transform: translate(-6%, -6%); }
-  to { transform: translate(6%, 6%); }
-}
-
+/* Header */
 header {
   text-align: center;
   padding: 48px 20px 24px;
@@ -45,30 +41,35 @@ header {
 .logo {
   width: 96px;
   height: 96px;
+  margin: 0 auto 14px;
+  display: block;
   border-radius: 24px;
-  margin-bottom: 16px;
-  box-shadow: 0 25px 60px rgba(59,130,246,.6);
+  box-shadow:
+    0 25px 60px rgba(59,130,246,.6),
+    0 0 0 6px rgba(255,255,255,.08);
 }
 
 h1 {
-  font-size: 44px;
+  font-size: 42px;
   font-weight: 900;
+  margin-bottom: 6px;
 }
 
 .tagline {
-  opacity: .9;
+  font-size: 14px;
   font-weight: 600;
+  opacity: .9;
 }
 
+/* Navigation */
 nav {
   display: flex;
   gap: 10px;
-  padding: 12px;
+  padding: 14px;
   position: sticky;
   top: 0;
-  background: rgba(15,37,87,.9);
+  background: rgba(15,37,87,.85);
   backdrop-filter: blur(20px);
-  z-index: 10;
 }
 
 nav button {
@@ -83,64 +84,94 @@ nav button {
 }
 
 nav button.active {
-  background: linear-gradient(135deg,#8B5CF6,#EC4899);
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
 }
 
+/* Sections */
 section {
   display: none;
-  padding: 24px 16px 100px;
+  padding: 24px 16px 90px;
   max-width: 680px;
   margin: auto;
 }
 
 section.active { display: block; }
 
+/* Cards */
 .card {
-  background: rgba(30,58,138,.75);
+  background: linear-gradient(145deg, rgba(30,58,138,.85), rgba(15,37,87,.9));
   border-radius: 28px;
   padding: 28px;
-  margin-bottom: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,.4);
+  margin-bottom: 22px;
+  border: 1.5px solid rgba(255,255,255,.25);
+  box-shadow: 0 22px 55px rgba(0,0,0,.45);
 }
 
-.card h2 { margin-bottom: 12px; }
+.card h2 {
+  font-size: 26px;
+  margin-bottom: 14px;
+}
 
-ul { list-style: none; }
-li { padding: 10px 0; }
+.card ul {
+  list-style: none;
+}
 
-button.primary {
+.card ul li {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+}
+
+/* Reminder Card */
+.reminder-card {
+  background: linear-gradient(
+    145deg,
+    rgba(139,92,246,.35),
+    rgba(30,58,138,.55)
+  );
+}
+
+/* Select */
+select {
   width: 100%;
   padding: 16px;
-  margin-top: 12px;
+  border-radius: 14px;
+  background: rgba(15,37,87,.9);
+  border: 1.5px solid rgba(255,255,255,.3);
+  color: white;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* Buttons */
+button.primary {
+  width: 100%;
+  padding: 18px;
   border-radius: 16px;
   border: none;
-  font-size: 16px;
   font-weight: 800;
-  background: linear-gradient(135deg,#8B5CF6,#EC4899);
+  margin-top: 10px;
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
   color: white;
   cursor: pointer;
 }
 
 button.secondary {
-  background: rgba(255,255,255,.15);
+  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5));
 }
 
 .small {
-  opacity: .85;
-  font-size: 14px;
-  margin-top: 10px;
+  margin-top: 14px;
+  font-weight: 600;
+  opacity: .9;
   text-align: center;
 }
 
-.plus {
-  border: 2px dashed rgba(255,255,255,.4);
-  background: rgba(15,37,87,.6);
-}
-
+/* Footer */
 footer {
   text-align: center;
   padding: 40px 20px;
-  opacity: .85;
+  font-weight: 700;
+  opacity: .8;
 }
 </style>
 </head>
@@ -150,73 +181,70 @@ footer {
 <div class="ambient-bg"></div>
 
 <header>
-  <img src="./images/icon192x192.png" class="logo" alt="CalmDrive">
+  <img src="./images/icon192x192.png" alt="CalmDrive Logo" class="logo">
   <h1>CalmDrive</h1>
-  <div class="tagline">Arrive Calm • Arrive Safe</div>
+  <p class="tagline">Arrive Calm • Arrive Safe</p>
 </header>
 
 <nav>
-  <button class="active" onclick="showTab('before',this)">Before</button>
-  <button onclick="showTab('during',this)">During</button>
-  <button onclick="showTab('log',this)">Log</button>
+  <button class="active" onclick="showTab('before')">Before</button>
+  <button onclick="showTab('during')">During</button>
+  <button onclick="showTab('log')">Log</button>
 </nav>
 
 <section id="before" class="active">
   <div class="card">
-    <h2>🚗 Drive Mindset</h2>
+    <h2>Pre-Drive Mindset</h2>
     <ul>
-      <li>✓ Leave early</li>
-      <li>✓ Breathe slowly</li>
-      <li>✓ Safety over speed</li>
-      <li>✓ Let others pass</li>
+      <li>Leave early — no rush</li>
+      <li>Three slow breaths</li>
+      <li>Safety over speed</li>
+      <li>You’re allowed to be calm</li>
     </ul>
-  </div>
-
-  <div class="card">
-    <h2>🔕 Silent Mode</h2>
-    <p>No reminders. Just quiet support.</p>
-    <button class="primary secondary">Enable Silent Mode</button>
   </div>
 </section>
 
 <section id="during">
-  <div class="card">
+  <div class="card reminder-card">
     <h2>🎧 Audio Reminders</h2>
+
+    <audio id="player"></audio>
+
     <select id="audioSelect">
-      <option value="">Choose reminder</option>
+      <option value="">Choose a reminder</option>
       <option value="./audio/reminder1.mp3">Reminder 1</option>
       <option value="./audio/reminder2.mp3">Reminder 2</option>
       <option value="./audio/reminder3.mp3">Reminder 3</option>
+      <option value="./audio/reminder4.mp3">Reminder 4</option>
+      <option value="./audio/reminder5.mp3">Reminder 5</option>
+      <option value="./audio/reminder6.mp3">Reminder 6</option>
     </select>
-    <audio id="player"></audio>
-    <button class="primary" onclick="playAudio()">Play</button>
-    <button class="primary secondary" onclick="stopAudio()">Stop</button>
+
+    <button class="primary" onclick="playAudio()">▶ Play Reminder</button>
+    <button class="primary secondary" onclick="stopAudio()">⏸ Stop</button>
+
     <p class="small">You’re doing fine. Keep going.</p>
   </div>
 </section>
 
 <section id="log">
   <div class="card">
-    <h2>📈 Drive Log</h2>
-    <p><strong id="count">0</strong> calm drives logged</p>
-    <button class="primary" onclick="logDrive()">Log This Drive</button>
+    <h2>Drive Log</h2>
+    <p id="logText">0 calm drives logged</p>
+    <button class="primary" onclick="logDrive()">✓ Log This Drive</button>
+    <p class="small">Take one calm breath. You’ve arrived.</p>
   </div>
 
   <div class="card">
-    <h2>🌿 Arrival Ritual</h2>
-    <p>Take one calm breath. You’ve arrived.</p>
-  </div>
-
-  <div class="card plus">
-    <h2>✨ CalmDrive Plus (Coming Later)</h2>
+    <h2>CalmDrive Plus</h2>
     <ul>
-      <li>🌱 Smart reminder pacing</li>
-      <li>🧠 Personalized calm feedback</li>
-      <li>🧭 Difficult-drive guidance</li>
-      <li>⏱ Drive-length awareness</li>
-      <li>🌙 Automatic calm silent mode</li>
+      <li>Smart reminder pacing</li>
+      <li>Personalized reassurance</li>
+      <li>Post-drive recovery support</li>
+      <li>Drive-length awareness</li>
+      <li>Automatic calm silent mode</li>
     </ul>
-    <p class="small">Free users are always welcome.</p>
+    <p class="small">Coming later. Free users always welcome.</p>
   </div>
 </section>
 
@@ -225,32 +253,33 @@ footer {
 </footer>
 
 <script>
-let drives = Number(localStorage.getItem("drives") || 0);
-document.getElementById("count").textContent = drives;
+let drives = 0;
+const logText = document.getElementById('logText');
+const player = document.getElementById('player');
 
-function showTab(id,btn){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
+function showTab(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  stopAudio();
 }
 
-function playAudio(){
-  const p=document.getElementById("player");
-  const s=document.getElementById("audioSelect").value;
-  if(!s){alert("Choose a reminder");return;}
-  p.src=s; p.play();
+function playAudio() {
+  const src = document.getElementById('audioSelect').value;
+  if (!src) return alert('Choose a reminder first');
+  player.src = src;
+  player.play();
 }
 
-function stopAudio(){
-  const p=document.getElementById("player");
-  p.pause(); p.currentTime=0;
+function stopAudio() {
+  player.pause();
+  player.currentTime = 0;
 }
 
-function logDrive(){
+function logDrive() {
   drives++;
-  localStorage.setItem("drives",drives);
-  document.getElementById("count").textContent=drives;
+  logText.textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
 }
 </script>
 
