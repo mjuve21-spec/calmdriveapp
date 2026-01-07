@@ -10,6 +10,9 @@
 <link rel="icon" sizes="192x192" href="./images/icon192x192.png">
 <link rel="apple-touch-icon" href="./images/icon512x512.png">
 
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,7 +24,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient background */
 .ambient-bg {
   position: fixed;
   inset: -40%;
@@ -32,7 +34,6 @@ body {
   z-index: -1;
 }
 
-/* Header */
 header {
   text-align: center;
   padding: 48px 20px 24px;
@@ -61,7 +62,6 @@ h1 {
   opacity: .9;
 }
 
-/* Navigation */
 nav {
   display: flex;
   gap: 10px;
@@ -87,7 +87,6 @@ nav button.active {
   background: linear-gradient(135deg, #8B5CF6, #EC4899);
 }
 
-/* Sections */
 section {
   display: none;
   padding: 24px 16px 90px;
@@ -97,7 +96,6 @@ section {
 
 section.active { display: block; }
 
-/* Cards */
 .card {
   background: linear-gradient(145deg, rgba(30,58,138,.85), rgba(15,37,87,.9));
   border-radius: 28px;
@@ -121,7 +119,6 @@ section.active { display: block; }
   border-bottom: 1px solid rgba(255,255,255,.15);
 }
 
-/* Reminder Card */
 .reminder-card {
   background: linear-gradient(
     145deg,
@@ -130,7 +127,6 @@ section.active { display: block; }
   );
 }
 
-/* Select */
 select {
   width: 100%;
   padding: 16px;
@@ -142,7 +138,6 @@ select {
   margin-bottom: 14px;
 }
 
-/* Buttons */
 button.primary {
   width: 100%;
   padding: 18px;
@@ -166,7 +161,6 @@ button.secondary {
   text-align: center;
 }
 
-/* Footer */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -181,7 +175,8 @@ footer {
 <div class="ambient-bg"></div>
 
 <header>
-  <img src="./images/icon192x192.png" alt="CalmDrive Logo" class="logo">
+  <!-- LOGO FIXED -->
+  <img src="./images/icon512x512.png" alt="CalmDrive Logo" class="logo">
   <h1>CalmDrive</h1>
   <p class="tagline">Arrive Calm • Arrive Safe</p>
 </header>
@@ -207,7 +202,6 @@ footer {
 <section id="during">
   <div class="card reminder-card">
     <h2>🎧 Audio Reminders</h2>
-
     <audio id="player"></audio>
 
     <select id="audioSelect">
