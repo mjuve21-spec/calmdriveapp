@@ -468,7 +468,7 @@ footer {
 
 <header>
   <p class="greeting">Welcome back!</p>
-  <img src="./images/icon192x192.png" alt="CalmDrive Logo" class="logo" onerror="this.style.display='none'; console.error('Icon failed to load from:', this.src);" onload="console.log('Icon loaded successfully from:', this.src);">
+  <img src="./images/icon192x192.png?v=2" alt="CalmDrive Logo" class="logo" onerror="console.error('ICON LOAD FAILED. Tried path:', this.src); this.style.border='3px solid red';" onload="console.log('ICON SUCCESS! Loaded from:', this.src);">
   <h1>CalmDrive</h1>
   <p class="tagline">Arrive Calm • Arrive Safe</p>
   
