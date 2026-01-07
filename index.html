@@ -1,235 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CalmDrive</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalmDrive</title>
 
-<link rel="manifest" href="manifest.json">
-<link rel="icon" sizes="32x32" href="images/icon32x32.png">
-<link rel="icon" sizes="192x192" href="images/icon192x192.png">
-<link rel="apple-touch-icon" href="images/icon512x512.png">
+  <!-- Manifest / PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icon192x192.png" />
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
+  <style>
+    /* ===================== GLOBAL ===================== */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      color: #ecfeff;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(94,234,212,0.35), transparent 45%),
+        radial-gradient(circle at 80% 20%, rgba(56,189,248,0.35), transparent 40%),
+        linear-gradient(180deg, #020617, #020617);
+      overflow-x: hidden;
+    }
 
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  min-height:100vh;
-  background:linear-gradient(180deg,#064E3B,#0F766E,#14B8A6,#67E8F9);
-  color:white;
-  overflow-x:hidden;
-}
+    /* subtle parallax */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(45,212,191,0.08), rgba(56,189,248,0.08));
+      transform: translateZ(0);
+      pointer-events: none;
+    }
 
-/* Ambient */
-.ambient-bg{
-  position:fixed;inset:-30%;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(45,212,191,.35),transparent 35%),
-    radial-gradient(circle at 80% 40%,rgba(34,211,238,.3),transparent 40%),
-    radial-gradient(circle at 50% 80%,rgba(20,184,166,.35),transparent 40%);
-  filter:blur(90px);
-  animation:move 25s ease-in-out infinite alternate;
-  z-index:-1;
-}
-@keyframes move{from{transform:translate(-8%,-8%)}to{transform:translate(8%,8%)}}
+    /* ===================== HEADER ===================== */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+    }
 
-/* Header */
-header{text-align:center;padding:50px 20px}
-.logo-container{width:120px;height:120px;margin:0 auto 20px}
-.logo-container img{
-  width:100%;
-  height:100%;
-  border-radius:28px;
-  box-shadow:0 30px 80px rgba(20,184,166,.6);
-}
+    header img {
+      width: 40px;
+      height: 40px;
+    }
 
-h1{
-  font-size:48px;
-  font-weight:900;
-  background:linear-gradient(135deg,#ECFEFF,#A5F3FC);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
 
-.tagline{opacity:.9;margin-top:6px;font-weight:600}
+    /* ===================== MAIN CARD ===================== */
+    main {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
 
-/* Nav */
-nav{
-  display:flex;gap:8px;
-  position:sticky;top:0;
-  background:rgba(6,78,59,.75);
-  backdrop-filter:blur(20px);
-  padding:12px;
-}
-nav button{
-  flex:1;padding:14px;
-  border:none;border-radius:14px;
-  font-weight:700;
-  background:linear-gradient(135deg,#2DD4BF,#22D3EE);
-  color:#022C22;
-}
-nav button.active{
-  background:linear-gradient(135deg,#5EEAD4,#67E8F9);
-}
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(15,23,42,0.75));
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+      backdrop-filter: blur(14px);
+    }
 
-/* Sections */
-section{display:none;padding:24px;max-width:680px;margin:auto}
-section.active{display:block}
+    .card p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      opacity: 0.95;
+    }
 
-/* Cards */
-.card{
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(30px);
-  border-radius:28px;
-  padding:28px;
-  margin-bottom:24px;
-  box-shadow:0 30px 70px rgba(0,0,0,.25);
-}
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
-.card h2{margin-bottom:12px}
-.card p{line-height:1.6}
+    button {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+      color: #022c22;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
 
-ul{list-style:none;margin-top:16px}
-li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.25)}
-li:last-child{border:none}
+    button.secondary {
+      background: rgba(148,163,184,0.15);
+      color: #e5f9f7;
+    }
 
-/* Buttons */
-.btn{
-  width:100%;
-  padding:18px;
-  margin-top:14px;
-  border:none;
-  border-radius:18px;
-  font-weight:800;
-  background:linear-gradient(135deg,#2DD4BF,#22D3EE);
-  color:#022C22;
-}
+    button:active {
+      transform: scale(0.97);
+      box-shadow: 0 10px 30px rgba(45,212,191,0.35);
+    }
 
-/* Audio */
-select{
-  width:100%;
-  padding:16px;
-  border-radius:14px;
-  border:none;
-  margin-bottom:12px;
-  background:rgba(255,255,255,.9);
-}
-
-.visualizer{
-  display:none;
-  justify-content:center;
-  gap:4px;
-  margin:16px 0;
-}
-.visualizer.active{display:flex}
-.bar{
-  width:6px;
-  height:20px;
-  background:#5EEAD4;
-  animation:wave .8s infinite ease-in-out;
-}
-.bar:nth-child(odd){animation-delay:.2s}
-@keyframes wave{50%{height:50px}}
-
-/* Footer */
-footer{text-align:center;padding:40px;opacity:.8}
-</style>
+    /* ===================== FOOTER TEXT ===================== */
+    .status {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      text-align: center;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="ambient-bg"></div>
-
 <header>
-  <div class="logo-container">
-    <img src="images/icon192x192.png" alt="CalmDrive Logo">
-  </div>
+  <img src="images/icon192x192.png" alt="CalmDrive logo" />
   <h1>CalmDrive</h1>
-  <p class="tagline">Arrive Calm • Arrive Safe</p>
 </header>
 
-<nav>
-  <button class="active" onclick="showTab('before')">Before</button>
-  <button onclick="showTab('during')">During</button>
-  <button onclick="showTab('after')">After</button>
-</nav>
-
-<section id="before" class="active">
+<main>
   <div class="card">
-    <h2>Pre-Drive Grounding</h2>
-    <ul>
-      <li>Breathe slowly for 30 seconds</li>
-      <li>Set intention: calm over speed</li>
-      <li>Accept traffic before it happens</li>
-    </ul>
-  </div>
-</section>
+    <p id="message">Take a breath. The road can wait.</p>
 
-<section id="during">
-  <div class="card">
-    <h2>Calm Audio Reminders</h2>
-    <audio id="player"></audio>
-
-    <select id="audioSelect">
-      <option value="">Choose reminder</option>
-      <option value="audio/reminder1.mp3">Reminder 1</option>
-      <option value="audio/reminder2.mp3">Reminder 2</option>
-      <option value="audio/reminder3.mp3">Reminder 3</option>
-      <option value="audio/reminder4.mp3">Reminder 4</option>
-      <option value="audio/reminder5.mp3">Reminder 5</option>
-      <option value="audio/reminder6.mp3">Reminder 6</option>
-    </select>
-
-    <div class="visualizer" id="viz">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-      <div class="bar"></div><div class="bar"></div>
+    <div class="controls">
+      <button onclick="startDrive()">Start Drive</button>
+      <button class="secondary" onclick="silentMode()">Silent Mode</button>
+      <button class="secondary" onclick="badDriveRecovery()">Rough Drive</button>
     </div>
 
-    <button class="btn" onclick="play()">Start Audio</button>
-    <button class="btn" onclick="stop()">Stop Audio</button>
+    <div class="status" id="status">Ready when you are.</div>
   </div>
-</section>
+</main>
 
-<section id="after">
-  <div class="card">
-    <h2>Arrival Ritual</h2>
-    <p>Pause. Breathe. Acknowledge a calm choice you made.</p>
-  </div>
-
-  <div class="card">
-    <h2>Recovery Mode</h2>
-    <p>If the drive was hard, that’s okay. One moment doesn’t erase progress.</p>
-  </div>
-</section>
-
-<footer>
-  CalmDrive • Built for calmer roads
-</footer>
+<!-- ===================== AUDIO ===================== -->
+<audio id="audio"></audio>
 
 <script>
-function showTab(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"))
-  document.getElementById(id).classList.add("active")
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"))
-  event.target.classList.add("active")
-}
+  const reminders = [
+    'audio/reminder1.mp3',
+    'audio/reminder2.mp3',
+    'audio/reminder3.mp3',
+    'audio/reminder4.mp3',
+    'audio/reminder5.mp3',
+    'audio/reminder6.mp3'
+  ];
 
-const player=document.getElementById("player")
-const select=document.getElementById("audioSelect")
-const viz=document.getElementById("viz")
+  const affirmations = [
+    "You're doing fine.",
+    "No need to rush.",
+    "This drive doesn't define your day.",
+    "You're handling this better than before."
+  ];
 
-function play(){
-  if(!select.value)return
-  player.src=select.value
-  player.play()
-  viz.classList.add("active")
-}
+  let driveStart = null;
+  let reminderIndex = 0;
+  const audio = document.getElementById('audio');
 
-function stop(){
-  player.pause()
-  viz.classList.remove("active")
-}
+  function startDrive() {
+    driveStart = Date.now();
+    reminderIndex = 0;
+    document.getElementById('status').textContent = 'Drive started.';
+    playNextReminder();
+  }
+
+  function playNextReminder() {
+    if (reminderIndex >= reminders.length) {
+      arrivalRitual();
+      return;
+    }
+
+    audio.src = reminders[reminderIndex];
+    audio.play();
+
+    audio.onended = () => {
+      reminderIndex++;
+
+      // silence buffer so audio never cuts off
+      setTimeout(() => {
+        maybeAffirm();
+        setTimeout(playNextReminder, 4000);
+      }, 1200);
+    };
+  }
+
+  function maybeAffirm() {
+    if (Math.random() < 0.35) {
+      const msg = affirmations[Math.floor(Math.random() * affirmations.length)];
+      document.getElementById('message').textContent = msg;
+    }
+  }
+
+  function silentMode() {
+    audio.pause();
+    document.getElementById('message').textContent = 'Silent mode. I’m here if you need me.';
+    document.getElementById('status').textContent = 'No reminders playing.';
+  }
+
+  function arrivalRitual() {
+    document.getElementById('message').textContent = 'You made it. Take that calm with you.';
+    document.getElementById('status').textContent = 'Drive complete.';
+  }
+
+  function badDriveRecovery() {
+    audio.pause();
+    document.getElementById('message').textContent = 'That was a rough drive. That happens.';
+    document.getElementById('status').textContent = 'Tomorrow is a new one.';
+  }
 </script>
 
 </body>
