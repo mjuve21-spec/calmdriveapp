@@ -3,221 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>CalmDrive</title>
 
- <!-- Manifest / PWA -->
-<link rel="manifest" href="manifest.json" />
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
 
-<link rel="icon" type="image/png" sizes="32x32" href="images/icon32x32.png" />
-<link rel="icon" type="image/png" sizes="192x192" href="images/icon192x192.png" />
+  <!-- Icons (NOT rendered on page) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/icon32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./images/icon192x192.png">
+  <link rel="apple-touch-icon" href="./images/icon512x512.png">
 
-<link rel="apple-touch-icon" href="images/icon512x512.png" />
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-
-  <style>
-    /* ===================== GLOBAL ===================== */
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
-      color: #ecfeff;
-      background:
-        radial-gradient(circle at 50% -20%, rgba(94,234,212,0.35), transparent 45%),
-        radial-gradient(circle at 80% 20%, rgba(56,189,248,0.35), transparent 40%),
-        linear-gradient(180deg, #020617, #020617);
-      overflow-x: hidden;
-    }
-
-    /* subtle parallax */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(45,212,191,0.08), rgba(56,189,248,0.08));
-      transform: translateZ(0);
-      pointer-events: none;
-    }
-
-    /* ===================== HEADER ===================== */
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 20px;
-    }
-
-    header img {
-      width: 40px;
-      height: 40px;
-    }
-
-    header h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    /* ===================== MAIN CARD ===================== */
-    main {
-      display: flex;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(15,23,42,0.75));
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
-      backdrop-filter: blur(14px);
-    }
-
-    .card p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 24px;
-      opacity: 0.95;
-    }
-
-    .controls {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      flex: 1;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, #2dd4bf, #38bdf8);
-      color: #022c22;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    button.secondary {
-      background: rgba(148,163,184,0.15);
-      color: #e5f9f7;
-    }
-
-    button:active {
-      transform: scale(0.97);
-      box-shadow: 0 10px 30px rgba(45,212,191,0.35);
-    }
-
-    /* ===================== FOOTER TEXT ===================== */
-    .status {
-      margin-top: 24px;
-      font-size: 0.9rem;
-      opacity: 0.7;
-      text-align: center;
-    }
-  </style>
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
+  <main class="app">
+    <h1>CalmDrive</h1>
 
-<header>
-  <img src="images/icon192x192.png" alt="CalmDrive logo" />
-  <h1>CalmDrive</h1>
-</header>
-
-<main>
-  <div class="card">
-    <p id="message">Take a breath. The road can wait.</p>
+    <p>Take a breath. The road can wait.</p>
 
     <div class="controls">
-      <button onclick="startDrive()">Start Drive</button>
-      <button class="secondary" onclick="silentMode()">Silent Mode</button>
-      <button class="secondary" onclick="badDriveRecovery()">Rough Drive</button>
+      <button>Start Drive</button>
+      <button>Silent Mode</button>
+      <button>Rough Drive</button>
     </div>
+  </main>
 
-    <div class="status" id="status">Ready when you are.</div>
-  </div>
-</main>
-
-<!-- ===================== AUDIO ===================== -->
-<audio id="audio"></audio>
-
-<script>
-  const reminders = [
-    'audio/reminder1.mp3',
-    'audio/reminder2.mp3',
-    'audio/reminder3.mp3',
-    'audio/reminder4.mp3',
-    'audio/reminder5.mp3',
-    'audio/reminder6.mp3'
-  ];
-
-  const affirmations = [
-    "You're doing fine.",
-    "No need to rush.",
-    "This drive doesn't define your day.",
-    "You're handling this better than before."
-  ];
-
-  let driveStart = null;
-  let reminderIndex = 0;
-  const audio = document.getElementById('audio');
-
-  function startDrive() {
-    driveStart = Date.now();
-    reminderIndex = 0;
-    document.getElementById('status').textContent = 'Drive started.';
-    playNextReminder();
-  }
-
-  function playNextReminder() {
-    if (reminderIndex >= reminders.length) {
-      arrivalRitual();
-      return;
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
     }
-
-    audio.src = reminders[reminderIndex];
-    audio.play();
-
-    audio.onended = () => {
-      reminderIndex++;
-
-      // silence buffer so audio never cuts off
-      setTimeout(() => {
-        maybeAffirm();
-        setTimeout(playNextReminder, 4000);
-      }, 1200);
-    };
-  }
-
-  function maybeAffirm() {
-    if (Math.random() < 0.35) {
-      const msg = affirmations[Math.floor(Math.random() * affirmations.length)];
-      document.getElementById('message').textContent = msg;
-    }
-  }
-
-  function silentMode() {
-    audio.pause();
-    document.getElementById('message').textContent = 'Silent mode. I’m here if you need me.';
-    document.getElementById('status').textContent = 'No reminders playing.';
-  }
-
-  function arrivalRitual() {
-    document.getElementById('message').textContent = 'You made it. Take that calm with you.';
-    document.getElementById('status').textContent = 'Drive complete.';
-  }
-
-  function badDriveRecovery() {
-    audio.pause();
-    document.getElementById('message').textContent = 'That was a rough drive. That happens.';
-    document.getElementById('status').textContent = 'Tomorrow is a new one.';
-  }
-</script>
-
+  </script>
 </body>
 </html>
