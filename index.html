@@ -6,9 +6,9 @@
 <title>CalmDrive</title>
 
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" sizes="32x32" href="./images/icon32x32.png">
-<link rel="icon" sizes="192x192" href="./images/icon192x192.png">
-<link rel="apple-touch-icon" href="./images/icon512x512.png">
+<link rel="icon" sizes="32x32" href="./icon192x192(1).png">
+<link rel="icon" sizes="192x192" href="./icon192x192(1).png">
+<link rel="apple-touch-icon" href="./icon192x192(1).png">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -70,6 +70,7 @@ nav {
   top: 0;
   background: rgba(15,37,87,.85);
   backdrop-filter: blur(20px);
+  z-index: 100;
 }
 
 nav button {
@@ -138,6 +139,10 @@ select {
   margin-bottom: 14px;
 }
 
+select option {
+  background: #0F2557;
+}
+
 button.primary {
   width: 100%;
   padding: 18px;
@@ -175,8 +180,8 @@ footer {
 <div class="ambient-bg"></div>
 
 <header>
-  <!-- LOGO FIXED -->
-  <img src="./images/icon512x512.png" alt="CalmDrive Logo" class="logo">
+  <!-- LOGO - Using the working file from root -->
+  <img src="./icon192x192(1).png" alt="CalmDrive Logo" class="logo" onerror="console.error('ICON LOAD FAILED. Tried path:', this.src); this.style.border='3px solid red';" onload="console.log('ICON SUCCESS! Loaded from:', this.src);">
   <h1>CalmDrive</h1>
   <p class="tagline">Arrive Calm • Arrive Safe</p>
 </header>
@@ -194,7 +199,7 @@ footer {
       <li>Leave early — no rush</li>
       <li>Three slow breaths</li>
       <li>Safety over speed</li>
-      <li>You’re allowed to be calm</li>
+      <li>You're allowed to be calm</li>
     </ul>
   </div>
 </section>
@@ -217,7 +222,7 @@ footer {
     <button class="primary" onclick="playAudio()">▶ Play Reminder</button>
     <button class="primary secondary" onclick="stopAudio()">⏸ Stop</button>
 
-    <p class="small">You’re doing fine. Keep going.</p>
+    <p class="small">You're doing fine. Keep going.</p>
   </div>
 </section>
 
@@ -226,7 +231,7 @@ footer {
     <h2>Drive Log</h2>
     <p id="logText">0 calm drives logged</p>
     <button class="primary" onclick="logDrive()">✓ Log This Drive</button>
-    <p class="small">Take one calm breath. You’ve arrived.</p>
+    <p class="small">Take one calm breath. You've arrived.</p>
   </div>
 
   <div class="card">
@@ -263,7 +268,10 @@ function playAudio() {
   const src = document.getElementById('audioSelect').value;
   if (!src) return alert('Choose a reminder first');
   player.src = src;
-  player.play();
+  player.play().catch(err => {
+    console.error('Audio play error:', err);
+    alert('Unable to play audio. Make sure the file exists.');
+  });
 }
 
 function stopAudio() {
@@ -274,7 +282,18 @@ function stopAudio() {
 function logDrive() {
   drives++;
   logText.textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
+  // Save to localStorage
+  localStorage.setItem('calmDrivesCount', drives);
 }
+
+// Load saved drives count on page load
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('calmDrivesCount');
+  if (saved) {
+    drives = parseInt(saved);
+    logText.textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
+  }
+});
 </script>
 
 </body>
