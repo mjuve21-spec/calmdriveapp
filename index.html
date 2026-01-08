@@ -50,6 +50,29 @@ header {
     0 0 0 6px rgba(255,255,255,.08);
 }
 
+.greeting {
+  font-size: 18px;
+  font-weight: 600;
+  opacity: .85;
+  margin-bottom: 8px;
+}
+
+.greeting-edit {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,.1);
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.2);
+  transition: all .3s ease;
+}
+
+.greeting-edit:hover {
+  background: rgba(255,255,255,.2);
+}
+
 h1 {
   font-size: 42px;
   font-weight: 900;
@@ -82,6 +105,11 @@ nav button {
   color: white;
   font-weight: 700;
   cursor: pointer;
+  transition: all .3s ease;
+}
+
+nav button:hover {
+  background: rgba(30,58,138,.9);
 }
 
 nav button.active {
@@ -111,6 +139,11 @@ section.active { display: block; }
   margin-bottom: 14px;
 }
 
+.card p {
+  line-height: 1.6;
+  opacity: .95;
+}
+
 .card ul {
   list-style: none;
 }
@@ -137,10 +170,27 @@ select {
   color: white;
   font-weight: 600;
   margin-bottom: 14px;
+  cursor: pointer;
 }
 
 select option {
   background: #0F2557;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(15,37,87,.9);
+  border: 1.5px solid rgba(255,255,255,.3);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+input[type="text"]::placeholder {
+  color: rgba(255,255,255,.5);
 }
 
 button.primary {
@@ -153,6 +203,12 @@ button.primary {
   background: linear-gradient(135deg, #8B5CF6, #EC4899);
   color: white;
   cursor: pointer;
+  transition: all .3s ease;
+}
+
+button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139,92,246,.5);
 }
 
 button.secondary {
@@ -164,6 +220,14 @@ button.secondary {
   font-weight: 600;
   opacity: .9;
   text-align: center;
+  font-size: 15px;
+}
+
+.personal-message {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: rgba(255,255,255,.95);
 }
 
 footer {
@@ -172,6 +236,38 @@ footer {
   font-weight: 700;
   opacity: .8;
 }
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background: linear-gradient(145deg, rgba(30,58,138,.95), rgba(15,37,87,1));
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  border: 2px solid rgba(255,255,255,.2);
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+.modal-content h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 </style>
 </head>
 
@@ -179,9 +275,24 @@ footer {
 
 <div class="ambient-bg"></div>
 
+<!-- Name Setup Modal -->
+<div class="modal" id="nameModal">
+  <div class="modal-content">
+    <h3>Welcome to CalmDrive</h3>
+    <p style="margin-bottom: 20px; opacity: .9;">What's your name?</p>
+    <input type="text" id="nameInput" placeholder="Your name">
+    <button class="primary" onclick="saveName()">Let's Go</button>
+  </div>
+</div>
+
 <header>
-  <!-- LOGO - Using the working file from root -->
   <img src="./icon192x192(1).png" alt="CalmDrive Logo" class="logo" onerror="console.error('ICON LOAD FAILED. Tried path:', this.src); this.style.border='3px solid red';" onload="console.log('ICON SUCCESS! Loaded from:', this.src);">
+  
+  <p class="greeting">
+    <span id="greetingText">Hey there</span>
+    <span class="greeting-edit" onclick="editName()">change name</span>
+  </p>
+  
   <h1>CalmDrive</h1>
   <p class="tagline">Arrive Calm • Arrive Safe</p>
 </header>
@@ -194,6 +305,7 @@ footer {
 
 <section id="before" class="active">
   <div class="card">
+    <p class="personal-message" id="beforeMessage">Ready for a calm drive?</p>
     <h2>Pre-Drive Mindset</h2>
     <ul>
       <li>Leave early — no rush</li>
@@ -206,6 +318,7 @@ footer {
 
 <section id="during">
   <div class="card reminder-card">
+    <p class="personal-message" id="duringMessage">Let's stay calm together.</p>
     <h2>🎧 Audio Reminders</h2>
     <audio id="player"></audio>
 
@@ -228,8 +341,9 @@ footer {
 
 <section id="log">
   <div class="card">
+    <p class="personal-message" id="logMessage">How did your drive go?</p>
     <h2>Drive Log</h2>
-    <p id="logText">0 calm drives logged</p>
+    <p id="logText" style="font-size: 18px; margin: 16px 0;">0 calm drives logged</p>
     <button class="primary" onclick="logDrive()">✓ Log This Drive</button>
     <p class="small">Take one calm breath. You've arrived.</p>
   </div>
@@ -252,9 +366,51 @@ footer {
 </footer>
 
 <script>
+let userName = '';
 let drives = 0;
-const logText = document.getElementById('logText');
-const player = document.getElementById('player');
+
+// Load saved data
+window.addEventListener('load', () => {
+  userName = localStorage.getItem('calmDriveName') || '';
+  drives = parseInt(localStorage.getItem('calmDrivesCount')) || 0;
+  
+  if (!userName) {
+    document.getElementById('nameModal').classList.add('active');
+  } else {
+    updateGreeting();
+    updateMessages();
+  }
+  
+  document.getElementById('logText').textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
+});
+
+function saveName() {
+  const input = document.getElementById('nameInput').value.trim();
+  if (input) {
+    userName = input;
+    localStorage.setItem('calmDriveName', userName);
+    document.getElementById('nameModal').classList.remove('active');
+    updateGreeting();
+    updateMessages();
+  }
+}
+
+function editName() {
+  document.getElementById('nameInput').value = userName;
+  document.getElementById('nameModal').classList.add('active');
+}
+
+function updateGreeting() {
+  const greetings = ['Hey', 'Hi', 'Welcome back'];
+  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  document.getElementById('greetingText').textContent = `${greeting}, ${userName}`;
+}
+
+function updateMessages() {
+  document.getElementById('beforeMessage').textContent = `Hey ${userName}, ready for a calm drive?`;
+  document.getElementById('duringMessage').textContent = `${userName}, let's stay calm together.`;
+  document.getElementById('logMessage').textContent = `How did your drive go, ${userName}?`;
+}
 
 function showTab(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -267,6 +423,7 @@ function showTab(id) {
 function playAudio() {
   const src = document.getElementById('audioSelect').value;
   if (!src) return alert('Choose a reminder first');
+  const player = document.getElementById('player');
   player.src = src;
   player.play().catch(err => {
     console.error('Audio play error:', err);
@@ -275,25 +432,16 @@ function playAudio() {
 }
 
 function stopAudio() {
+  const player = document.getElementById('player');
   player.pause();
   player.currentTime = 0;
 }
 
 function logDrive() {
   drives++;
-  logText.textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
-  // Save to localStorage
   localStorage.setItem('calmDrivesCount', drives);
+  document.getElementById('logText').textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
 }
-
-// Load saved drives count on page load
-window.addEventListener('load', () => {
-  const saved = localStorage.getItem('calmDrivesCount');
-  if (saved) {
-    drives = parseInt(saved);
-    logText.textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
-  }
-});
 </script>
 
 </body>
