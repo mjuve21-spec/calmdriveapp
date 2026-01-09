@@ -119,20 +119,33 @@ nav button {
   flex: 1;
   padding: 14px;
   border-radius: 14px;
-  border: none;
-  background: rgba(30,58,138,.7);
+  border: 1px solid rgba(255,255,255,.2);
+  background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+  backdrop-filter: blur(10px);
   color: white;
   font-weight: 700;
   cursor: pointer;
   transition: all .3s ease;
+  box-shadow: 
+    0 4px 12px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.2);
 }
 
 nav button:hover {
-  background: rgba(30,58,138,.9);
+  background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.1));
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(0,0,0,.3),
+    inset 0 1px 0 rgba(255,255,255,.3);
 }
 
 nav button.active {
-  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+  background: linear-gradient(135deg, rgba(139,92,246,.5), rgba(236,72,153,.4));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,.3);
+  box-shadow: 
+    0 8px 24px rgba(139,92,246,.4),
+    inset 0 1px 0 rgba(255,255,255,.4);
 }
 
 section {
@@ -216,22 +229,34 @@ button.primary {
   width: 100%;
   padding: 18px;
   border-radius: 16px;
-  border: none;
+  border: 1px solid rgba(255,255,255,.3);
   font-weight: 800;
   margin-top: 10px;
-  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5));
+  backdrop-filter: blur(20px);
   color: white;
   cursor: pointer;
   transition: all .3s ease;
+  box-shadow: 
+    0 8px 24px rgba(139,92,246,.4),
+    inset 0 1px 0 rgba(255,255,255,.3);
 }
 
 button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(139,92,246,.5);
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, rgba(139,92,246,.7), rgba(236,72,153,.6));
+  box-shadow: 
+    0 12px 32px rgba(139,92,246,.5),
+    inset 0 1px 0 rgba(255,255,255,.4);
 }
 
 button.secondary {
-  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5));
+  background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.1));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 
+    0 6px 18px rgba(0,0,0,.2),
+    inset 0 1px 0 rgba(255,255,255,.2);
 }
 
 .small {
@@ -373,6 +398,7 @@ footer {
       <li>Post-drive recovery support</li>
       <li>Drive-length awareness</li>
       <li>Automatic calm silent mode</li>
+      <li>Choose male or female voice option</li>
     </ul>
     <p class="small">Coming later. Free users always welcome.</p>
   </div>
