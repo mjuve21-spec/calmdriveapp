@@ -48,21 +48,11 @@ body {
 }
 
 @keyframes ambientFloat {
-  0% { 
-    transform: translate(0%, 0%) scale(1);
-  }
-  25% { 
-    transform: translate(15%, -10%) scale(1.2);
-  }
-  50% { 
-    transform: translate(-10%, 15%) scale(1.1);
-  }
-  75% { 
-    transform: translate(12%, 8%) scale(1.25);
-  }
-  100% { 
-    transform: translate(0%, 0%) scale(1);
-  }
+  0% { transform: translate(0%, 0%) scale(1); }
+  25% { transform: translate(15%, -10%) scale(1.2); }
+  50% { transform: translate(-10%, 15%) scale(1.1); }
+  75% { transform: translate(12%, 8%) scale(1.25); }
+  100% { transform: translate(0%, 0%) scale(1); }
 }
 
 header {
@@ -76,9 +66,7 @@ header {
   margin: 0 auto 14px;
   display: block;
   border-radius: 24px;
-  box-shadow:
-    0 25px 60px rgba(59,130,246,.6),
-    0 0 0 6px rgba(255,255,255,.08);
+  box-shadow: 0 25px 60px rgba(59,130,246,.6), 0 0 0 6px rgba(255,255,255,.08);
 }
 
 .greeting {
@@ -184,12 +172,12 @@ section.active { display: block; }
   border-bottom: 1px solid rgba(255,255,255,.15);
 }
 
+.card ul li:last-child {
+  border-bottom: none;
+}
+
 .reminder-card {
-  background: linear-gradient(
-    145deg,
-    rgba(139,92,246,.35),
-    rgba(30,58,138,.55)
-  );
+  background: linear-gradient(145deg, rgba(139,92,246,.35), rgba(30,58,138,.55));
 }
 
 select {
@@ -268,7 +256,6 @@ footer {
   opacity: .8;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -306,7 +293,6 @@ footer {
 
 <div class="ambient-bg"></div>
 
-<!-- Name Setup Modal -->
 <div class="modal" id="nameModal">
   <div class="modal-content">
     <h3>Welcome to CalmDrive</h3>
@@ -317,7 +303,7 @@ footer {
 </div>
 
 <header>
-  <img src="./icon192x192(1).png" alt="CalmDrive Logo" class="logo" onerror="console.error('ICON LOAD FAILED. Tried path:', this.src); this.style.border='3px solid red';" onload="console.log('ICON SUCCESS! Loaded from:', this.src);">
+  <img src="./icon192x192(1).png" alt="CalmDrive Logo" class="logo">
   
   <p class="greeting">
     <span id="greetingText">Hey there</span>
@@ -351,7 +337,7 @@ footer {
   <div class="card reminder-card">
     <p class="personal-message" id="duringMessage">Let's stay calm together.</p>
     <h2>🎧 Audio Reminders</h2>
-    <audio id="player"></audio>
+    <audio id="player" preload="metadata"></audio>
 
     <select id="audioSelect">
       <option value="">Choose a reminder</option>
@@ -400,7 +386,6 @@ footer {
 let userName = '';
 let drives = 0;
 
-// Load saved data
 window.addEventListener('load', () => {
   userName = localStorage.getItem('calmDriveName') || '';
   drives = parseInt(localStorage.getItem('calmDrivesCount')) || 0;
@@ -453,12 +438,17 @@ function showTab(id) {
 
 function playAudio() {
   const src = document.getElementById('audioSelect').value;
-  if (!src) return alert('Choose a reminder first');
+  if (!src) {
+    alert('Choose a reminder first');
+    return;
+  }
+  
   const player = document.getElementById('player');
   player.src = src;
+  
   player.play().catch(err => {
     console.error('Audio play error:', err);
-    alert('Unable to play audio. Make sure the file exists.');
+    alert('Unable to play audio. Make sure the file exists at: ' + src);
   });
 }
 
