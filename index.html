@@ -167,6 +167,25 @@ section.active { display: block; }
   margin-bottom: 22px;
   border: 1.5px solid rgba(255,255,255,.25);
   box-shadow: 0 22px 55px rgba(0,0,0,.45);
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(236,72,153,.25), rgba(249,115,22,.2));
+  border-radius: 0 0 28px 28px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card h2 {
@@ -193,7 +212,24 @@ section.active { display: block; }
 }
 
 .reminder-card {
-  background: linear-gradient(145deg, rgba(139,92,246,.35), rgba(30,58,138,.55));
+  background: 
+    linear-gradient(145deg, rgba(139,92,246,.4), rgba(236,72,153,.35)),
+    linear-gradient(to bottom right, #8B5CF6, #EC4899, #F97316);
+  position: relative;
+}
+
+.reminder-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(30,58,138,.7), rgba(15,37,87,.8));
+  border-radius: 28px;
+  z-index: 0;
+}
+
+.reminder-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 select {
