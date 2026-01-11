@@ -12,6 +12,12 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CalmDrive">
+<meta name="theme-color" content="#1E3A8A">
+
+<!-- For Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="CalmDrive">
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -359,6 +365,60 @@ footer {
   font-size: 24px;
   margin-bottom: 20px;
 }
+
+/* Install prompt */
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: linear-gradient(145deg, rgba(30,58,138,.95), rgba(15,37,87,1));
+  border-radius: 20px;
+  padding: 20px;
+  border: 2px solid rgba(255,255,255,.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  z-index: 999;
+  display: none;
+}
+
+.install-prompt.show {
+  display: block;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.install-prompt h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.install-prompt p {
+  font-size: 14px;
+  opacity: .9;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.install-prompt button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5));
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.install-prompt .close-btn {
+  background: rgba(255,255,255,.15);
+  padding: 8px 16px;
+  font-size: 13px;
+}
 </style>
 </head>
 
@@ -369,8 +429,8 @@ footer {
 <div class="modal" id="nameModal">
   <div class="modal-content">
     <h3>Welcome to CalmDrive</h3>
-    <p style="margin-bottom: 20px; opacity: .9;">What's your name?</p>
-    <input type="text" id="nameInput" placeholder="Your name">
+    <label for="nameInput" style="display: block; margin-bottom: 8px; opacity: .9;">What's your name?</label>
+    <input type="text" id="nameInput" name="userName" placeholder="Your name" aria-label="Enter your name">
     <button class="primary" onclick="saveName()">Let's Go</button>
   </div>
 </div>
@@ -410,9 +470,10 @@ footer {
   <div class="card reminder-card">
     <p class="personal-message" id="duringMessage">Let's stay calm together.</p>
     <h2>🎧 Audio Reminders</h2>
-    <audio id="player" preload="metadata"></audio>
+    <label for="audioSelect" style="display: block; margin-bottom: 8px; font-size: 15px;">Choose a calming reminder:</label>
+    <audio id="player" preload="metadata" aria-label="Audio reminder player"></audio>
 
-    <select id="audioSelect">
+    <select id="audioSelect" name="audioReminder" aria-label="Select audio reminder">
       <option value="">Choose a reminder</option>
       <option value="./audio/reminder1.mp3">Reminder 1</option>
       <option value="./audio/reminder2.mp3">Reminder 2</option>
@@ -455,6 +516,17 @@ footer {
 <footer>
   CalmDrive • Your Calm Matters
 </footer>
+
+<!-- Install Prompt for iOS -->
+<div class="install-prompt" id="installPrompt">
+  <h4>📱 Install CalmDrive</h4>
+  <p>Add to your home screen for the best experience - works like a real app!</p>
+  <p style="font-size: 13px; opacity: .8;">
+    Tap <strong>Share ⬆️</strong> then <strong>"Add to Home Screen"</strong>
+  </p>
+  <button onclick="closeInstallPrompt()">Got it</button>
+  <button class="close-btn" onclick="closeInstallPrompt()">Maybe later</button>
+</div>
 
 <script>
 let userName = '';
@@ -537,6 +609,32 @@ function logDrive() {
   localStorage.setItem('calmDrivesCount', drives);
   document.getElementById('logText').textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
 }
+
+// Show install prompt on iOS Safari
+function showInstallPrompt() {
+  // Check if standalone (already installed)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  
+  // Check if iOS Safari
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  
+  // Check if user already dismissed
+  const dismissed = localStorage.getItem('installPromptDismissed');
+  
+  if (isIOS && !isStandalone && !dismissed) {
+    setTimeout(() => {
+      document.getElementById('installPrompt').classList.add('show');
+    }, 3000); // Show after 3 seconds
+  }
+}
+
+function closeInstallPrompt() {
+  document.getElementById('installPrompt').classList.remove('show');
+  localStorage.setItem('installPromptDismissed', 'true');
+}
+
+// Show install prompt on load
+window.addEventListener('load', showInstallPrompt);
 </script>
 
 </body>
