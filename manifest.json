@@ -1,43 +1,8 @@
-{
-  "name": "CalmDrive",
-  "short_name": "CalmDrive",
-  "description": "A calming meditation and relaxation app for drivers to help reduce stress and anxiety on the road",
-  "start_url": "./index.html",
-  "scope": "/calmdriveapp/",
-  "display": "standalone",
-  "background_color": "#1e3a8a",
-  "theme_color": "#3b82f6",
-  "orientation": "portrait",
-  "id": "calmdriveapp",
-  "categories": ["health", "lifestyle", "wellness"],
-  "icons": [
-    {
-      "src": "./images/icon192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./images/icon512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "./images/screenshot-mobile.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "CalmDrive mobile view"
-    },
-    {
-      "src": "./images/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "CalmDrive desktop view"
-    }
-  ]
-}
+"icons": [
+  {
+    "src": "./icon192x192.png",
+    "sizes": "192x192",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
+]
