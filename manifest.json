@@ -1,8 +1,16 @@
-"icons": [
-  {
-    "src": "./images/icon192x192.png",
-    "sizes": "192x192",
-    "type": "image/png",
-    "purpose": "any maskable"
-  }
-]
+{
+  "name": "CalmDrive",
+  "short_name": "CalmDrive",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "./images/icon192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
