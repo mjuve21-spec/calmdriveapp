@@ -1,71 +1,83 @@
-<script>
-const reminders = [
-  "audio/reminder1.mp3",
-  "audio/reminder2.mp3",
-  "audio/reminder3.mp3",
-  "audio/reminder4.mp3",
-  "audio/reminder5.mp3",
-  "audio/reminder6.mp3"
+const CACHE_NAME = 'calmdrive-v1';
+const RUNTIME_CACHE = 'calmdrive-runtime-v1';
+
+// Assets to cache on install
+const PRECACHE_URLS = [
+  './',
+  './index.html',
+  './icon192x192.png',
+  './css',
+  './audio/reminder1.mp3',
+  './audio/reminder2.mp3',
+  './audio/reminder3.mp3',
+  './audio/reminder4.mp3',
+  './audio/reminder5.mp3',
+  './audio/reminder6.mp3'
 ];
 
-let reminderInterval = null;
-const audioPlayer = document.getElementById("calmAudio");
+// Install event - cache critical assets
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(PRECACHE_URLS);
+      })
+      .then(() => self.skipWaiting())
+      .catch(err => console.log('Cache failed:', err))
+  );
+});
 
-function showTab(id) {
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-}
+// Activate event - clean up old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
 
-function playRandomReminder() {
-  const file = reminders[Math.floor(Math.random() * reminders.length)];
-  audioPlayer.src = file;
-  audioPlayer.volume = 0.9;
-  audioPlayer.play().catch(() => {});
-}
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  
+  // Skip cross-origin requests
+  if (request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches.match(request)
+        .then(cachedResponse => {
+          // Return cached version or fetch from network
+          if (cachedResponse) {
+            return cachedResponse;
+          }
 
-function startReminders() {
-  stopReminders();
-  playRandomReminder();
-  reminderInterval = setInterval(playRandomReminder, 45000);
-}
+          return fetch(request).then(response => {
+            // Don't cache non-successful responses
+            if (!response || response.status !== 200 || response.type === 'error') {
+              return response;
+            }
 
-function stopReminders() {
-  clearInterval(reminderInterval);
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
-}
+            // Clone the response
+            const responseToCache = response.clone();
 
-document.getElementById('anger').oninput = e => {
-  document.getElementById('angerValue').textContent = e.target.value;
-};
+            caches.open(RUNTIME_CACHE).then(cache => {
+              cache.put(request, responseToCache);
+            });
 
-function saveLog() {
-  const logs = JSON.parse(localStorage.getItem('calmLogs') || '[]');
-  logs.unshift({
-    trigger: trigger.value,
-    anger: anger.value,
-    handled: handled.checked,
-    date: new Date()
-  });
-  localStorage.setItem('calmLogs', JSON.stringify(logs));
-  alert('Saved. Nice job staying aware.');
-  loadStats();
-}
-
-function loadStats() {
-  const logs = JSON.parse(localStorage.getItem('calmLogs') || '[]');
-  const calm = logs.filter(l => l.handled).length;
-  totalLogs.textContent = logs.length;
-  calmPercent.textContent = logs.length
-    ? Math.round((calm / logs.length) * 100) + '%'
-    : '0%';
-
-  if (calm >= 3) {
-    highFive.textContent = "🙌 High-five! You stayed calm on multiple drives!";
+            return response;
+          });
+        })
+        .catch(() => {
+          // Return offline page or fallback
+          return caches.match('./index.html');
+        })
+    );
   }
-}
-
-loadStats();
-</script>
+});
