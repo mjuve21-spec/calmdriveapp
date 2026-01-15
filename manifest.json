@@ -2,64 +2,63 @@
   "name": "CalmDrive",
   "short_name": "CalmDrive",
   "description": "A calming driving companion to help you arrive calm and safe.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/calmdriveapp/",
+  "scope": "/calmdriveapp/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0E2557",
   "theme_color": "#1E3A8A",
-  "id": "./",
   "icons": [
     {
-      "src": "./icons/icon-72x72.png",
+      "src": "/calmdriveapp/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-96x96.png",
+      "src": "/calmdriveapp/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-128x128.png",
+      "src": "/calmdriveapp/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-144x144.png",
+      "src": "/calmdriveapp/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-152x152.png",
+      "src": "/calmdriveapp/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-192x192.png",
+      "src": "/calmdriveapp/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-384x384.png",
+      "src": "/calmdriveapp/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-512x512.png",
+      "src": "/calmdriveapp/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/maskable-icon-512x512.png",
+      "src": "/calmdriveapp/icons/maskable-icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -67,21 +66,21 @@
   ],
   "screenshots": [
     {
-      "src": "./screenshots/screenshot1.png",
+      "src": "/calmdriveapp/screenshots/screenshot1.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Before Drive Screen"
     },
     {
-      "src": "./screenshots/screenshot2.png",
+      "src": "/calmdriveapp/screenshots/screenshot2.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Audio Reminders"
     },
     {
-      "src": "./screenshots/screenshot3.png",
+      "src": "/calmdriveapp/screenshots/screenshot3.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
@@ -94,10 +93,10 @@
       "name": "Start Drive",
       "short_name": "Drive",
       "description": "Begin a calm drive session",
-      "url": "./index.html?tab=before",
+      "url": "/calmdriveapp/?tab=before",
       "icons": [
         {
-          "src": "./icons/icon-96x96.png",
+          "src": "/calmdriveapp/icons/icon-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
