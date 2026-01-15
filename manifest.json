@@ -1,14 +1,24 @@
 {
   "name": "CalmDrive",
   "short_name": "CalmDrive",
+  "description": "A calming driving companion to help you arrive calm and safe.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "background_color": "#0F2557",
+  "theme_color": "#1E3A8A",
+  "id": "/calmdriveapp/",
   "icons": [
     {
       "src": "./images/icon192x192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/icon512x512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
