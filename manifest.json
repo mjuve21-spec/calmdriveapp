@@ -8,7 +8,7 @@
   "orientation": "portrait",
   "background_color": "#0E2557",
   "theme_color": "#1E3A8A",
-  "id": "./calmdnriveapp/",
+  "id": "./",
   "icons": [
     {
       "src": "./icons/icon-72x72.png",
@@ -41,7 +41,7 @@
       "purpose": "any"
     },
     {
-      "src": "./images/icon192x192.png",
+      "src": "./icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
@@ -53,7 +53,7 @@
       "purpose": "any"
     },
     {
-      "src": "./images/icon512x512.png",
+      "src": "./icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
@@ -97,8 +97,8 @@
       "url": "./index.html?tab=before",
       "icons": [
         {
-          "src": "./images/icon192x192.png",
-          "sizes": "192x192",
+          "src": "./icons/icon-96x96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
