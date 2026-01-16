@@ -69,20 +69,27 @@
   "screenshots": [
     {
       "src": "/calmdriveapp/screenshots/screenshot1.png",
-      "sizes": "540x720",
+      "sizes": "1920x1080",
       "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Before Drive Screen"
+      "form_factor": "wide",
+      "label": "CalmDrive Desktop View"
     },
     {
       "src": "/calmdriveapp/screenshots/screenshot2.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Audio Reminders"
+      "label": "Before Drive Screen"
     },
     {
       "src": "/calmdriveapp/screenshots/screenshot3.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Audio Reminders"
+    },
+    {
+      "src": "/calmdriveapp/screenshots/screenshot4.png",
       "sizes": "540x720",
       "type": "image/png",
       "form_factor": "narrow",
