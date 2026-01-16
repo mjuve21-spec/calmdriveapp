@@ -6,10 +6,14 @@
   "scope": "/calmdriveapp/",
   "id": "/calmdriveapp/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "portrait",
   "background_color": "#0E2557",
   "theme_color": "#1E3A8A",
+  "lang": "en-US",
+  "dir": "ltr",
   "prefer_related_applications": false,
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "icons": [
     {
       "src": "/calmdriveapp/icons/icon-72x72.png",
