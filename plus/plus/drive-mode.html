@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drive Mode - CalmDrive Plus</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background circles */
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 20s infinite ease-in-out;
+}
+
+.circle1 {
+  width: 300px;
+  height: 300px;
+  background: #7dd3fc;
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.circle2 {
+  width: 200px;
+  height: 200px;
+  background: #a5b4fc;
+  bottom: -50px;
+  right: -50px;
+  animation-delay: 5s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, 50px) scale(1.1); }
+}
+
+/* Header */
+header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #7dd3fc;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(34, 197, 94, 0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.drive-timer {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.timer-label {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.timer-display {
+  font-size: 72px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+/* Breathing Circle */
+.breathing-container {
+  margin: 40px 0;
+  position: relative;
+}
+
+.breathing-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(125, 211, 252, 0.2), rgba(165, 180, 252, 0.2));
+  border: 3px solid rgba(125, 211, 252, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: breathe 8s infinite ease-in-out;
+  box-shadow: 0 0 40px rgba(125, 211, 252, 0.3);
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+.breathing-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #7dd3fc;
+}
+
+/* Reminder Display */
+.current-reminder {
+  text-align: center;
+  max-width: 600px;
+  margin: 40px 0;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reminder-text {
+  font-size: 24px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* Control Buttons */
+.controls {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.control-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.play-btn {
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  color: #0f172a;
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+}
+
+.skip-btn, .pause-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #7dd3fc;
+}
+
+.control-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Stats Footer */
+footer {
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7dd3fc;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Emergency Calm Button */
+.emergency-calm {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+  animation: emergencyPulse 3s infinite;
+  z-index: 100;
+}
+
+@keyframes emergencyPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 4px 30px rgba(239, 68, 68, 0.8); }
+}
+
+.emergency-calm:hover {
+  transform: scale(1.1);
+}
+</style>
+</head>
+<body>
+  <div class="bg-circle circle1"></div>
+  <div class="bg-circle circle2"></div>
+
+  <header>
+    <button class="back-btn" onclick="endDrive()">← End Drive</button>
+    <div class="status">
+      <span class="status-dot"></span>
+      <span>Drive Active</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="drive-timer">
+      <div class="timer-label">Drive Time</div>
+      <div class="timer-display" id="driveTimer">00:00:00</div>
+    </div>
+
+    <div class="breathing-container">
+      <div class="breathing-circle">
+        <span class="breathing-text" id="breathingText">Breathe</span>
+      </div>
+    </div>
+
+    <div class="current-reminder">
+      <p class="reminder-text" id="reminderText">
+        You're doing great. Stay focused, stay calm.
+      </p>
+    </div>
+
+    <div class="controls">
+      <button class="control-btn skip-btn" onclick="previousReminder()">⏮</button>
+      <button class="control-btn play-btn" id="playBtn" onclick="togglePlayPause()">▶</button>
+      <button class="control-btn skip-btn" onclick="nextReminder()">⏭</button>
+    </div>
+  </main>
+
+  <button class="emergency-calm" onclick="emergencyCalm()" title="Emergency Calm">🆘</button>
+
+  <footer>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value" id="remindersPlayed">0</div>
+        <div class="stat-label">Reminders</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="breathsCount">0</div>
+        <div class="stat-label">Breaths</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="calmScore">100%</div>
+        <div class="stat-label">Calm Score</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let driveStartTime = Date.now();
+    let isPlaying = false;
+    let currentReminderIndex = 0;
+    let remindersPlayedCount = 0;
+    let breathCount = 0;
+
+    const reminders = [
+      "You're doing great. Stay focused, stay calm.",
+      "Take a deep breath. You have plenty of time.",
+      "You're safe. You're in control.",
+      "Remember to relax your shoulders.",
+      "You're allowed to drive at your own pace.",
+      "You're making progress. Keep going."
+    ];
+
+    // Drive Timer
+    function updateTimer() {
+      const elapsed = Date.now() - driveStartTime;
+      const hours = Math.floor(elapsed / 3600000);
+      const minutes = Math.floor((elapsed % 3600000) / 60000);
+      const seconds = Math.floor((elapsed % 60000) / 1000);
+      
+      document.getElementById('driveTimer').textContent = 
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    setInterval(updateTimer, 1000);
+
+    // Breathing animation
+    let breathingPhase = 0;
+    const breathingTexts = ['Breathe In', 'Hold', 'Breathe Out', 'Hold'];
+    
+    function updateBreathing() {
+      document.getElementById('breathingText').textContent = breathingTexts[breathingPhase];
+      breathingPhase = (breathingPhase + 1) % 4;
+      if (breathingPhase === 0) {
+        breathCount++;
+        document.getElementById('breathsCount').textContent = breathCount;
+      }
+    }
+
+    setInterval(updateBreathing, 4000); // 4 second intervals
+
+    // Play/Pause toggle
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      const btn = document.getElementById('playBtn');
+      btn.textContent = isPlaying ? '⏸' : '▶';
+      
+      if (isPlaying) {
+        playCurrentReminder();
+      }
+    }
+
+    // Play current reminder
+    function playCurrentReminder() {
+      document.getElementById('reminderText').textContent = reminders[currentReminderIndex];
+      remindersPlayedCount++;
+      document.getElementById('remindersPlayed').textContent = remindersPlayedCount;
+    }
+
+    // Navigation
+    function nextReminder() {
+      currentReminderIndex = (currentReminderIndex + 1) % reminders.length;
+      playCurrentReminder();
+    }
+
+    function previousReminder() {
+      currentReminderIndex = (currentReminderIndex - 1 + reminders.length) % reminders.length;
+      playCurrentReminder();
+    }
+
+    // Emergency calm
+    function emergencyCalm() {
+      alert('🫁 Deep Breath Protocol:\n\n1. Breathe in for 4 seconds\n2. Hold for 4 seconds\n3. Breathe out for 6 seconds\n\nRepeat 3 times. You\'re safe. You\'re okay.');
+      document.getElementById('reminderText').textContent = "Take your time. You're doing the right thing by pausing.";
+    }
+
+    // End drive
+    function endDrive() {
+      if (confirm('End this drive session?')) {
+        window.location.href = 'pre-drive-setup.html';
+      }
+    }
+
+    // Auto-play reminders every 2 minutes when playing
+    setInterval(() => {
+      if (isPlaying) {
+        nextReminder();
+      }
+    }, 120000); // 2 minutes
+  </script>
+</body>
+</html>
