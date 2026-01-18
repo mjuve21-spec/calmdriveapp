@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prepare Your Drive - CalmDrive Plus</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #f1f5f9;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.app-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #7dd3fc;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Destination Input */
+.destination-section {
+  margin-bottom: 40px;
+}
+
+.destination-input {
+  width: 100%;
+  padding: 18px 20px 18px 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  font-size: 16px;
+  color: #f1f5f9;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #94a3b8;
+}
+
+.destination-input:focus {
+  outline: none;
+  border-color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.05);
+}
+
+.destination-input::placeholder {
+  color: #64748b;
+}
+
+/* Section Headers */
+.section-header {
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 40px 0 20px 0;
+  font-weight: 600;
+}
+
+/* Settings Card */
+.settings-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.settings-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(125, 211, 252, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-switch.active {
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-slider {
+  left: 25px;
+}
+
+/* Button Group */
+.button-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.option-btn {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.option-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.option-btn.selected {
+  background: rgba(125, 211, 252, 0.2);
+  border-color: #7dd3fc;
+  color: #7dd3fc;
+}
+
+/* Slider */
+.slider-container {
+  margin-top: 20px;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.slider-label {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.slider-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #7dd3fc;
+  text-transform: uppercase;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+  position: relative;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(125, 211, 252, 0.5);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(125, 211, 252, 0.5);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Start Button */
+.start-drive-btn {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
+  border: none;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  margin-top: 40px;
+  transition: all 0.3s;
+  box-shadow: 0 8px 24px rgba(125, 211, 252, 0.4);
+}
+
+.start-drive-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(125, 211, 252, 0.5);
+}
+
+.start-drive-btn:active {
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <div class="logo">🚗</div>
+        <span class="app-name">Calm Drive</span>
+      </div>
+      <h1>Prepare Your Drive</h1>
+      <p class="subtitle">Set your focus and choose your peace.</p>
+    </header>
+
+    <div class="destination-section">
+      <div class="input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          class="destination-input" 
+          placeholder="Where are we heading?"
+          id="destination"
+        >
+      </div>
+    </div>
+
+    <div class="section-header">Calming Preferences</div>
+
+    <!-- Breathing Exercises -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">🫁</div>
+          <span>Breathing Exercises</span>
+        </div>
+        <div class="toggle-switch active" id="breathingToggle" onclick="toggleBreathing()">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+      <div id="breathingOptions">
+        <div class="button-group">
+          <button class="option-btn selected" onclick="selectBreathingInterval(4)">4s Interval</button>
+          <button class="option-btn" onclick="selectBreathingInterval(6)">6s Interval</button>
+          <button class="option-btn" onclick="selectBreathingInterval(8)">8s Interval</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calming Audio -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">🎵</div>
+          <span>Calming Audio</span>
+        </div>
+      </div>
+      <div class="button-group">
+        <button class="option-btn selected" onclick="selectAudio('ambient')">Ambient</button>
+        <button class="option-btn" onclick="selectAudio('meditation')">Meditation</button>
+        <button class="option-btn" onclick="selectAudio('music')">Music</button>
+      </div>
+    </div>
+
+    <!-- Alert Sensitivity -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">🔔</div>
+          <span>Alert Sensitivity</span>
+        </div>
+      </div>
+      <div class="slider-container">
+        <div class="slider-header">
+          <span class="slider-label">Reminder Frequency</span>
+          <span class="slider-value" id="sensitivityValue">HIGH</span>
+        </div>
+        <input 
+          type="range" 
+          min="0" 
+          max="2" 
+          value="2" 
+          class="slider" 
+          id="sensitivitySlider"
+          oninput="updateSensitivity(this.value)"
+        >
+        <div class="slider-labels">
+          <span>Minimal</span>
+          <span>Balanced</span>
+          <span>Vigilant</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice Guidance -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">👤</div>
+          <span>Voice Guidance</span>
+        </div>
+        <div class="toggle-switch" id="voiceToggle" onclick="toggleVoice()">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-drive-btn" onclick="startDrive()">Start Drive</button>
+  </div>
+
+  <script>
+    // Settings state
+    let settings = {
+      destination: '',
+      breathingEnabled: true,
+      breathingInterval: 4,
+      audioType: 'ambient',
+      sensitivity: 2,
+      voiceEnabled: false
+    };
+
+    // Load saved settings
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('calmDrivePlusSettings');
+      if (saved) {
+        settings = JSON.parse(saved);
+        applySettings();
+      }
+    });
+
+    function applySettings() {
+      document.getElementById('destination').value = settings.destination || '';
+      document.getElementById('breathingToggle').classList.toggle('active', settings.breathingEnabled);
+      document.getElementById('voiceToggle').classList.toggle('active', settings.voiceEnabled);
+      document.getElementById('sensitivitySlider').value = settings.sensitivity;
+      updateSensitivity(settings.sensitivity);
+    }
+
+    function saveSettings() {
+      settings.destination = document.getElementById('destination').value;
+      localStorage.setItem('calmDrivePlusSettings', JSON.stringify(settings));
+    }
+
+    // Toggle breathing
+    function toggleBreathing() {
+      settings.breathingEnabled = !settings.breathingEnabled;
+      document.getElementById('breathingToggle').classList.toggle('active');
+      document.getElementById('breathingOptions').style.opacity = settings.breathingEnabled ? '1' : '0.5';
+      saveSettings();
+    }
+
+    // Select breathing interval
+    function selectBreathingInterval(interval) {
+      settings.breathingInterval = interval;
+      document.querySelectorAll('#breathingOptions .option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      event.target.classList.add('selected');
+      saveSettings();
+    }
+
+    // Select audio type
+    function selectAudio(type) {
+      settings.audioType = type;
+      const parent = event.target.parentElement;
+      parent.querySelectorAll('.option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      event.target.classList.add('selected');
+      saveSettings();
+    }
+
+    // Update sensitivity
+    function updateSensitivity(value) {
+      settings.sensitivity = parseInt(value);
+      const labels = ['MINIMAL', 'BALANCED', 'HIGH'];
+      document.getElementById('sensitivityValue').textContent = labels[value];
+      saveSettings();
+    }
+
+    // Toggle voice
+    function toggleVoice() {
+      settings.voiceEnabled = !settings.voiceEnabled;
+      document.getElementById('voiceToggle').classList.toggle('active');
+      saveSettings();
+    }
+
+    // Start drive
+    function startDrive() {
+      saveSettings();
+      window.location.href = 'drive-mode.html';
+    }
+
+    // Auto-save destination
+    document.getElementById('destination').addEventListener('input', saveSettings);
+  </script>
+</body>
+</html>
