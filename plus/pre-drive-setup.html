@@ -1,504 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prepare Your Drive - CalmDrive Plus</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PreDriveSetup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #f1f5f9;
-  min-height: 100vh;
-  padding: 20px;
-}
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --color-chart-1: var(--chart-1);
+        --color-chart-2: var(--chart-2);
+        --color-chart-3: var(--chart-3);
+        --color-chart-4: var(--chart-4);
+        --color-chart-5: var(--chart-5);
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
+        --font-font-sans: var(--font-sans);
+        --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
+        --font-font-mono: var(--font-mono);
 
-/* Header */
-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.logo {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.app-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: #7dd3fc;
-}
-
-h1 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  font-size: 18px;
-  color: #94a3b8;
-  font-weight: 400;
-}
-
-/* Destination Input */
-.destination-section {
-  margin-bottom: 40px;
-}
-
-.destination-input {
-  width: 100%;
-  padding: 18px 20px 18px 50px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  font-size: 16px;
-  color: #f1f5f9;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.input-wrapper {
-  position: relative;
-}
-
-.search-icon {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  color: #94a3b8;
-}
-
-.destination-input:focus {
-  outline: none;
-  border-color: #7dd3fc;
-  background: rgba(125, 211, 252, 0.05);
-}
-
-.destination-input::placeholder {
-  color: #64748b;
-}
-
-/* Section Headers */
-.section-header {
-  font-size: 12px;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin: 40px 0 20px 0;
-  font-weight: 600;
-}
-
-/* Settings Card */
-.settings-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 20px;
-  transition: all 0.3s;
-}
-
-.settings-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.card-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(125, 211, 252, 0.2);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-/* Toggle Switch */
-.toggle-switch {
-  position: relative;
-  width: 50px;
-  height: 28px;
-  background: rgba(100, 116, 139, 0.5);
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.toggle-switch.active {
-  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
-}
-
-.toggle-slider {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 22px;
-  height: 22px;
-  background: white;
-  border-radius: 50%;
-  transition: all 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-switch.active .toggle-slider {
-  left: 25px;
-}
-
-/* Button Group */
-.button-group {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.option-btn {
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: #94a3b8;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-align: center;
-}
-
-.option-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.option-btn.selected {
-  background: rgba(125, 211, 252, 0.2);
-  border-color: #7dd3fc;
-  color: #7dd3fc;
-}
-
-/* Slider */
-.slider-container {
-  margin-top: 20px;
-}
-
-.slider-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.slider-label {
-  font-size: 14px;
-  color: #94a3b8;
-}
-
-.slider-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: #7dd3fc;
-  text-transform: uppercase;
-}
-
-.slider {
-  width: 100%;
-  height: 6px;
-  background: rgba(100, 116, 139, 0.3);
-  border-radius: 3px;
-  outline: none;
-  -webkit-appearance: none;
-  position: relative;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(125, 211, 252, 0.5);
-}
-
-.slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 8px rgba(125, 211, 252, 0.5);
-}
-
-.slider-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 11px;
-  color: #64748b;
-  text-transform: uppercase;
-}
-
-/* Start Button */
-.start-drive-btn {
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(135deg, #7dd3fc, #a5b4fc);
-  border: none;
-  border-radius: 16px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  cursor: pointer;
-  margin-top: 40px;
-  transition: all 0.3s;
-  box-shadow: 0 8px 24px rgba(125, 211, 252, 0.4);
-}
-
-.start-drive-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(125, 211, 252, 0.5);
-}
-
-.start-drive-btn:active {
-  transform: translateY(0);
-}
-</style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <div class="logo-container">
-        <div class="logo">🚗</div>
-        <span class="app-name">Calm Drive</span>
-      </div>
-      <h1>Prepare Your Drive</h1>
-      <p class="subtitle">Set your focus and choose your peace.</p>
-    </header>
-
-    <div class="destination-section">
-      <div class="input-wrapper">
-        <span class="search-icon">🔍</span>
-        <input 
-          type="text" 
-          class="destination-input" 
-          placeholder="Where are we heading?"
-          id="destination"
-        >
-      </div>
-    </div>
-
-    <div class="section-header">Calming Preferences</div>
-
-    <!-- Breathing Exercises -->
-    <div class="settings-card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-icon">🫁</div>
-          <span>Breathing Exercises</span>
-        </div>
-        <div class="toggle-switch active" id="breathingToggle" onclick="toggleBreathing()">
-          <div class="toggle-slider"></div>
-        </div>
-      </div>
-      <div id="breathingOptions">
-        <div class="button-group">
-          <button class="option-btn selected" onclick="selectBreathingInterval(4)">4s Interval</button>
-          <button class="option-btn" onclick="selectBreathingInterval(6)">6s Interval</button>
-          <button class="option-btn" onclick="selectBreathingInterval(8)">8s Interval</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Calming Audio -->
-    <div class="settings-card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-icon">🎵</div>
-          <span>Calming Audio</span>
-        </div>
-      </div>
-      <div class="button-group">
-        <button class="option-btn selected" onclick="selectAudio('ambient')">Ambient</button>
-        <button class="option-btn" onclick="selectAudio('meditation')">Meditation</button>
-        <button class="option-btn" onclick="selectAudio('music')">Music</button>
-      </div>
-    </div>
-
-    <!-- Alert Sensitivity -->
-    <div class="settings-card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-icon">🔔</div>
-          <span>Alert Sensitivity</span>
-        </div>
-      </div>
-      <div class="slider-container">
-        <div class="slider-header">
-          <span class="slider-label">Reminder Frequency</span>
-          <span class="slider-value" id="sensitivityValue">HIGH</span>
-        </div>
-        <input 
-          type="range" 
-          min="0" 
-          max="2" 
-          value="2" 
-          class="slider" 
-          id="sensitivitySlider"
-          oninput="updateSensitivity(this.value)"
-        >
-        <div class="slider-labels">
-          <span>Minimal</span>
-          <span>Balanced</span>
-          <span>Vigilant</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Voice Guidance -->
-    <div class="settings-card">
-      <div class="card-header">
-        <div class="card-title">
-          <div class="card-icon">👤</div>
-          <span>Voice Guidance</span>
-        </div>
-        <div class="toggle-switch" id="voiceToggle" onclick="toggleVoice()">
-          <div class="toggle-slider"></div>
-        </div>
-      </div>
-    </div>
-
-    <button class="start-drive-btn" onclick="startDrive()">Start Drive</button>
-  </div>
-
-  <script>
-    // Settings state
-    let settings = {
-      destination: '',
-      breathingEnabled: true,
-      breathingInterval: 4,
-      audioType: 'ambient',
-      sensitivity: 2,
-      voiceEnabled: false
-    };
-
-    // Load saved settings
-    window.addEventListener('load', () => {
-      const saved = localStorage.getItem('calmDrivePlusSettings');
-      if (saved) {
-        settings = JSON.parse(saved);
-        applySettings();
+        --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+        --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+        --tracking-wide: calc(var(--tracking-normal) + 0.025em);
+        --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+        --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+        --tracking-normal: var(--tracking-normal);
       }
-    });
 
-    function applySettings() {
-      document.getElementById('destination').value = settings.destination || '';
-      document.getElementById('breathingToggle').classList.toggle('active', settings.breathingEnabled);
-      document.getElementById('voiceToggle').classList.toggle('active', settings.voiceEnabled);
-      document.getElementById('sensitivitySlider').value = settings.sensitivity;
-      updateSensitivity(settings.sensitivity);
-    }
+      :root {
+          --background: #0f172a;
+        --foreground: #f1f5f9;
+        --primary: #7dd3fc;
+        --primary-foreground: #0f172a;
+        --secondary: #334155;
+        --secondary-foreground: #f1f5f9;
+        --muted: #1e293b;
+        --muted-foreground: #94a3b8;
+        --accent: #334155;
+        --accent-foreground: #f1f5f9;
+        --destructive: #ef4444;
+        --card: #1e293b;
+        --card-foreground: #f1f5f9;
+        --popover: #1e293b;
+        --popover-foreground: #f1f5f9;
+        --border: #334155;
+        --input: #1e293b;
+        --ring: #7dd3fc;
+        --chart-1: #7dd3fc;
+        --chart-2: #5eead4;
+        --chart-3: #a5b4fc;
+        --chart-4: #94a3b8;
+        --chart-5: #cbd5e1;
 
-    function saveSettings() {
-      settings.destination = document.getElementById('destination').value;
-      localStorage.setItem('calmDrivePlusSettings', JSON.stringify(settings));
-    }
+        --font-sans: "Manrope";
+        --font-heading: "Space Grotesk";
+        --font-serif: "Playfair Display";
+        --font-mono: "JetBrains Mono";
 
-    // Toggle breathing
-    function toggleBreathing() {
-      settings.breathingEnabled = !settings.breathingEnabled;
-      document.getElementById('breathingToggle').classList.toggle('active');
-      document.getElementById('breathingOptions').style.opacity = settings.breathingEnabled ? '1' : '0.5';
-      saveSettings();
-    }
-
-    // Select breathing interval
-    function selectBreathingInterval(interval) {
-      settings.breathingInterval = interval;
-      document.querySelectorAll('#breathingOptions .option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-      });
-      event.target.classList.add('selected');
-      saveSettings();
-    }
-
-    // Select audio type
-    function selectAudio(type) {
-      settings.audioType = type;
-      const parent = event.target.parentElement;
-      parent.querySelectorAll('.option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-      });
-      event.target.classList.add('selected');
-      saveSettings();
-    }
-
-    // Update sensitivity
-    function updateSensitivity(value) {
-      settings.sensitivity = parseInt(value);
-      const labels = ['MINIMAL', 'BALANCED', 'HIGH'];
-      document.getElementById('sensitivityValue').textContent = labels[value];
-      saveSettings();
-    }
-
-    // Toggle voice
-    function toggleVoice() {
-      settings.voiceEnabled = !settings.voiceEnabled;
-      document.getElementById('voiceToggle').classList.toggle('active');
-      saveSettings();
-    }
-
-    // Start drive
-    function startDrive() {
-      saveSettings();
-      window.location.href = 'drive-mode.html';
-    }
-
-    // Auto-save destination
-    document.getElementById('destination').addEventListener('input', saveSettings);
-  </script>
-</body>
+        --radius: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden"
+    >
+      <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+        <img src="icon192x192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
+        <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
+      </div>
+      <div
+        class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"
+      ></div>
+      <div
+        class="absolute bottom-1/4 -left-20 w-80 h-80 bg-chart-3/5 rounded-full blur-3xl pointer-events-none"
+      ></div>
+      <header class="pt-14 px-6 pb-8 z-10">
+        <div class="flex flex-col space-y-1">
+          <h1 class="text-3xl font-heading font-bold text-foreground tracking-tight">
+            Prepare Your Drive
+          </h1>
+          <p class="text-lg text-muted-foreground">Set your focus and choose your peace.</p>
+        </div>
+      </header>
+      <main class="flex-1 px-6 space-y-6 overflow-y-auto pb-32 z-10">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <iconify-icon
+              icon="solar:magnifer-linear"
+              class="size-5 text-muted-foreground"
+            ></iconify-icon>
+          </div>
+          <input
+            type="text"
+            placeholder="Where are we heading?"
+            class="w-full bg-input h-14 pl-12 pr-4 rounded-2xl text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 outline-none transition-all shadow-sm"
+          />
+        </div>
+        <div class="flex items-center justify-between pt-2">
+          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest"
+            >Calming Preferences</span
+          >
+        </div>
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-xl bg-primary/10">
+                <iconify-icon icon="solar:wind-bold" class="size-6 text-primary"></iconify-icon>
+              </div>
+              <span class="font-semibold text-lg">Breathing Exercises</span>
+            </div>
+            <div class="w-12 h-6 bg-primary rounded-full relative">
+              <div class="absolute right-1 top-1 size-4 bg-primary-foreground rounded-full"></div>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button
+              class="flex-1 py-2 bg-primary/20 text-primary rounded-lg text-sm font-bold border border-primary/30"
+            >
+              4s Interval</button
+            ><button
+              class="flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30"
+            >
+              6s Interval</button
+            ><button
+              class="flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30"
+            >
+              8s Interval
+            </button>
+          </div>
+        </div>
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-primary/10">
+              <iconify-icon
+                icon="solar:music-library-2-bold"
+                class="size-6 text-primary"
+              ></iconify-icon>
+            </div>
+            <span class="font-semibold text-lg">Calming Audio</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div
+              class="flex flex-col items-center p-3 rounded-xl bg-background/50 border border-primary/40 ring-1 ring-primary/40"
+            >
+              <iconify-icon
+                icon="solar:water-drops-bold"
+                class="size-6 text-primary mb-2"
+              ></iconify-icon
+              ><span class="text-xs font-medium text-foreground">Ambient</span>
+            </div>
+            <div
+              class="flex flex-col items-center p-3 rounded-xl bg-background/50 border border-border/30 opacity-60"
+            >
+              <iconify-icon
+                icon="solar:star-fall-bold"
+                class="size-6 text-muted-foreground mb-2"
+              ></iconify-icon
+              ><span class="text-xs font-medium text-muted-foreground">Meditation</span>
+            </div>
+            <div
+              class="flex flex-col items-center p-3 rounded-xl bg-background/50 border border-border/30 opacity-60"
+            >
+              <iconify-icon
+                icon="solar:soundwave-bold"
+                class="size-6 text-muted-foreground mb-2"
+              ></iconify-icon
+              ><span class="text-xs font-medium text-muted-foreground">Music</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-xl bg-primary/10">
+                <iconify-icon
+                  icon="solar:bell-bing-bold"
+                  class="size-6 text-primary"
+                ></iconify-icon>
+              </div>
+              <span class="font-semibold text-lg">Alert Sensitivity</span>
+            </div>
+            <span class="text-xs font-mono font-bold text-primary uppercase">High</span>
+          </div>
+          <div class="px-1 py-4">
+            <div class="h-1.5 w-full bg-background rounded-full relative">
+              <div class="absolute inset-y-0 left-0 w-3/4 bg-primary rounded-full"></div>
+              <div
+                class="absolute top-1/2 left-3/4 -translate-y-1/2 -translate-x-1/2 size-5 bg-foreground border-4 border-primary rounded-full shadow-lg"
+              ></div>
+            </div>
+            <div class="flex justify-between mt-3">
+              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter"
+                >Minimal</span
+              ><span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter"
+                >Balanced</span
+              ><span class="text-[10px] text-primary uppercase font-bold tracking-tighter"
+                >Vigilant</span
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-primary/10">
+              <iconify-icon
+                icon="solar:user-speak-rounded-bold"
+                class="size-6 text-primary"
+              ></iconify-icon>
+            </div>
+            <span class="font-semibold text-lg">Voice Guidance</span>
+          </div>
+          <div class="w-12 h-6 bg-muted rounded-full relative">
+            <div class="absolute left-1 top-1 size-4 bg-muted-foreground rounded-full"></div>
+          </div>
+        </div>
+      </main>
+      <div
+        class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent pt-10 z-20"
+      >
+        <button
+          onclick="window.location.href='active-drive.html'"
+          class="w-full h-16 bg-primary text-primary-foreground rounded-2xl font-heading font-bold text-xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform"
+        >
+          <iconify-icon icon="solar:steering-wheel-bold" class="size-6"></iconify-icon>Start Drive
+        </button>
+      </div>
+    </div>
+  </body>
 </html>
