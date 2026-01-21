@@ -111,16 +111,25 @@
         class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"
       ></div>
       <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-        <img src="icon192x192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
+        <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
         <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
       </div>
       <header class="pt-12 px-6 flex justify-between items-start z-10">
         <div class="flex flex-col">
           <div class="flex items-baseline gap-3">
-            <h1 class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">
+            <h1 id="speedValue" class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">
               64
             </h1>
-            <span class="text-xl text-muted-foreground font-medium">MPH</span>
+            <div class="flex flex-col gap-1">
+              <button 
+                id="unitToggle" 
+                onclick="toggleUnit()"
+                class="text-xl font-medium transition-colors cursor-pointer hover:text-primary"
+              >
+                <span id="currentUnit" class="text-primary">MPH</span>
+              </button>
+              <span id="altSpeed" class="text-xs text-muted-foreground">103 KPH</span>
+            </div>
           </div>
         </div>
         <div
@@ -132,8 +141,9 @@
           <div
             class="size-10 rounded-full border-2 border-destructive flex items-center justify-center bg-white/5"
           >
-            <span class="text-lg font-bold font-mono">60</span>
+            <span id="speedLimit" class="text-lg font-bold font-mono">60</span>
           </div>
+          <span id="limitUnit" class="text-[10px] text-muted-foreground mt-0.5">MPH</span>
         </div>
       </header>
       <main class="flex-1 flex flex-col items-center justify-center relative z-10 px-6 space-y-10">
@@ -172,9 +182,9 @@
             <iconify-icon
               icon="solar:routing-2-bold"
               class="size-6 text-primary mb-1"
-            ></iconify-icon
-            ><span class="text-xl font-bold font-mono text-foreground">12.4</span
-            ><span class="text-xs text-muted-foreground uppercase tracking-wider">Miles</span>
+            ></iconify-icon>
+            <span id="distance" class="text-xl font-bold font-mono text-foreground">12.4</span>
+            <span id="distanceUnit" class="text-xs text-muted-foreground uppercase tracking-wider">Miles</span>
           </div>
           <div
             class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50"
@@ -240,5 +250,37 @@
         </div>
       </div>
     </div>
+
+    <script>
+      let isMPH = true;
+      const speedMPH = 64;
+      const speedKPH = 103;
+      const limitMPH = 60;
+      const limitKPH = 97;
+      const distanceMiles = 12.4;
+      const distanceKM = 20.0;
+
+      function toggleUnit() {
+        isMPH = !isMPH;
+        
+        if (isMPH) {
+          document.getElementById('speedValue').textContent = speedMPH;
+          document.getElementById('currentUnit').textContent = 'MPH';
+          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
+          document.getElementById('speedLimit').textContent = limitMPH;
+          document.getElementById('limitUnit').textContent = 'MPH';
+          document.getElementById('distance').textContent = distanceMiles;
+          document.getElementById('distanceUnit').textContent = 'Miles';
+        } else {
+          document.getElementById('speedValue').textContent = speedKPH;
+          document.getElementById('currentUnit').textContent = 'KPH';
+          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
+          document.getElementById('speedLimit').textContent = limitKPH;
+          document.getElementById('limitUnit').textContent = 'KPH';
+          document.getElementById('distance').textContent = distanceKM;
+          document.getElementById('distanceUnit').textContent = 'KM';
+        }
+      }
+    </script>
   </body>
 </html>
