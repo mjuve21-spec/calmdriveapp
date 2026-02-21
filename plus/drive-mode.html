@@ -196,7 +196,22 @@ window.onload = () => {
   // GPS speed
   initGPS();
 
-  // Breathing - start immediately
+  // Auto-play start-of-drive audio
+  setTimeout(() => {
+    const v = getVoice();
+    const list = AUDIO.start[v];
+    playAudio(list[0]);
+  }, 2000);
+
+  // Auto mid-drive reminder every 8 minutes
+  setInterval(() => {
+    const v = getVoice();
+    const list = AUDIO.mid[v];
+    playAudio(list[midIndex % list.length]);
+    midIndex++;
+  }, 8 * 60 * 1000);
+
+  // ===== BREATHING - start immediately
   runBreathPhase(breathSec);
 
   // Prompts
@@ -286,15 +301,79 @@ function saveCheckin() {
 }
 
 // ===== AUDIO =====
-function playCalm() {
-  const audio  = sessionStorage.getItem('cd_audio') || 'ambient';
-  const script = AUDIO_SCRIPTS[audio] || AUDIO_SCRIPTS.ambient;
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(script);
-    u.rate = 0.8; u.pitch = 0.9;
-    window.speechSynthesis.speak(u);
+let currentAudio = null;
+let reminderIndex = 0;
+// ===== REAL AUDIO =====
+const AUDIO = {
+  start: {
+    m: [
+      '../audio/start_of_drive_1m.mp3',
+      '../audio/start_of_drive_2m.mp3',
+      '../audio/start_of_drive_3m.mp3',
+      '../audio/start_of_drive4m.mp3',
+    ],
+    w: [
+      '../audio/start_of_drive_1w.mp3',
+      '../audio/start_of_drive_2_w.mp3',
+      '../audio/start_of_drive_3w.mp3',
+      '../audio/start_of_drive_4w.mp3',
+    ],
+  },
+  mid: {
+    m: [
+      '../audio/mid_drive_1m.mp3',
+      '../audio/mid_drive_2m.mp3',
+      '../audio/mid_drive_3m.mp3',
+      '../audio/mid_drive_4m.mp3',
+    ],
+    w: [
+      '../audio/_mid-drive_1w_.mp3',
+      '../audio/mid-drive_2w.mp3',
+      '../audio/_mid-drive_3w.mp3',
+      '../audio/mid-drive_4w.mp3',
+    ],
+  },
+  recenter: {
+    m: [
+      '../audio/re-cent_1m.mp3',
+      '../audio/re-cent_2m.mp3',
+      '../audio/re-cent_3m.mp3',
+      '../audio/re-cent_4m.mp3',
+    ],
+    w: [
+      '../audio/re-cent_1_wmp3.mp3',
+      '../audio/re-cent2w.mp3',
+      '../audio/re-cent3w.mp3',
+      '../audio/re-cent_4w.mp3',
+    ],
   }
+};
+
+let midIndex = 0, recentIndex = 0;
+
+function getVoice() {
+  return sessionStorage.getItem('cd_voice') || 'm';
+}
+
+function playAudio(src) {
+  stopCalm();
+  currentAudio = new Audio(src);
+  currentAudio.volume = 1.0;
+  currentAudio.play().catch(e => console.log('Audio error:', e));
+}
+
+function playCalm() {
+  // Tap = play next re-centering audio
+  const v = getVoice();
+  const list = AUDIO.recenter[v];
+  playAudio(list[recentIndex % list.length]);
+  recentIndex++;
+  const btn = document.querySelector('[onclick="playCalm()"] .text-\[10px\]');
+  if (btn) { btn.textContent = '▶ Playing'; setTimeout(() => { if(btn) btn.textContent = 'Calm Audio'; }, 5000); }
+}
+
+function stopCalm() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
 }
 
 // ===== END =====
@@ -303,7 +382,7 @@ function endDrive() {
   clearInterval(promptInterval);
   clearTimeout(breathTimeout);
   if (gpsWatch !== null) navigator.geolocation.clearWatch(gpsWatch);
-  window.speechSynthesis?.cancel();
+  stopCalm(); window.speechSynthesis?.cancel();
   CD.endDrive();
   window.location.href = 'post-drive-summary.html';
 }
