@@ -1,286 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ActiveDrive</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
-    <style type="text/tailwindcss">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ActiveDrive – CalmDrive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --background:#0f172a; --foreground:#f1f5f9; --primary:#7dd3fc;
+      --primary-foreground:#0f172a; --muted:#1e293b; --muted-foreground:#94a3b8;
+      --card:#1e293b; --border:#334155; --destructive:#ef4444;
+    }
+    @keyframes breathe-expand { 0%{transform:scale(1);box-shadow:0 0 20px -5px rgba(125,211,252,0.2)} 100%{transform:scale(1.25);box-shadow:0 0 70px -5px rgba(125,211,252,0.7)} }
+    @keyframes breathe-shrink { 0%{transform:scale(1.25);box-shadow:0 0 70px -5px rgba(125,211,252,0.6)} 100%{transform:scale(1);box-shadow:0 0 20px -5px rgba(125,211,252,0.2)} }
+    @keyframes breathe-hold-big { 0%,100%{transform:scale(1.25);box-shadow:0 0 65px -5px rgba(125,211,252,0.6)} }
+    @keyframes breathe-hold-sm  { 0%,100%{transform:scale(1);box-shadow:0 0 20px -5px rgba(125,211,252,0.2)} }
+    @keyframes pulse-ring { 0%,100%{opacity:.08} 50%{opacity:.25} }
+    .ring-pulse { animation: pulse-ring 4s ease-in-out infinite; }
+    .phase-inhale { animation: breathe-expand var(--bd,4s) ease-in-out forwards; }
+    .phase-hold1  { animation: breathe-hold-big var(--bd,4s) ease-in-out forwards; }
+    .phase-exhale { animation: breathe-shrink var(--bd,4s) ease-in-out forwards; }
+    .phase-hold2  { animation: breathe-hold-sm var(--bd,4s) ease-in-out forwards; }
+  </style>
+</head>
+<body>
 
-      @theme inline {
-        --color-background: var(--background);
-        --color-foreground: var(--foreground);
-        --color-primary: var(--primary);
-        --color-primary-foreground: var(--primary-foreground);
-        --color-secondary: var(--secondary);
-        --color-secondary-foreground: var(--secondary-foreground);
-        --color-muted: var(--muted);
-        --color-muted-foreground: var(--muted-foreground);
-        --color-accent: var(--accent);
-        --color-accent-foreground: var(--accent-foreground);
-        --color-destructive: var(--destructive);
-        --color-card: var(--card);
-        --color-card-foreground: var(--card-foreground);
-        --color-popover: var(--popover);
-        --color-popover-foreground: var(--popover-foreground);
-        --color-border: var(--border);
-        --color-input: var(--input);
-        --color-ring: var(--ring);
-        --color-chart-1: var(--chart-1);
-        --color-chart-2: var(--chart-2);
-        --color-chart-3: var(--chart-3);
-        --color-chart-4: var(--chart-4);
-        --color-chart-5: var(--chart-5);
+<!-- Check-in modal -->
+<div id="checkin-modal" class="fixed inset-0 bg-[#0f172a]/96 z-50 hidden flex-col items-center justify-center px-8 text-center backdrop-blur-sm">
+  <h2 class="text-2xl font-bold font-['Space_Grotesk'] mb-2">Stress Check-In</h2>
+  <p class="text-[#94a3b8] mb-6">How are you feeling right now?</p>
+  <div class="text-6xl font-bold font-['JetBrains_Mono'] text-[#7dd3fc] mb-2" id="modal-stress-val">5</div>
+  <div class="text-sm text-[#94a3b8] mb-5" id="modal-stress-desc">Moderate</div>
+  <input type="range" min="1" max="10" value="5" id="modal-slider" class="w-full max-w-xs accent-[#7dd3fc] mb-2" oninput="updateModal(this.value)" />
+  <div class="flex justify-between w-full max-w-xs text-xs text-[#94a3b8] mb-8"><span>😌 Calm</span><span>😤 Stressed</span></div>
+  <button onclick="saveCheckin()" class="w-full max-w-xs h-14 rounded-2xl bg-[#7dd3fc] text-[#0f172a] font-bold text-lg active:scale-[.98]">Save & Continue Driving</button>
+</div>
 
-        --font-font-sans: var(--font-sans);
-        --font-font-heading: var(--font-heading);
-        --font-font-serif: var(--font-serif);
-        --font-font-mono: var(--font-mono);
+<div class="flex flex-col min-h-screen bg-[#0f172a] font-['Manrope'] text-[#f1f5f9] relative overflow-hidden">
+  <div class="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#7dd3fc]/4 rounded-full blur-3xl pointer-events-none"></div>
 
-        --radius-sm: calc(var(--radius) - 4px);
-        --radius-md: calc(var(--radius) - 2px);
-        --radius-lg: var(--radius);
-        --radius-xl: calc(var(--radius) + 4px);
+  <!-- Top bar -->
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+    <img src="../_icon192x192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg" onerror="this.style.display='none'" />
+    <span class="text-sm font-['Space_Grotesk'] font-bold tracking-wide">Calm Drive</span>
+  </div>
 
-        --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
-        --tracking-tight: calc(var(--tracking-normal) - 0.025em);
-        --tracking-wide: calc(var(--tracking-normal) + 0.025em);
-        --tracking-wider: calc(var(--tracking-normal) + 0.05em);
-        --tracking-widest: calc(var(--tracking-normal) + 0.1em);
-        --tracking-normal: var(--tracking-normal);
-      }
-
-      :root {
-          --background: #0f172a;
-        --foreground: #f1f5f9;
-        --primary: #7dd3fc;
-        --primary-foreground: #0f172a;
-        --secondary: #334155;
-        --secondary-foreground: #f1f5f9;
-        --muted: #1e293b;
-        --muted-foreground: #94a3b8;
-        --accent: #334155;
-        --accent-foreground: #f1f5f9;
-        --destructive: #ef4444;
-        --card: #1e293b;
-        --card-foreground: #f1f5f9;
-        --popover: #1e293b;
-        --popover-foreground: #f1f5f9;
-        --border: #334155;
-        --input: #1e293b;
-        --ring: #7dd3fc;
-        --chart-1: #7dd3fc;
-        --chart-2: #5eead4;
-        --chart-3: #a5b4fc;
-        --chart-4: #94a3b8;
-        --chart-5: #cbd5e1;
-
-        --font-sans: "Manrope";
-        --font-heading: "Space Grotesk";
-        --font-serif: "Playfair Display";
-        --font-mono: "JetBrains Mono";
-
-        --radius: 0.75rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div
-      class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden"
-    >
-      <div
-        class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"
-      ></div>
-      <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-        <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
-        <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
-      </div>
-      <header class="pt-12 px-6 flex justify-between items-start z-10">
-        <div class="flex flex-col">
-          <div class="flex items-baseline gap-3">
-            <h1 id="speedValue" class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">
-              64
-            </h1>
-            <div class="flex flex-col gap-1">
-              <button 
-                id="unitToggle" 
-                onclick="toggleUnit()"
-                class="text-xl font-medium transition-colors cursor-pointer hover:text-primary"
-              >
-                <span id="currentUnit" class="text-primary">MPH</span>
-              </button>
-              <span id="altSpeed" class="text-xs text-muted-foreground">103 KPH</span>
-            </div>
-          </div>
-        </div>
-        <div
-          class="flex flex-col items-center justify-center p-3 rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm"
-        >
-          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1"
-            >LIMIT</span
-          >
-          <div
-            class="size-10 rounded-full border-2 border-destructive flex items-center justify-center bg-white/5"
-          >
-            <span id="speedLimit" class="text-lg font-bold font-mono">60</span>
-          </div>
-          <span id="limitUnit" class="text-[10px] text-muted-foreground mt-0.5">MPH</span>
-        </div>
-      </header>
-      <main class="flex-1 flex flex-col items-center justify-center relative z-10 px-6 space-y-10">
-        <div class="relative flex items-center justify-center py-8">
-          <div
-            class="absolute size-72 rounded-full border border-primary/20 scale-110 opacity-20"
-          ></div>
-          <div
-            class="absolute size-64 rounded-full border border-primary/30 scale-105 opacity-40"
-          ></div>
-          <div
-            class="size-56 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/40 backdrop-blur-md flex items-center justify-center shadow-[0_0_40px_-10px_rgba(125,211,252,0.3)] animate-pulse"
-          >
-            <div class="text-center space-y-1">
-              <span class="block text-sm font-medium text-primary uppercase tracking-widest"
-                >Inhale</span
-              ><iconify-icon
-                icon="solar:wind-bold"
-                class="size-10 text-primary mx-auto opacity-80"
-              ></iconify-icon>
-            </div>
-          </div>
-        </div>
-        <div class="text-center space-y-2">
-          <h2 class="text-3xl font-heading font-medium text-foreground tracking-tight">
-            You're doing great
-          </h2>
-          <p class="text-lg text-muted-foreground">Traffic is light. Relax your shoulders.</p>
-        </div>
-      </main>
-      <div class="px-6 pb-8 z-10">
-        <div class="grid grid-cols-3 gap-3">
-          <div
-            class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50"
-          >
-            <iconify-icon
-              icon="solar:routing-2-bold"
-              class="size-6 text-primary mb-1"
-            ></iconify-icon>
-            <span id="distance" class="text-xl font-bold font-mono text-foreground">12.4</span>
-            <span id="distanceUnit" class="text-xs text-muted-foreground uppercase tracking-wider">Miles</span>
-          </div>
-          <div
-            class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50"
-          >
-            <iconify-icon
-              icon="solar:clock-circle-bold"
-              class="size-6 text-primary mb-1"
-            ></iconify-icon
-            ><span class="text-xl font-bold font-mono text-foreground">5:42</span
-            ><span class="text-xs text-muted-foreground uppercase tracking-wider">Arrival</span>
-          </div>
-          <div
-            class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50"
-          >
-            <iconify-icon
-              icon="solar:traffic-bold"
-              class="size-6 text-emerald-400 mb-1"
-            ></iconify-icon
-            ><span class="text-xl font-bold text-emerald-400">Clear</span
-            ><span class="text-xs text-muted-foreground uppercase tracking-wider">Traffic</span>
-          </div>
+  <!-- Header: Speed + Timer + Stress -->
+  <header class="pt-14 px-6 flex justify-between items-start z-10 mt-2">
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span id="speed-val" class="text-[80px] font-['JetBrains_Mono'] font-bold tracking-tighter leading-none">—</span>
+        <div class="flex flex-col pb-2">
+          <button onclick="toggleUnit()" class="text-xl font-semibold text-[#7dd3fc] hover:opacity-80 text-left" id="speed-unit">MPH</button>
+          <span id="gps-status" class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Acquiring GPS</span>
         </div>
       </div>
-      <div class="px-6 pb-8 z-10">
-        <div
-          class="h-20 bg-card rounded-3xl flex items-center justify-between px-2 shadow-xl border border-border/50"
-        >
-          <button
-            class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group"
-          >
-            <div
-              class="p-2 rounded-full bg-background/50 group-hover:bg-primary/20 transition-colors"
-            >
-              <iconify-icon
-                icon="solar:music-library-2-bold"
-                class="size-6 text-primary"
-              ></iconify-icon>
-            </div>
-            <span class="text-[10px] font-medium text-muted-foreground">Calm Audio</span>
-          </button>
-          <div class="w-px h-8 bg-border/50"></div>
-          <button
-            class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors"
-          >
-            <div
-              class="size-14 rounded-full bg-destructive flex items-center justify-center shadow-lg shadow-destructive/20 border-4 border-card -mt-8"
-            >
-              <iconify-icon icon="solar:stop-bold" class="size-6 text-white"></iconify-icon>
-            </div>
-            <span class="text-[10px] font-medium text-destructive mt-1">End Drive</span>
-          </button>
-          <div class="w-px h-8 bg-border/50"></div>
-          <button
-            class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group"
-          >
-            <div
-              class="p-2 rounded-full bg-background/50 group-hover:bg-primary/20 transition-colors"
-            >
-              <iconify-icon icon="solar:settings-bold" class="size-6 text-primary"></iconify-icon>
-            </div>
-            <span class="text-[10px] font-medium text-muted-foreground">Settings</span>
-          </button>
+      <div class="text-xs text-[#94a3b8] uppercase tracking-widest mt-1" id="destination-label">Drive in progress</div>
+    </div>
+    <div class="flex flex-col gap-2 items-center">
+      <div class="flex flex-col items-center px-4 py-2 rounded-2xl border border-white/10 bg-[#1e293b]/60">
+        <span class="text-[10px] text-[#94a3b8] uppercase tracking-widest">Time</span>
+        <span id="timer-display" class="text-lg font-['JetBrains_Mono'] font-bold">00:00</span>
+      </div>
+      <div class="flex flex-col items-center px-4 py-2 rounded-2xl border border-white/10 bg-[#1e293b]/60">
+        <span class="text-[10px] text-[#94a3b8] uppercase tracking-widest">Stress</span>
+        <span id="pre-stress-badge" class="text-lg font-['JetBrains_Mono'] font-bold text-[#7dd3fc]">5</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breathing ring + prompt -->
+  <main class="flex-1 flex flex-col items-center justify-center relative z-10 px-6 gap-6">
+    <div class="relative flex items-center justify-center">
+      <!-- Outer rings -->
+      <div class="absolute size-80 rounded-full border border-[#7dd3fc]/10 ring-pulse"></div>
+      <div class="absolute size-72 rounded-full border border-[#7dd3fc]/15 ring-pulse" style="animation-delay:.6s"></div>
+      <div class="absolute size-64 rounded-full border border-[#7dd3fc]/20 ring-pulse" style="animation-delay:1.2s"></div>
+      <!-- Main breathing orb -->
+      <div id="breathe-ring"
+        class="size-52 rounded-full bg-gradient-to-br from-[#7dd3fc]/20 to-[#7dd3fc]/5 border-2 border-[#7dd3fc]/50 flex items-center justify-center cursor-pointer select-none"
+        onclick="manualBreathe()"
+        style="box-shadow:0 0 20px -5px rgba(125,211,252,0.2)">
+        <div class="text-center pointer-events-none">
+          <iconify-icon icon="solar:wind-bold" class="size-12 text-[#7dd3fc] mx-auto block mb-2 opacity-90"></iconify-icon>
+          <span id="breathe-phase" class="block text-sm font-bold text-[#7dd3fc] uppercase tracking-[3px]">Inhale</span>
+          <span id="breath-inner-count" class="block text-xs text-[#7dd3fc]/50 mt-1"></span>
         </div>
       </div>
     </div>
 
-    <script>
-      let isMPH = true;
-      const speedMPH = 64;
-      const speedKPH = 103;
-      const limitMPH = 60;
-      const limitKPH = 97;
-      const distanceMiles = 12.4;
-      const distanceKM = 20.0;
+    <div class="text-center max-w-xs">
+      <h2 id="calm-prompt" class="text-2xl font-['Space_Grotesk'] font-medium">You're doing great</h2>
+      <p id="calm-sub" class="text-base text-[#94a3b8] mt-1">Stay smooth. Stay calm.</p>
+    </div>
+  </main>
 
-      function toggleUnit() {
-        isMPH = !isMPH;
-        
-        if (isMPH) {
-          document.getElementById('speedValue').textContent = speedMPH;
-          document.getElementById('currentUnit').textContent = 'MPH';
-          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
-          document.getElementById('speedLimit').textContent = limitMPH;
-          document.getElementById('limitUnit').textContent = 'MPH';
-          document.getElementById('distance').textContent = distanceMiles;
-          document.getElementById('distanceUnit').textContent = 'Miles';
-        } else {
-          document.getElementById('speedValue').textContent = speedKPH;
-          document.getElementById('currentUnit').textContent = 'KPH';
-          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
-          document.getElementById('speedLimit').textContent = limitKPH;
-          document.getElementById('limitUnit').textContent = 'KPH';
-          document.getElementById('distance').textContent = distanceKM;
-          document.getElementById('distanceUnit').textContent = 'KM';
-        }
-      }
-    </script>
-  </body>
+  <!-- Stats strip -->
+  <div class="px-6 pb-4 z-10">
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-[#1e293b] p-3 rounded-2xl flex flex-col items-center text-center border border-[#334155]/50">
+        <iconify-icon icon="solar:clock-circle-bold" class="size-5 text-[#7dd3fc] mb-1"></iconify-icon>
+        <span id="elapsed-mins" class="text-lg font-bold font-['JetBrains_Mono']">0</span>
+        <span class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Mins</span>
+      </div>
+      <div class="bg-[#1e293b] p-3 rounded-2xl flex flex-col items-center text-center border border-[#334155]/50">
+        <iconify-icon icon="solar:wind-bold" class="size-5 text-[#7dd3fc] mb-1"></iconify-icon>
+        <span id="breath-count" class="text-lg font-bold font-['JetBrains_Mono']">0</span>
+        <span class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Breaths</span>
+      </div>
+      <div class="bg-[#1e293b] p-3 rounded-2xl flex flex-col items-center text-center border border-[#334155]/50">
+        <iconify-icon icon="solar:heart-pulse-bold" class="size-5 text-[#7dd3fc] mb-1"></iconify-icon>
+        <span id="checkin-count" class="text-lg font-bold font-['JetBrains_Mono']">0</span>
+        <span class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Check-ins</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action bar -->
+  <div class="px-6 pb-8 z-10">
+    <div class="h-20 bg-[#1e293b] rounded-3xl flex items-center justify-between px-2 shadow-xl border border-[#334155]/50">
+      <button onclick="openCheckin()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group">
+        <div class="p-2 rounded-full bg-[#0f172a]/50 group-hover:bg-[#7dd3fc]/20 transition-colors">
+          <iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-[#7dd3fc]"></iconify-icon>
+        </div>
+        <span class="text-[10px] font-medium text-[#94a3b8]">Check In</span>
+      </button>
+      <div class="w-px h-8 bg-[#334155]/50"></div>
+      <button onclick="endDrive()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors">
+        <div class="size-14 rounded-full bg-[#ef4444] flex items-center justify-center shadow-lg border-4 border-[#1e293b] -mt-8">
+          <iconify-icon icon="solar:stop-bold" class="size-6 text-white"></iconify-icon>
+        </div>
+        <span class="text-[10px] font-medium text-[#ef4444] mt-1">End Drive</span>
+      </button>
+      <div class="w-px h-8 bg-[#334155]/50"></div>
+      <button onclick="playCalm()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group">
+        <div class="p-2 rounded-full bg-[#0f172a]/50 group-hover:bg-[#7dd3fc]/20 transition-colors">
+          <iconify-icon icon="solar:music-library-2-bold" class="size-6 text-[#7dd3fc]"></iconify-icon>
+        </div>
+        <span class="text-[10px] font-medium text-[#94a3b8]">Calm Audio</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../cd-data.js"></script>
+<script>
+const STRESS_DESCS = {1:'Very calm',2:'Relaxed',3:'Fairly calm',4:'Slightly tense',5:'Moderate',6:'Noticeably tense',7:'Quite stressed',8:'Very stressed',9:'Highly stressed',10:'Peak stress'};
+const PROMPTS = [
+  ['You\'re doing great','Stay smooth. Stay calm.'],
+  ['Relax your grip','You don\'t need to hold the wheel tightly.'],
+  ['Deep breath','Let your shoulders drop.'],
+  ['Other drivers','Not your problem. Not your pace.'],
+  ['Arrive safe','That\'s all that matters right now.'],
+  ['You\'re in control','Calm is a choice you\'re making.'],
+  ['Almost there','Every calm mile counts.'],
+];
+const AUDIO_SCRIPTS = {
+  ambient:    "Breathe in slowly... hold... and breathe out gently. You're doing well.",
+  meditation: "Close off the outside world. Just you, the road, and your breath. In... and out.",
+  music:      "Let the calm wash over you. You're safe. You're steady. You've got this."
+};
+const PHASES     = ['Inhale','Hold','Exhale','Hold'];
+const PHASE_CLS  = ['phase-inhale','phase-hold1','phase-exhale','phase-hold2'];
+
+let timerInterval, promptInterval, breathTimeout;
+let breathCount = 0, checkinCount = 0;
+let breathPhaseIdx = 0;
+let isMPH = true, currentSpeedMs = 0;
+let gpsWatch = null;
+
+window.onload = () => {
+  const dest      = sessionStorage.getItem('cd_destination');
+  const pre       = sessionStorage.getItem('cd_preStress') || '5';
+  const breathSec = parseInt(sessionStorage.getItem('cd_breathInterval') || '4');
+
+  document.getElementById('pre-stress-badge').textContent = pre;
+  if (dest) document.getElementById('destination-label').textContent = '→ ' + dest;
+  document.documentElement.style.setProperty('--bd', breathSec + 's');
+
+  // Live timer
+  const driveStart = CD.getActiveDrive()?.startTime || Date.now();
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - driveStart) / 1000);
+    document.getElementById('timer-display').textContent =
+      String(Math.floor(elapsed/60)).padStart(2,'0') + ':' + String(elapsed%60).padStart(2,'0');
+    document.getElementById('elapsed-mins').textContent = Math.floor(elapsed/60);
+  }, 1000);
+
+  // GPS speed
+  initGPS();
+
+  // Breathing - start immediately
+  runBreathPhase(breathSec);
+
+  // Prompts
+  promptInterval = setInterval(() => {
+    const p = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
+    document.getElementById('calm-prompt').textContent = p[0];
+    document.getElementById('calm-sub').textContent    = p[1];
+  }, 50000);
+};
+
+// ===== GPS =====
+function initGPS() {
+  if (!('geolocation' in navigator)) {
+    document.getElementById('speed-val').textContent    = '—';
+    document.getElementById('gps-status').textContent   = 'GPS unavailable';
+    return;
+  }
+  gpsWatch = navigator.geolocation.watchPosition(pos => {
+    const spd = pos.coords.speed;
+    currentSpeedMs = (spd !== null && spd >= 0) ? spd : 0;
+    updateSpeed();
+    document.getElementById('gps-status').textContent = 'GPS ●';
+  }, err => {
+    document.getElementById('speed-val').textContent  = '—';
+    document.getElementById('gps-status').textContent = err.code === 1 ? 'GPS denied' : 'GPS error';
+  }, { enableHighAccuracy:true, maximumAge:1000, timeout:15000 });
+}
+
+function updateSpeed() {
+  const spd = isMPH ? Math.round(currentSpeedMs * 2.23694) : Math.round(currentSpeedMs * 3.6);
+  document.getElementById('speed-val').textContent = spd;
+}
+
+function toggleUnit() {
+  isMPH = !isMPH;
+  document.getElementById('speed-unit').textContent = isMPH ? 'MPH' : 'KPH';
+  updateSpeed();
+}
+
+// ===== BREATHING =====
+function runBreathPhase(intervalSec) {
+  const ring = document.getElementById('breathe-ring');
+  const phaseEl = document.getElementById('breathe-phase');
+
+  // Remove all phase classes, force reflow
+  PHASE_CLS.forEach(c => ring.classList.remove(c));
+  void ring.offsetWidth;
+  ring.classList.add(PHASE_CLS[breathPhaseIdx]);
+  phaseEl.textContent = PHASES[breathPhaseIdx];
+
+  if (breathPhaseIdx === 0) {
+    breathCount++;
+    CD.incrementBreath();
+    document.getElementById('breath-count').textContent = breathCount;
+    document.getElementById('breath-inner-count').textContent = breathCount + (breathCount === 1 ? ' breath' : ' breaths');
+  }
+
+  breathPhaseIdx = (breathPhaseIdx + 1) % 4;
+  breathTimeout = setTimeout(() => runBreathPhase(intervalSec), intervalSec * 1000);
+}
+
+function manualBreathe() {
+  clearTimeout(breathTimeout);
+  breathPhaseIdx = 0;
+  const breathSec = parseInt(sessionStorage.getItem('cd_breathInterval') || '4');
+  runBreathPhase(breathSec);
+}
+
+// ===== CHECK-IN =====
+function openCheckin() {
+  document.getElementById('modal-slider').value = 5;
+  updateModal(5);
+  const m = document.getElementById('checkin-modal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function updateModal(val) {
+  document.getElementById('modal-stress-val').textContent  = val;
+  document.getElementById('modal-stress-desc').textContent = STRESS_DESCS[val];
+}
+function saveCheckin() {
+  const val = parseInt(document.getElementById('modal-slider').value);
+  CD.addCheckin(val);
+  checkinCount++;
+  document.getElementById('checkin-count').textContent = checkinCount;
+  const m = document.getElementById('checkin-modal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+// ===== AUDIO =====
+function playCalm() {
+  const audio  = sessionStorage.getItem('cd_audio') || 'ambient';
+  const script = AUDIO_SCRIPTS[audio] || AUDIO_SCRIPTS.ambient;
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(script);
+    u.rate = 0.8; u.pitch = 0.9;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+// ===== END =====
+function endDrive() {
+  clearInterval(timerInterval);
+  clearInterval(promptInterval);
+  clearTimeout(breathTimeout);
+  if (gpsWatch !== null) navigator.geolocation.clearWatch(gpsWatch);
+  window.speechSynthesis?.cancel();
+  CD.endDrive();
+  window.location.href = 'post-drive-summary.html';
+}
+</script>
+</body>
 </html>
