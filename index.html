@@ -1,664 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CalmDrive</title>
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" sizes="32x32" href="./icon192x192.png">
-<link rel="icon" sizes="192x192" href="./icon192x192.png">
-<link rel="apple-touch-icon" href="./icon192x192.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CalmDrive">
-<meta name="theme-color" content="#1E3A8A">
-
-<!-- For Android -->
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="CalmDrive">
-
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a1628, #1a2847, #2a3f6f, #3b4f8a, #1e3a8a);
-  background-size: 300% 300%;
-  animation: gradientShift 12s ease infinite;
-  color: white;
-  overflow-x: hidden;
-  position: relative;
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.ambient-bg {
-  position: fixed;
-  inset: -60%;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(139,92,246,.7), transparent 30%),
-    radial-gradient(circle at 80% 30%, rgba(236,72,153,.6), transparent 35%),
-    radial-gradient(circle at 40% 70%, rgba(59,130,246,.65), transparent 32%),
-    radial-gradient(circle at 75% 75%, rgba(167,139,250,.55), transparent 38%);
-  filter: blur(80px);
-  animation: ambientFloat 18s ease-in-out infinite;
-  z-index: -1;
-  will-change: transform;
-}
-
-@keyframes ambientFloat {
-  0% { transform: translate(0%, 0%) scale(1); }
-  25% { transform: translate(15%, -10%) scale(1.2); }
-  50% { transform: translate(-10%, 15%) scale(1.1); }
-  75% { transform: translate(12%, 8%) scale(1.25); }
-  100% { transform: translate(0%, 0%) scale(1); }
-}
-
-header {
-  text-align: center;
-  padding: 48px 20px 24px;
-}
-
-.logo {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 14px;
-  display: block;
-  border-radius: 24px;
-  box-shadow: 0 25px 60px rgba(59,130,246,.6), 0 0 0 6px rgba(255,255,255,.08);
-}
-
-.greeting {
-  font-size: 18px;
-  font-weight: 600;
-  opacity: .85;
-  margin-bottom: 8px;
-}
-
-.greeting-edit {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 4px 10px;
-  background: rgba(255,255,255,.1);
-  border-radius: 12px;
-  font-size: 12px;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,.2);
-  transition: all .3s ease;
-}
-
-.greeting-edit:hover {
-  background: rgba(255,255,255,.2);
-}
-
-h1 {
-  font-size: 42px;
-  font-weight: 900;
-  margin-bottom: 6px;
-}
-
-.tagline {
-  font-size: 14px;
-  font-weight: 600;
-  opacity: .9;
-}
-
-nav {
-  display: flex;
-  gap: 10px;
-  padding: 14px;
-  position: sticky;
-  top: 0;
-  background: rgba(15,37,87,.85);
-  backdrop-filter: blur(20px);
-  z-index: 100;
-}
-
-nav button {
-  flex: 1;
-  padding: 14px;
-  border-radius: 14px;
-  border: 2px solid rgba(255,255,255,.3);
-  background: rgba(255,255,255,.15);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all .3s ease;
-  box-shadow: 
-    0 4px 12px rgba(0,0,0,.25),
-    inset 0 1px 0 rgba(255,255,255,.3);
-}
-
-nav button:hover {
-  background: rgba(255,255,255,.22);
-  transform: translateY(-2px);
-  box-shadow: 
-    0 6px 18px rgba(0,0,0,.3),
-    inset 0 1px 0 rgba(255,255,255,.4);
-}
-
-nav button.active {
-  background: rgba(255,255,255,.25);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 2px solid rgba(255,255,255,.5);
-  box-shadow: 
-    0 8px 28px rgba(139,92,246,.5),
-    0 4px 12px rgba(236,72,153,.3),
-    inset 0 2px 0 rgba(255,255,255,.5);
-}
-
-section {
-  display: none;
-  padding: 24px 16px 90px;
-  max-width: 680px;
-  margin: auto;
-}
-
-section.active { display: block; }
-
-.card {
-  background: linear-gradient(145deg, rgba(30,58,138,.85), rgba(15,37,87,.9));
-  border-radius: 28px;
-  padding: 28px;
-  margin-bottom: 22px;
-  border: 1.5px solid rgba(255,255,255,.25);
-  box-shadow: 0 22px 55px rgba(0,0,0,.45);
-  position: relative;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(236,72,153,.25), rgba(249,115,22,.2));
-  border-radius: 0 0 28px 28px;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.card > * {
-  position: relative;
-  z-index: 1;
-}
-
-.card h2 {
-  font-size: 26px;
-  margin-bottom: 14px;
-}
-
-.card p {
-  line-height: 1.6;
-  opacity: .95;
-}
-
-.card ul {
-  list-style: none;
-}
-
-.card ul li {
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(255,255,255,.15);
-}
-
-.card ul li:last-child {
-  border-bottom: none;
-}
-
-.reminder-card {
-  background: 
-    linear-gradient(145deg, rgba(139,92,246,.4), rgba(236,72,153,.35)),
-    linear-gradient(to bottom right, #8B5CF6, #EC4899, #F97316);
-  position: relative;
-}
-
-.reminder-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(145deg, rgba(30,58,138,.7), rgba(15,37,87,.8));
-  border-radius: 28px;
-  z-index: 0;
-}
-
-.reminder-card > * {
-  position: relative;
-  z-index: 1;
-}
-
-select {
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  background: rgba(15,37,87,.9);
-  border: 1.5px solid rgba(255,255,255,.3);
-  color: white;
-  font-weight: 600;
-  margin-bottom: 14px;
-  cursor: pointer;
-}
-
-select option {
-  background: #0F2557;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  background: rgba(15,37,87,.9);
-  border: 1.5px solid rgba(255,255,255,.3);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-input[type="text"]::placeholder {
-  color: rgba(255,255,255,.5);
-}
-
-button.primary {
-  width: 100%;
-  padding: 18px;
-  border-radius: 16px;
-  border: 2px solid rgba(255,255,255,.4);
-  font-weight: 800;
-  margin-top: 10px;
-  background: rgba(255,255,255,.18);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  color: white;
-  cursor: pointer;
-  transition: all .3s ease;
-  box-shadow: 
-    0 12px 32px rgba(0,0,0,.3),
-    0 4px 12px rgba(139,92,246,.3),
-    inset 0 2px 0 rgba(255,255,255,.5),
-    inset 0 -2px 0 rgba(0,0,0,.2);
-  text-shadow: 0 1px 2px rgba(0,0,0,.3);
-}
-
-button.primary:hover {
-  transform: translateY(-4px);
-  background: rgba(255,255,255,.25);
-  border-color: rgba(255,255,255,.5);
-  box-shadow: 
-    0 16px 40px rgba(0,0,0,.4),
-    0 6px 16px rgba(139,92,246,.4),
-    inset 0 2px 0 rgba(255,255,255,.6),
-    inset 0 -2px 0 rgba(0,0,0,.2);
-}
-
-button.secondary {
-  background: rgba(255,255,255,.12);
-  backdrop-filter: blur(25px) saturate(150%);
-  -webkit-backdrop-filter: blur(25px) saturate(150%);
-  border: 2px solid rgba(255,255,255,.3);
-  box-shadow: 
-    0 8px 24px rgba(0,0,0,.25),
-    inset 0 2px 0 rgba(255,255,255,.4),
-    inset 0 -2px 0 rgba(0,0,0,.15);
-}
-
-.small {
-  margin-top: 14px;
-  font-weight: 600;
-  opacity: .9;
-  text-align: center;
-  font-size: 15px;
-}
-
-.personal-message {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 18px;
-  color: rgba(255,255,255,.95);
-}
-
-footer {
-  text-align: center;
-  padding: 40px 20px;
-  font-weight: 700;
-  opacity: .8;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.7);
-  backdrop-filter: blur(10px);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal.active {
-  display: flex;
-}
-
-.modal-content {
-  background: linear-gradient(145deg, rgba(30,58,138,.95), rgba(15,37,87,1));
-  border-radius: 24px;
-  padding: 32px;
-  max-width: 400px;
-  width: 100%;
-  border: 2px solid rgba(255,255,255,.2);
-  box-shadow: 0 30px 80px rgba(0,0,0,.6);
-}
-
-.modal-content h3 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-/* Install prompt */
-.install-prompt {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background: linear-gradient(145deg, rgba(30,58,138,.95), rgba(15,37,87,1));
-  border-radius: 20px;
-  padding: 20px;
-  border: 2px solid rgba(255,255,255,.2);
-  box-shadow: 0 20px 60px rgba(0,0,0,.6);
-  z-index: 999;
-  display: none;
-}
-
-.install-prompt.show {
-  display: block;
-  animation: slideUp 0.4s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(100px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.install-prompt h4 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.install-prompt p {
-  font-size: 14px;
-  opacity: .9;
-  margin-bottom: 12px;
-  line-height: 1.5;
-}
-
-.install-prompt button {
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, rgba(139,92,246,.6), rgba(236,72,153,.5));
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.install-prompt .close-btn {
-  background: rgba(255,255,255,.15);
-  padding: 8px 16px;
-  font-size: 13px;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalmDrive Plus</title>
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon192x192.png">
+  <link rel="apple-touch-icon" href="./icon192x192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+  <style type="text/tailwindcss">
+    :root { --bg:#0f172a; --card:#1e293b; --text:#f1f5f9; --muted:#94a3b8; --primary:#7dd3fc; --border:#334155; }
+  </style>
 </head>
+<body class="bg-[#0f172a] text-[#f1f5f9] font-['Manrope']">
 
-<body>
-
-<div class="ambient-bg"></div>
-
-<div class="modal" id="nameModal">
-  <div class="modal-content">
-    <h3>Welcome to CalmDrive</h3>
-    <label for="nameInput" style="display: block; margin-bottom: 12px; font-size: 16px; opacity: .9;">What's your name?</label>
-    <input type="text" id="nameInput" name="userName" placeholder="Your name" aria-required="false">
-    <button class="primary" onclick="saveName()">Let's Go</button>
-  </div>
+<!-- WELCOME OVERLAY -->
+<div id="welcome-overlay" class="fixed inset-0 bg-[#0f172a] z-50 flex-col items-center justify-center px-8 text-center hidden">
+  <img src="./icon192x192.png" class="w-20 h-20 rounded-2xl mb-6 shadow-xl mx-auto" />
+  <h1 class="text-3xl font-bold font-['Space_Grotesk'] mb-3">Welcome to CalmDrive</h1>
+  <p class="text-[#94a3b8] mb-8 text-base leading-relaxed">Your calm driving companion.<br>What should we call you?</p>
+  <input id="name-input" type="text" placeholder="Your name" maxlength="30"
+    class="w-full max-w-xs h-14 px-5 rounded-2xl bg-[#1e293b] border border-[#334155] text-[#f1f5f9] text-center text-lg outline-none focus:border-[#7dd3fc] mb-4 transition-colors block mx-auto" />
+  <button onclick="saveName()" class="w-full max-w-xs h-14 rounded-2xl bg-[#7dd3fc] text-[#0f172a] font-bold text-lg shadow-xl block mx-auto">Let's Drive →</button>
 </div>
 
-<header>
-  <img src="./icon192x192.png" alt="CalmDrive Logo" class="logo">
-  
-  <p class="greeting">
-    <span id="greetingText">Hey there</span>
-    <span class="greeting-edit" onclick="editName()">change name</span>
-  </p>
-  
-  <h1>CalmDrive</h1>
-  <p class="tagline">Arrive Calm • Arrive Safe</p>
-</header>
+<div class="min-h-screen flex flex-col relative">
+  <header class="pt-10 px-6 text-center">
+    <div class="flex justify-center items-center gap-2 mb-2">
+      <span class="text-lg font-bold font-['Space_Grotesk']">CalmDrive</span>
+      <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-[#7dd3fc]/20 text-[#7dd3fc]">PLUS</span>
+    </div>
+    <h1 class="text-3xl font-bold font-['Space_Grotesk']" id="greeting">Prepare Your Drive</h1>
+    <p class="mt-2 text-sm text-[#94a3b8]" id="greeting-sub">Set your intention before you start.</p>
+  </header>
 
-<nav>
-  <button class="active" onclick="showTab('before')">Before</button>
-  <button onclick="showTab('during')">During</button>
-  <button onclick="showTab('log')">Log</button>
-</nav>
+  <!-- Stats strip -->
+  <div id="stats-strip" class="mx-6 mt-5 p-4 rounded-2xl bg-[#1e293b] border border-[#334155] hidden">
+    <div class="grid grid-cols-3 gap-3 text-center">
+      <div><div class="text-xl font-bold font-['Space_Grotesk'] text-[#7dd3fc]" id="stat-drives">0</div><div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Drives</div></div>
+      <div><div class="text-xl font-bold font-['Space_Grotesk'] text-[#7dd3fc]" id="stat-calm">—</div><div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Avg Calm</div></div>
+      <div><div class="text-xl font-bold font-['Space_Grotesk'] text-[#7dd3fc]" id="stat-streak">0</div><div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Day Streak</div></div>
+    </div>
+  </div>
 
-<section id="before" class="active">
-  <div class="card">
-    <p class="personal-message" id="beforeMessage">Ready for a calm drive?</p>
-    <h2>Pre-Drive Mindset</h2>
-    <ul>
-      <li>Leave early — no rush</li>
-      <li>Three slow breaths</li>
-      <li>Safety over speed</li>
-      <li>You're allowed to be calm</li>
-    </ul>
-        <a href="plus/drive-mode.html"
-       style="
-         display:block;
-         margin-top:20px;
-         text-align:center;
-         background:#7dd3fc;
-         color:#0f172a;
-         padding:16px;
-         border-radius:16px;
-         font-weight:800;
-         text-decoration:none;
-       ">
-      🚗 Start Drive Mode
+  <main class="flex-1 px-6 mt-6 space-y-5 pb-36">
+
+    <!-- Stress rating -->
+    <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-5 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 rounded-xl bg-[#7dd3fc]/10"><iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-[#7dd3fc]"></iconify-icon></div>
+        <span class="font-semibold text-lg">How stressed are you right now?</span>
+      </div>
+      <div class="text-center">
+        <div class="text-5xl font-bold font-['Space_Grotesk'] text-[#7dd3fc] mb-1" id="stress-display">5</div>
+        <div class="text-sm text-[#94a3b8]" id="stress-desc">Moderate — you'll be fine</div>
+      </div>
+      <input type="range" min="1" max="10" value="5" id="stress-slider" class="w-full accent-[#7dd3fc] cursor-pointer" oninput="updateStress(this.value)" />
+      <div class="flex justify-between text-xs text-[#94a3b8]"><span>😌 Calm</span><span>😤 Stressed</span></div>
+    </div>
+
+    <!-- Destination -->
+    <div>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none"><iconify-icon icon="solar:magnifer-linear" class="size-5 text-[#94a3b8]"></iconify-icon></div>
+        <input type="text" id="destination-input" placeholder="Where are we heading? (optional)"
+          class="w-full h-14 pl-12 pr-4 rounded-2xl bg-[#1e293b] border border-[#334155] text-[#f1f5f9] placeholder:text-[#94a3b8] focus:border-[#7dd3fc] outline-none transition-all" />
+      </div>
+      <p class="mt-2 text-xs text-[#94a3b8]">Helps set your intention, not navigation.</p>
+    </div>
+
+    <!-- Breathing -->
+    <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-5 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-[#7dd3fc]/10"><iconify-icon icon="solar:wind-bold" class="size-6 text-[#7dd3fc]"></iconify-icon></div>
+          <span class="font-semibold text-lg">Breathing Interval</span>
+        </div>
+        <span class="text-sm text-[#7dd3fc] font-bold">ON</span>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="selectBreath(this,'4')" class="breath-btn flex-1 py-2 rounded-lg bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30">4s</button>
+        <button onclick="selectBreath(this,'6')" class="breath-btn flex-1 py-2 rounded-lg bg-[#0f172a] text-[#94a3b8]">6s</button>
+        <button onclick="selectBreath(this,'8')" class="breath-btn flex-1 py-2 rounded-lg bg-[#0f172a] text-[#94a3b8]">8s</button>
+      </div>
+    </div>
+
+    <!-- Audio -->
+    <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-5 space-y-3">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 rounded-xl bg-[#7dd3fc]/10"><iconify-icon icon="solar:music-library-2-bold" class="size-6 text-[#7dd3fc]"></iconify-icon></div>
+        <span class="font-semibold text-lg">Calming Audio</span>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <button onclick="selectAudio(this,'ambient')" class="audio-btn active-audio flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#7dd3fc]/40 ring-1 ring-[#7dd3fc]/40">
+          <iconify-icon icon="solar:water-drops-bold" class="size-6 text-[#7dd3fc] mb-2"></iconify-icon><span class="text-xs font-medium">Ambient</span>
+        </button>
+        <button onclick="selectAudio(this,'meditation')" class="audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#334155]/30 opacity-60">
+          <iconify-icon icon="solar:star-fall-bold" class="size-6 text-[#94a3b8] mb-2"></iconify-icon><span class="text-xs font-medium text-[#94a3b8]">Meditation</span>
+        </button>
+        <button onclick="selectAudio(this,'music')" class="audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#334155]/30 opacity-60">
+          <iconify-icon icon="solar:soundwave-bold" class="size-6 text-[#94a3b8] mb-2"></iconify-icon><span class="text-xs font-medium text-[#94a3b8]">Music</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-5 space-y-2">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="p-2.5 rounded-xl bg-[#7dd3fc]/10"><iconify-icon icon="solar:checklist-minimalistic-bold" class="size-6 text-[#7dd3fc]"></iconify-icon></div>
+        <span class="font-semibold text-lg">Before You Go</span>
+      </div>
+      <div onclick="toggleCheck(this)" class="checklist-item flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-[#0f172a]/40 transition-colors">
+        <div class="check-circle w-6 h-6 rounded-full border-2 border-[#334155] flex items-center justify-center flex-shrink-0 transition-all"></div>
+        <span class="text-sm">Left early — no rush</span>
+      </div>
+      <div onclick="toggleCheck(this)" class="checklist-item flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-[#0f172a]/40 transition-colors">
+        <div class="check-circle w-6 h-6 rounded-full border-2 border-[#334155] flex items-center justify-center flex-shrink-0 transition-all"></div>
+        <span class="text-sm">Took 3 slow breaths</span>
+      </div>
+      <div onclick="toggleCheck(this)" class="checklist-item flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-[#0f172a]/40 transition-colors">
+        <div class="check-circle w-6 h-6 rounded-full border-2 border-[#334155] flex items-center justify-center flex-shrink-0 transition-all"></div>
+        <span class="text-sm">Phone is hands-free or put away</span>
+      </div>
+      <div onclick="toggleCheck(this)" class="checklist-item flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-[#0f172a]/40 transition-colors">
+        <div class="check-circle w-6 h-6 rounded-full border-2 border-[#334155] flex items-center justify-center flex-shrink-0 transition-all"></div>
+        <span class="text-sm">Safety over speed — I accept delays</span>
+      </div>
+    </div>
+
+    <a href="plus/drive-history.html" class="flex items-center justify-center gap-2 text-sm text-[#94a3b8] py-2 hover:text-[#7dd3fc] transition-colors">
+      <iconify-icon icon="solar:history-bold" class="size-4"></iconify-icon>View Drive History
     </a>
+  </main>
 
+  <div class="fixed bottom-6 left-6 right-6 z-10">
+    <button onclick="startDrive()" class="w-full h-16 rounded-2xl bg-[#7dd3fc] text-[#0f172a] font-bold text-xl shadow-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-3">
+      <iconify-icon icon="solar:steering-wheel-bold" class="size-6"></iconify-icon>Start Drive
+    </button>
   </div>
-</section>
-
-<section id="during">
-  <div class="card reminder-card">
-    <p class="personal-message" id="duringMessage">Let's stay calm together.</p>
-    <h2>🎧 Audio Reminders</h2>
-    <label for="audioSelect" style="display: block; margin-bottom: 8px; font-size: 15px;">Choose a calming reminder:</label>
-    <audio id="player" preload="metadata" aria-label="Audio reminder player"></audio>
-
-    <select id="audioSelect" name="audioReminder" aria-label="Select audio reminder">
-      <option value="">Choose a reminder</option>
-      <option value="./audio/reminder1.mp3">Reminder 1</option>
-      <option value="./audio/reminder2.mp3">Reminder 2</option>
-      <option value="./audio/reminder3.mp3">Reminder 3</option>
-      <option value="./audio/reminder4.mp3">Reminder 4</option>
-      <option value="./audio/reminder5.mp3">Reminder 5</option>
-      <option value="./audio/reminder6.mp3">Reminder 6</option>
-    </select>
-
-    <button class="primary" onclick="playAudio()">▶ Play Reminder</button>
-    <button class="primary secondary" onclick="stopAudio()">⏸ Stop</button>
-
-    <p class="small">You're doing fine. Keep going.</p>
-  </div>
-</section>
-
-<section id="log">
-  <div class="card">
-    <p class="personal-message" id="logMessage">How did your drive go?</p>
-    <h2>Drive Log</h2>
-    <p id="logText" style="font-size: 18px; margin: 16px 0;">0 calm drives logged</p>
-    <button class="primary" onclick="logDrive()">✓ Log This Drive</button>
-    <p class="small">Take one calm breath. You've arrived.</p>
-  </div>
-
-  <div class="card">
-    <h2>CalmDrive Plus</h2>
-    <ul>
-      <li>Smart reminder pacing</li>
-      <li>Personalized reassurance</li>
-      <li>Post-drive recovery support</li>
-      <li>Drive-length awareness</li>
-      <li>Automatic calm silent mode</li>
-      <li>Choose male or female voice option</li>
-    </ul>
-    <p class="small">Coming later. Free users always welcome.</p>
-  </div>
-</section>
-
-<footer>
-  CalmDrive • Your Calm Matters
-</footer>
-
-<!-- Install Prompt for iOS -->
-<div class="install-prompt" id="installPrompt">
-  <h4>📱 Install CalmDrive</h4>
-  <p>Add to your home screen for the best experience - works like a real app!</p>
-  <p style="font-size: 13px; opacity: .8;">
-    Tap <strong>Share ⬆️</strong> then <strong>"Add to Home Screen"</strong>
-  </p>
-  <button onclick="closeInstallPrompt()">Got it</button>
-  <button class="close-btn" onclick="closeInstallPrompt()">Maybe later</button>
 </div>
 
+<script src="cd-data.js"></script>
 <script>
-let userName = '';
-let drives = 0;
+const STRESS_DESCS = {1:'Very calm — perfect start',2:'Nice and relaxed',3:'Fairly calm',4:'Slightly tense — that\'s normal',5:'Moderate — you\'ll be fine',6:'Noticeably tense',7:'Quite stressed',8:'Very stressed',9:'Highly stressed — breathe first',10:'Peak stress — please breathe first'};
+let selectedBreath = '4', selectedAudio = 'ambient';
 
-window.addEventListener('load', () => {
-  userName = localStorage.getItem('calmDriveName') || '';
-  drives = parseInt(localStorage.getItem('calmDrivesCount')) || 0;
-  
-  if (!userName) {
-    document.getElementById('nameModal').classList.add('active');
+window.onload = () => {
+  const name = localStorage.getItem('cd_name');
+  if (!name) {
+    const ov = document.getElementById('welcome-overlay');
+    ov.classList.remove('hidden');
+    ov.classList.add('flex');
   } else {
-    updateGreeting();
-    updateMessages();
+    updateGreeting(name);
+    loadStats();
   }
-  
-  document.getElementById('logText').textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
-});
+  document.getElementById('name-input')?.addEventListener('keypress', e => { if(e.key==='Enter') saveName(); });
+};
 
 function saveName() {
-  const input = document.getElementById('nameInput').value.trim();
-  if (input) {
-    userName = input;
-    localStorage.setItem('calmDriveName', userName);
-    document.getElementById('nameModal').classList.remove('active');
-    updateGreeting();
-    updateMessages();
+  const val = document.getElementById('name-input').value.trim();
+  if (!val) return;
+  localStorage.setItem('cd_name', val);
+  const ov = document.getElementById('welcome-overlay');
+  ov.classList.add('hidden'); ov.classList.remove('flex');
+  updateGreeting(val); loadStats();
+}
+
+function updateGreeting(name) {
+  const h = new Date().getHours();
+  const tod = h<12?'Morning':h<17?'Afternoon':'Evening';
+  document.getElementById('greeting').textContent = `Good ${tod}, ${name}`;
+  document.getElementById('greeting-sub').textContent = 'Ready for a calm drive?';
+}
+
+function loadStats() {
+  const s = CD.getStats();
+  if (s.total > 0) {
+    document.getElementById('stats-strip').classList.remove('hidden');
+    document.getElementById('stat-drives').textContent = s.total;
+    document.getElementById('stat-calm').textContent = s.avgCalm + '%';
+    document.getElementById('stat-streak').textContent = s.streak;
   }
 }
 
-function editName() {
-  document.getElementById('nameInput').value = userName;
-  document.getElementById('nameModal').classList.add('active');
+function updateStress(val) {
+  document.getElementById('stress-display').textContent = val;
+  document.getElementById('stress-desc').textContent = STRESS_DESCS[val];
 }
 
-function updateGreeting() {
-  const greetings = ['Hey', 'Hi', 'Welcome back'];
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-  document.getElementById('greetingText').textContent = `${greeting}, ${userName}`;
+function selectBreath(btn, val) {
+  selectedBreath = val;
+  document.querySelectorAll('.breath-btn').forEach(b => { b.className = 'breath-btn flex-1 py-2 rounded-lg bg-[#0f172a] text-[#94a3b8]'; });
+  btn.className = 'breath-btn flex-1 py-2 rounded-lg bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30';
 }
 
-function updateMessages() {
-  document.getElementById('beforeMessage').textContent = `Hey ${userName}, ready for a calm drive?`;
-  document.getElementById('duringMessage').textContent = `${userName}, let's stay calm together.`;
-  document.getElementById('logMessage').textContent = `How did your drive go, ${userName}?`;
-}
-
-function showTab(id) {
-  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-  stopAudio();
-}
-
-function playAudio() {
-  const src = document.getElementById('audioSelect').value;
-  if (!src) {
-    alert('Choose a reminder first');
-    return;
-  }
-  
-  const player = document.getElementById('player');
-  player.src = src;
-  
-  player.play().catch(err => {
-    console.error('Audio play error:', err);
-    alert('Unable to play audio. Make sure the file exists at: ' + src);
+function selectAudio(btn, val) {
+  selectedAudio = val;
+  document.querySelectorAll('.audio-btn').forEach(b => {
+    b.className = 'audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#334155]/30 opacity-60';
   });
+  btn.className = 'audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#7dd3fc]/40 ring-1 ring-[#7dd3fc]/40';
+  btn.style.opacity = '1';
 }
 
-function stopAudio() {
-  const player = document.getElementById('player');
-  player.pause();
-  player.currentTime = 0;
-}
-
-function logDrive() {
-  drives++;
-  localStorage.setItem('calmDrivesCount', drives);
-  document.getElementById('logText').textContent = `${drives} calm drive${drives === 1 ? '' : 's'} logged`;
-}
-
-// Show install prompt on iOS Safari
-function showInstallPrompt() {
-  // Check if standalone (already installed)
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  
-  // Check if iOS Safari
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  
-  // Check if user already dismissed
-  const dismissed = localStorage.getItem('installPromptDismissed');
-  
-  if (isIOS && !isStandalone && !dismissed) {
-    setTimeout(() => {
-      document.getElementById('installPrompt').classList.add('show');
-    }, 3000); // Show after 3 seconds
+function toggleCheck(el) {
+  const circle = el.querySelector('.check-circle');
+  const checked = el.dataset.checked === 'true';
+  el.dataset.checked = checked ? 'false' : 'true';
+  if (!checked) {
+    circle.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    circle.style.cssText = 'background:#7dd3fc; border-color:#7dd3fc;';
+    el.querySelector('span').style.opacity = '0.5';
+  } else {
+    circle.innerHTML = '';
+    circle.style.cssText = '';
+    el.querySelector('span').style.opacity = '1';
   }
 }
 
-function closeInstallPrompt() {
-  document.getElementById('installPrompt').classList.remove('show');
-  localStorage.setItem('installPromptDismissed', 'true');
-}
-
-// Show install prompt on load
-window.addEventListener('load', showInstallPrompt);
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-   navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => console.log('Service Worker registered:', reg.scope))
-      .catch(err => console.error('Service Worker failed:', err));
-  });
+function startDrive() {
+  sessionStorage.setItem('cd_preStress', document.getElementById('stress-slider').value);
+  sessionStorage.setItem('cd_destination', document.getElementById('destination-input').value.trim());
+  sessionStorage.setItem('cd_breathInterval', selectedBreath);
+  sessionStorage.setItem('cd_audio', selectedAudio);
+  CD.startDrive();
+  window.location.href = 'plus/drive-mode.html';
 }
 </script>
-
 </body>
 </html>
