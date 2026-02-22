@@ -4,8 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CalmDrive Plus</title>
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon192x192.png">
-  <link rel="apple-touch-icon" href="./icon192x192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512x512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-512x512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CalmDrive">
+  <meta name="theme-color" content="#0f172a">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
@@ -88,21 +96,19 @@
       </div>
     </div>
 
-    <!-- Audio -->
+    <!-- Audio voice preference -->
     <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-5 space-y-3">
       <div class="flex items-center gap-3">
         <div class="p-2.5 rounded-xl bg-[#7dd3fc]/10"><iconify-icon icon="solar:music-library-2-bold" class="size-6 text-[#7dd3fc]"></iconify-icon></div>
-        <span class="font-semibold text-lg">Calming Audio</span>
+        <span class="font-semibold text-lg">Voice Guide</span>
       </div>
-      <div class="grid grid-cols-3 gap-3">
-        <button onclick="selectAudio(this,'ambient')" class="audio-btn active-audio flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#7dd3fc]/40 ring-1 ring-[#7dd3fc]/40">
-          <iconify-icon icon="solar:water-drops-bold" class="size-6 text-[#7dd3fc] mb-2"></iconify-icon><span class="text-xs font-medium">Ambient</span>
+      <p class="text-sm text-[#94a3b8]">Calm reminders will play automatically during your drive.</p>
+      <div class="flex gap-3">
+        <button onclick="selectVoice(this,'m')" id="voice-m" class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30">
+          <iconify-icon icon="solar:user-bold" class="size-5"></iconify-icon> Male
         </button>
-        <button onclick="selectAudio(this,'meditation')" class="audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#334155]/30 opacity-60">
-          <iconify-icon icon="solar:star-fall-bold" class="size-6 text-[#94a3b8] mb-2"></iconify-icon><span class="text-xs font-medium text-[#94a3b8]">Meditation</span>
-        </button>
-        <button onclick="selectAudio(this,'music')" class="audio-btn flex flex-col items-center p-3 rounded-xl bg-[#0f172a] border border-[#334155]/30 opacity-60">
-          <iconify-icon icon="solar:soundwave-bold" class="size-6 text-[#94a3b8] mb-2"></iconify-icon><span class="text-xs font-medium text-[#94a3b8]">Music</span>
+        <button onclick="selectVoice(this,'w')" id="voice-w" class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0f172a] text-[#94a3b8] border border-[#334155]/30">
+          <iconify-icon icon="solar:user-bold" class="size-5"></iconify-icon> Female
         </button>
       </div>
     </div>
@@ -146,7 +152,7 @@
 <script src="cd-data.js"></script>
 <script>
 const STRESS_DESCS = {1:'Very calm — perfect start',2:'Nice and relaxed',3:'Fairly calm',4:'Slightly tense — that\'s normal',5:'Moderate — you\'ll be fine',6:'Noticeably tense',7:'Quite stressed',8:'Very stressed',9:'Highly stressed — breathe first',10:'Peak stress — please breathe first'};
-let selectedBreath = '4', selectedAudio = 'ambient';
+let selectedBreath = '4', selectedAudio = 'ambient', selectedVoice = 'm';
 
 window.onload = () => {
   const name = localStorage.getItem('cd_name');
@@ -198,6 +204,16 @@ function selectBreath(btn, val) {
   btn.className = 'breath-btn flex-1 py-2 rounded-lg bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30';
 }
 
+function selectVoice(btn, val) {
+  selectedVoice = val;
+  document.getElementById('voice-m').className = val === 'm'
+    ? 'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30'
+    : 'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0f172a] text-[#94a3b8] border border-[#334155]/30';
+  document.getElementById('voice-w').className = val === 'w'
+    ? 'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#7dd3fc]/20 text-[#7dd3fc] font-bold border border-[#7dd3fc]/30'
+    : 'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0f172a] text-[#94a3b8] border border-[#334155]/30';
+}
+
 function selectAudio(btn, val) {
   selectedAudio = val;
   document.querySelectorAll('.audio-btn').forEach(b => {
@@ -227,6 +243,7 @@ function startDrive() {
   sessionStorage.setItem('cd_destination', document.getElementById('destination-input').value.trim());
   sessionStorage.setItem('cd_breathInterval', selectedBreath);
   sessionStorage.setItem('cd_audio', selectedAudio);
+  sessionStorage.setItem('cd_voice', selectedVoice);
   CD.startDrive();
   window.location.href = 'plus/drive-mode.html';
 }
