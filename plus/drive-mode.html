@@ -161,11 +161,7 @@ const PROMPTS = [
   ['You\'re in control','Calm is a choice you\'re making.'],
   ['Almost there','Every calm mile counts.'],
 ];
-const AUDIO_SCRIPTS = {
-  ambient:    "Breathe in slowly... hold... and breathe out gently. You're doing well.",
-  meditation: "Close off the outside world. Just you, the road, and your breath. In... and out.",
-  music:      "Let the calm wash over you. You're safe. You're steady. You've got this."
-};
+
 const PHASES     = ['Inhale','Hold','Exhale','Hold'];
 const PHASE_CLS  = ['phase-inhale','phase-hold1','phase-exhale','phase-hold2'];
 
@@ -300,7 +296,7 @@ function saveCheckin() {
   m.classList.add('hidden'); m.classList.remove('flex');
 }
 
-// ===== AUDIO =====
+
 let currentAudio = null;
 let reminderIndex = 0;
 // ===== REAL AUDIO =====
