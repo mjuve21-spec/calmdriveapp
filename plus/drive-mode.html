@@ -350,20 +350,13 @@ window.onload = () => {
   // GPS speed
   initGPS();
 
-  // Auto-play start-of-drive audio
+  // iOS blocks autoplay - audio plays when user taps Calm Audio button
+  // Show a prompt to tap for audio
   setTimeout(() => {
-    const v = getVoice();
-    const list = AUDIO.start[v];
-    playAudio(list[0]);
-  }, 2000);
-
-  // Auto mid-drive reminder every 8 minutes
-  setInterval(() => {
-    const v = getVoice();
-    const list = AUDIO.mid[v];
-    playAudio(list[midIndex % list.length]);
-    midIndex++;
-  }, 8 * 60 * 1000);
+    const sub = document.getElementById('calm-sub');
+    if (sub) sub.textContent = '👆 Tap Calm Audio below to start';
+    setTimeout(() => { if (sub) sub.textContent = 'Stay smooth. Stay calm.'; }, 4000);
+  }, 1500);
 
   // ===== BREATHING - start immediately
   runBreathPhase(breathSec);
