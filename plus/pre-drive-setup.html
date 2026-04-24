@@ -6,26 +6,13 @@
     <title>PreDriveSetup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <style type="text/tailwindcss">
-
       @theme inline {
         --color-background: var(--background);
         --color-foreground: var(--foreground);
@@ -50,17 +37,14 @@
         --color-chart-3: var(--chart-3);
         --color-chart-4: var(--chart-4);
         --color-chart-5: var(--chart-5);
-
         --font-font-sans: var(--font-sans);
         --font-font-heading: var(--font-heading);
         --font-font-serif: var(--font-serif);
         --font-font-mono: var(--font-mono);
-
         --radius-sm: calc(var(--radius) - 4px);
         --radius-md: calc(var(--radius) - 2px);
         --radius-lg: var(--radius);
         --radius-xl: calc(var(--radius) + 4px);
-
         --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
         --tracking-tight: calc(var(--tracking-normal) - 0.025em);
         --tracking-wide: calc(var(--tracking-normal) + 0.025em);
@@ -70,7 +54,7 @@
       }
 
       :root {
-          --background: #0f172a;
+        --background: #0f172a;
         --foreground: #f1f5f9;
         --primary: #7dd3fc;
         --primary-foreground: #0f172a;
@@ -93,56 +77,42 @@
         --chart-3: #a5b4fc;
         --chart-4: #94a3b8;
         --chart-5: #cbd5e1;
-
         --font-sans: "Manrope";
         --font-heading: "Space Grotesk";
         --font-serif: "Playfair Display";
         --font-mono: "JetBrains Mono";
-
         --radius: 0.75rem;
       }
     </style>
   </head>
   <body>
-    <div
-      class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden"
-    >
+    <div class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden">
       <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
         <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
         <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
       </div>
-      <div
-        class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"
-      ></div>
-      <div
-        class="absolute bottom-1/4 -left-20 w-80 h-80 bg-chart-3/5 rounded-full blur-3xl pointer-events-none"
-      ></div>
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-chart-3/5 rounded-full blur-3xl pointer-events-none"></div>
       <header class="pt-14 px-6 pb-8 z-10">
         <div class="flex flex-col space-y-1">
-          <h1 class="text-3xl font-heading font-bold text-foreground tracking-tight">
-            Prepare Your Drive
-          </h1>
+          <h1 class="text-3xl font-heading font-bold text-foreground tracking-tight">Prepare Your Drive</h1>
           <p class="text-lg text-muted-foreground">Set your focus and choose your peace.</p>
         </div>
       </header>
       <main class="flex-1 px-6 space-y-6 overflow-y-auto pb-32 z-10">
         <div class="relative">
           <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-            <iconify-icon
-              icon="solar:magnifer-linear"
-              class="size-5 text-muted-foreground"
-            ></iconify-icon>
+            <iconify-icon icon="solar:magnifer-linear" class="size-5 text-muted-foreground"></iconify-icon>
           </div>
           <input
             type="text"
+            id="destination"
             placeholder="Where are we heading?"
             class="w-full bg-input h-14 pl-12 pr-4 rounded-2xl text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 outline-none transition-all shadow-sm"
           />
         </div>
         <div class="flex items-center justify-between pt-2">
-          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest"
-            >Calming Preferences</span
-          >
+          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest">Calming Preferences</span>
         </div>
         <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
           <div class="flex items-center justify-between">
@@ -152,50 +122,35 @@
               </div>
               <span class="font-semibold text-lg">Breathing Exercises</span>
             </div>
-            <div class="w-12 h-6 bg-primary rounded-full relative">
-              <div class="absolute right-1 top-1 size-4 bg-primary-foreground rounded-full"></div>
+            <div id="breathingToggle" onclick="toggleBreathing()" class="w-12 h-6 bg-primary rounded-full relative cursor-pointer transition-colors">
+              <div id="breathingKnob" class="absolute right-1 top-1 size-4 bg-primary-foreground rounded-full transition-all"></div>
             </div>
           </div>
           <div class="flex gap-2">
-            <button
-              class="flex-1 py-2 bg-primary/20 text-primary rounded-lg text-sm font-bold border border-primary/30"
-            >
-              4s Interval</button
-            ><button
-              class="flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30"
-            >
-              6s Interval</button
-            ><button
-              class="flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30"
-            >
-              8s Interval
-            </button>
+            <button id="interval4s" onclick="selectInterval('4s', 'interval4s')" class="interval-btn flex-1 py-2 bg-primary/20 text-primary rounded-lg text-sm font-bold border border-primary/30 transition-colors">4s Interval</button>
+            <button id="interval6s" onclick="selectInterval('6s', 'interval6s')" class="interval-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">6s Interval</button>
+            <button id="interval8s" onclick="selectInterval('8s', 'interval8s')" class="interval-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">8s Interval</button>
           </div>
         </div>
         <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
           <div class="flex items-center gap-3">
             <div class="p-2.5 rounded-xl bg-primary/10">
-              <iconify-icon
-                icon="solar:music-library-2-bold"
-                class="size-6 text-primary"
-              ></iconify-icon>
+              <iconify-icon icon="solar:music-library-2-bold" class="size-6 text-primary"></iconify-icon>
             </div>
             <span class="font-semibold text-lg">Calming Audio</span>
           </div>
           <div class="grid grid-cols-3 gap-3">
-            <div
-              id="voice-m" onclick="selectVoice('m')" class="flex flex-col items-center p-3 rounded-xl bg-background/50 border border-primary/40 ring-1 ring-primary/40 cursor-pointer"
-            >
-              <iconify-icon icon="solar:user-bold" class="size-6 text-primary mb-2"></iconify-icon>
-              <span class="text-xs font-medium text-foreground">Male</span>
+            <div id="audioAmbient" onclick="selectAudio('ambient', 'audioAmbient')" class="audio-card flex flex-col items-center p-3 rounded-xl bg-background/50 border border-primary/40 ring-1 ring-primary/40 cursor-pointer transition-all">
+              <iconify-icon icon="solar:water-drops-bold" class="size-6 text-primary mb-2"></iconify-icon>
+              <span class="text-xs font-medium text-foreground">Ambient</span>
             </div>
-            <div
-              id="voice-w"
-              onclick="selectVoice('w')"
-              class="flex flex-col items-center p-3 rounded-xl bg-background/50 border border-border/30 opacity-60 cursor-pointer"
-            >
-              <iconify-icon icon="solar:user-bold" class="size-6 text-muted-foreground mb-2"></iconify-icon>
-              <span class="text-xs font-medium text-muted-foreground">Female</span>
+            <div id="audioMeditation" onclick="selectAudio('meditation', 'audioMeditation')" class="audio-card flex flex-col items-center p-3 rounded-xl bg-background/50 border border-border/30 opacity-60 cursor-pointer transition-all">
+              <iconify-icon icon="solar:star-fall-bold" class="size-6 text-muted-foreground mb-2"></iconify-icon>
+              <span class="text-xs font-medium text-muted-foreground">Meditation</span>
+            </div>
+            <div id="audioMusic" onclick="selectAudio('music', 'audioMusic')" class="audio-card flex flex-col items-center p-3 rounded-xl bg-background/50 border border-border/30 opacity-60 cursor-pointer transition-all">
+              <iconify-icon icon="solar:soundwave-bold" class="size-6 text-muted-foreground mb-2"></iconify-icon>
+              <span class="text-xs font-medium text-muted-foreground">Music</span>
             </div>
           </div>
         </div>
@@ -203,94 +158,215 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="p-2.5 rounded-xl bg-primary/10">
-                <iconify-icon
-                  icon="solar:bell-bing-bold"
-                  class="size-6 text-primary"
-                ></iconify-icon>
+                <iconify-icon icon="solar:bell-bing-bold" class="size-6 text-primary"></iconify-icon>
               </div>
               <span class="font-semibold text-lg">Alert Sensitivity</span>
             </div>
-            <span class="text-xs font-mono font-bold text-primary uppercase">High</span>
+            <span id="sensitivityLabel" class="text-xs font-mono font-bold text-primary uppercase">Vigilant</span>
           </div>
           <div class="px-1 py-4">
-            <div class="h-1.5 w-full bg-background rounded-full relative">
-              <div class="absolute inset-y-0 left-0 w-3/4 bg-primary rounded-full"></div>
-              <div
-                class="absolute top-1/2 left-3/4 -translate-y-1/2 -translate-x-1/2 size-5 bg-foreground border-4 border-primary rounded-full shadow-lg"
-              ></div>
+            <div class="h-1.5 w-full bg-background rounded-full relative" id="sliderTrack">
+              <div id="sensitivityFill" class="absolute inset-y-0 left-0 w-3/4 bg-primary rounded-full"></div>
+              <div id="sensitivitySlider" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-5 bg-foreground border-4 border-primary rounded-full shadow-lg cursor-pointer" style="left: 75%"></div>
             </div>
             <div class="flex justify-between mt-3">
-              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter"
-                >Minimal</span
-              ><span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter"
-                >Balanced</span
-              ><span class="text-[10px] text-primary uppercase font-bold tracking-tighter"
-                >Vigilant</span
-              >
+              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Minimal</span>
+              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Balanced</span>
+              <span class="text-[10px] text-primary uppercase font-bold tracking-tighter">Vigilant</span>
             </div>
           </div>
         </div>
-        <div
-          class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 flex items-center justify-between"
-        >
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="p-2.5 rounded-xl bg-primary/10">
-              <iconify-icon
-                icon="solar:user-speak-rounded-bold"
-                class="size-6 text-primary"
-              ></iconify-icon>
+              <iconify-icon icon="solar:user-speak-rounded-bold" class="size-6 text-primary"></iconify-icon>
             </div>
             <span class="font-semibold text-lg">Voice Guidance</span>
           </div>
-          <div class="w-12 h-6 bg-muted rounded-full relative">
-            <div class="absolute left-1 top-1 size-4 bg-muted-foreground rounded-full"></div>
+          <div id="voiceToggle" onclick="toggleVoice()" class="w-12 h-6 bg-muted rounded-full relative cursor-pointer transition-colors">
+            <div id="voiceKnob" class="absolute left-1 top-1 size-4 bg-muted-foreground rounded-full transition-all"></div>
           </div>
         </div>
       </main>
-      <div
-        class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent pt-10 z-20"
-      >
-        <button
-          onclick="startDrive()"
-          class="w-full h-16 bg-primary text-primary-foreground rounded-2xl font-heading font-bold text-xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform"
-        >
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent pt-10 z-20">
+        <button onclick="startDrive()" class="w-full h-16 bg-primary text-primary-foreground rounded-2xl font-heading font-bold text-xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform">
           <iconify-icon icon="solar:steering-wheel-bold" class="size-6"></iconify-icon>Start Drive
         </button>
       </div>
     </div>
-  <script src="../cd-data.js"></script>
-<script>
-let selectedVoice = 'm';
 
-function selectVoice(v) {
-  selectedVoice = v;
-  const m = document.getElementById('voice-m');
-  const w = document.getElementById('voice-w');
-  if (v === 'm') {
-    m.className = m.className.replace('opacity-60','').replace('border-border/30','border-primary/40 ring-1 ring-primary/40');
-    m.querySelector('iconify-icon').setAttribute('class','size-6 text-primary mb-2');
-    m.querySelector('span').className = 'text-xs font-medium text-foreground';
-    w.className = w.className.replace('border-primary/40 ring-1 ring-primary/40','border-border/30') + ' opacity-60';
-    w.querySelector('iconify-icon').setAttribute('class','size-6 text-muted-foreground mb-2');
-    w.querySelector('span').className = 'text-xs font-medium text-muted-foreground';
-  } else {
-    w.className = w.className.replace('opacity-60','').replace('border-border/30','border-primary/40 ring-1 ring-primary/40');
-    w.querySelector('iconify-icon').setAttribute('class','size-6 text-primary mb-2');
-    w.querySelector('span').className = 'text-xs font-medium text-foreground';
-    m.className = m.className.replace('border-primary/40 ring-1 ring-primary/40','border-border/30') + ' opacity-60';
-    m.querySelector('iconify-icon').setAttribute('class','size-6 text-muted-foreground mb-2');
-    m.querySelector('span').className = 'text-xs font-medium text-muted-foreground';
-  }
-}
+    <script>
+      let breathingEnabled = true;
+      let voiceEnabled = false;
+      let selectedInterval = '4s';
+      let selectedAudio = 'ambient';
+      let sensitivity = 75;
 
-function startDrive() {
-  sessionStorage.setItem('cd_voice', selectedVoice);
-  sessionStorage.setItem('cd_preStress', '5');
-  sessionStorage.setItem('cd_destination', document.querySelector('input[type=text]')?.value || '');
-  // Start drive in cd-data
-  if (typeof CD !== 'undefined') CD.startDrive();
-  window.location.href = 'drive-mode.html';
-}
-</script>
-</body>
+      // ─── Load saved settings ───────────────────────────────────
+      window.onload = function() {
+        // Load interval
+        const savedInterval = localStorage.getItem('breathInterval') || '4s';
+        selectInterval(savedInterval, 'interval' + savedInterval.replace('s', '') + 's');
+
+        // Load audio
+        const savedAudio = localStorage.getItem('audioType') || 'ambient';
+        selectAudio(savedAudio, 'audio' + savedAudio.charAt(0).toUpperCase() + savedAudio.slice(1));
+
+        // Load breathing toggle
+        breathingEnabled = localStorage.getItem('breathingEnabled') !== 'false';
+        if (!breathingEnabled) {
+          document.getElementById('breathingToggle').classList.remove('bg-primary');
+          document.getElementById('breathingToggle').classList.add('bg-muted');
+          document.getElementById('breathingKnob').classList.add('left-1');
+          document.getElementById('breathingKnob').classList.remove('right-1');
+        }
+
+        // Load voice toggle
+        voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
+        if (voiceEnabled) {
+          document.getElementById('voiceToggle').classList.add('bg-primary');
+          document.getElementById('voiceToggle').classList.remove('bg-muted');
+          document.getElementById('voiceKnob').classList.remove('left-1');
+          document.getElementById('voiceKnob').classList.add('right-1');
+        }
+
+        // Load sensitivity
+        sensitivity = parseInt(localStorage.getItem('sensitivity') || '75');
+        updateSensitivity(sensitivity);
+
+        // Setup slider
+        setupSlider();
+      };
+
+      // ─── Save and Start Drive ──────────────────────────────────
+      function startDrive() {
+        // Save all settings to localStorage
+        localStorage.setItem('breathInterval', selectedInterval);
+        localStorage.setItem('audioType', selectedAudio);
+        localStorage.setItem('breathingEnabled', breathingEnabled);
+        localStorage.setItem('voiceEnabled', voiceEnabled);
+        localStorage.setItem('sensitivity', sensitivity);
+        localStorage.setItem('destination', document.getElementById('destination').value);
+        localStorage.setItem('driveStartTime', new Date().toISOString());
+
+        window.location.href = 'drive-mode.html';
+      }
+
+      // ─── Breathing Toggle ──────────────────────────────────────
+      function toggleBreathing() {
+        breathingEnabled = !breathingEnabled;
+        const toggle = document.getElementById('breathingToggle');
+        const knob = document.getElementById('breathingKnob');
+        if (breathingEnabled) {
+          toggle.classList.add('bg-primary');
+          toggle.classList.remove('bg-muted');
+          knob.classList.remove('left-1');
+          knob.classList.add('right-1');
+        } else {
+          toggle.classList.remove('bg-primary');
+          toggle.classList.add('bg-muted');
+          knob.classList.add('left-1');
+          knob.classList.remove('right-1');
+        }
+      }
+
+      // ─── Voice Toggle ──────────────────────────────────────────
+      function toggleVoice() {
+        voiceEnabled = !voiceEnabled;
+        const toggle = document.getElementById('voiceToggle');
+        const knob = document.getElementById('voiceKnob');
+        if (voiceEnabled) {
+          toggle.classList.add('bg-primary');
+          toggle.classList.remove('bg-muted');
+          knob.classList.remove('left-1');
+          knob.classList.add('right-1');
+          knob.classList.remove('bg-muted-foreground');
+          knob.classList.add('bg-primary-foreground');
+        } else {
+          toggle.classList.remove('bg-primary');
+          toggle.classList.add('bg-muted');
+          knob.classList.add('left-1');
+          knob.classList.remove('right-1');
+          knob.classList.add('bg-muted-foreground');
+          knob.classList.remove('bg-primary-foreground');
+        }
+      }
+
+      // ─── Interval Selection ────────────────────────────────────
+      function selectInterval(interval, buttonId) {
+        selectedInterval = interval;
+        document.querySelectorAll('.interval-btn').forEach(btn => {
+          btn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.add('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        });
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+          btn.classList.add('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.remove('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        }
+      }
+
+      // ─── Audio Selection ───────────────────────────────────────
+      function selectAudio(type, cardId) {
+        selectedAudio = type;
+        document.querySelectorAll('.audio-card').forEach(card => {
+          card.classList.remove('border-primary/40', 'ring-1', 'ring-primary/40');
+          card.classList.add('border-border/30', 'opacity-60');
+        });
+        const card = document.getElementById(cardId);
+        if (card) {
+          card.classList.add('border-primary/40', 'ring-1', 'ring-primary/40');
+          card.classList.remove('opacity-60');
+        }
+      }
+
+      // ─── Sensitivity Slider ────────────────────────────────────
+      function updateSensitivity(value) {
+        sensitivity = value;
+        const label = document.getElementById('sensitivityLabel');
+        const fill = document.getElementById('sensitivityFill');
+        const slider = document.getElementById('sensitivitySlider');
+        slider.style.left = value + '%';
+        fill.style.width = value + '%';
+        if (value < 33) {
+          label.textContent = 'Minimal';
+          label.className = 'text-xs font-mono font-bold text-muted-foreground uppercase';
+        } else if (value < 66) {
+          label.textContent = 'Balanced';
+          label.className = 'text-xs font-mono font-bold text-muted-foreground uppercase';
+        } else {
+          label.textContent = 'Vigilant';
+          label.className = 'text-xs font-mono font-bold text-primary uppercase';
+        }
+      }
+
+      function setupSlider() {
+        const slider = document.getElementById('sensitivitySlider');
+        const track = document.getElementById('sliderTrack');
+        let isDragging = false;
+
+        slider.addEventListener('mousedown', () => isDragging = true);
+        slider.addEventListener('touchstart', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('touchend', () => isDragging = false);
+
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const rect = track.getBoundingClientRect();
+          let percent = ((e.clientX - rect.left) / rect.width) * 100;
+          percent = Math.max(0, Math.min(100, percent));
+          updateSensitivity(percent);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const touch = e.touches[0];
+          const rect = track.getBoundingClientRect();
+          let percent = ((touch.clientX - rect.left) / rect.width) * 100;
+          percent = Math.max(0, Math.min(100, percent));
+          updateSensitivity(percent);
+        });
+      }
+    </script>
+  </body>
 </html>
