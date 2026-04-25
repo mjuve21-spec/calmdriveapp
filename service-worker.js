@@ -76,7 +76,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => {
           // Return offline page or fallback
-          return caches.match('./index.html');
+          return response;
         })
     );
   }
