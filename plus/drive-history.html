@@ -63,8 +63,6 @@
   </header>
 
   <main class="flex-1 overflow-y-auto px-6 space-y-3 pb-32 z-10">
-
-    <!-- Stats Overview -->
     <div class="grid grid-cols-3 gap-3 mb-4">
       <div class="bg-card p-4 rounded-2xl border border-border/50 shadow-lg text-center">
         <iconify-icon icon="solar:steering-wheel-bold" class="size-6 text-primary mx-auto mb-2"></iconify-icon>
@@ -92,18 +90,13 @@
       </select>
     </div>
 
-    <!-- Drive List -->
-    <div id="driveList">
-      <!-- Drives will be loaded here -->
-    </div>
+    <div id="driveList"></div>
 
-    <!-- Empty state -->
     <div id="emptyState" class="hidden text-center py-16 space-y-3">
       <iconify-icon icon="solar:steering-wheel-bold" class="size-16 text-muted-foreground mx-auto opacity-30"></iconify-icon>
       <p class="text-muted-foreground">No drives yet!</p>
       <p class="text-sm text-muted-foreground">Complete your first drive to see it here.</p>
     </div>
-
   </main>
 
   <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/95 to-transparent z-20">
@@ -115,6 +108,7 @@
 </div>
 
 <script>
+  const BASE = 'https://mjuve21-spec.github.io/calmdriveapp/plus/';
   let allDrives = [];
 
   window.onload = function() {
@@ -125,12 +119,9 @@
 
   function updateStats(drives) {
     document.getElementById('totalDrives').textContent = drives.length;
-
     if (drives.length > 0) {
       const avgCalm = Math.round(drives.reduce((a, b) => a + b.calmScore, 0) / drives.length);
       document.getElementById('avgCalm').textContent = avgCalm + '%';
-
-      // Calculate total minutes
       let totalMins = 0;
       drives.forEach(d => {
         const parts = d.duration.split(':');
@@ -143,19 +134,16 @@
   function renderDrives(drives) {
     const list = document.getElementById('driveList');
     const empty = document.getElementById('emptyState');
-
     if (drives.length === 0) {
       list.innerHTML = '';
       empty.classList.remove('hidden');
       return;
     }
-
     empty.classList.add('hidden');
     list.innerHTML = drives.map(drive => {
       const stateColor = drive.state === 'Flow' ? 'text-emerald-400' : drive.state === 'Calm' ? 'text-primary' : 'text-yellow-400';
       const stateBg = drive.state === 'Flow' ? 'bg-emerald-500/20' : drive.state === 'Calm' ? 'bg-primary/20' : 'bg-yellow-500/20';
       const stateIcon = drive.state === 'Flow' ? 'solar:leaf-bold' : drive.state === 'Calm' ? 'solar:check-circle-bold' : 'solar:shield-warning-bold';
-
       return `
         <div class="bg-card p-5 rounded-2xl border border-border/50 shadow-lg space-y-3 mb-3">
           <div class="flex items-start justify-between">
@@ -192,31 +180,24 @@
   }
 
   function filterDrives(period) {
-    if (period === 'all') {
-      renderDrives(allDrives);
-      updateStats(allDrives);
-      return;
-    }
-
+    if (period === 'all') { renderDrives(allDrives); updateStats(allDrives); return; }
     const now = new Date();
     const filtered = allDrives.filter(drive => {
-      const driveDate = new Date(drive.id);
-      const diff = now - driveDate;
+      const diff = now - new Date(drive.id);
       if (period === 'week') return diff < 7 * 24 * 60 * 60 * 1000;
       if (period === 'month') return diff < 30 * 24 * 60 * 60 * 1000;
       return true;
     });
-
     renderDrives(filtered);
     updateStats(filtered);
   }
 
   function goBack() {
-    window.location.href = 'pre-drive-setup.html';
+    window.location.href = BASE + 'pre-drive-setup.html';
   }
 
   function startNewDrive() {
-    window.location.href = 'pre-drive-setup.html';
+    window.location.href = BASE + 'pre-drive-setup.html';
   }
 </script>
 </body>
