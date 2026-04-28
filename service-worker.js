@@ -1,12 +1,8 @@
-const CACHE_NAME = 'calmdrive-v1';
-const RUNTIME_CACHE = 'calmdrive-runtime-v1';
+const CACHE_NAME = 'calmdrive-v2';
 
 // Assets to cache on install
 const PRECACHE_URLS = [
-  './',
-  './index.html',
   './icon192x192.png',
-  './css',
   './audio/reminder1.mp3',
   './audio/reminder2.mp3',
   './audio/reminder3.mp3',
@@ -15,14 +11,11 @@ const PRECACHE_URLS = [
   './audio/reminder6.mp3'
 ];
 
-// Install event - cache critical assets
+// Install event - cache only audio and images
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(PRECACHE_URLS);
-      })
+      .then(cache => cache.addAll(PRECACHE_URLS))
       .then(() => self.skipWaiting())
       .catch(err => console.log('Cache failed:', err))
   );
@@ -34,8 +27,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-            console.log('Deleting old cache:', cacheName);
+          if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
@@ -44,40 +36,33 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - ALWAYS get HTML pages fresh from network
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  
-  // Skip cross-origin requests
-  if (request.url.startsWith(self.location.origin)) {
+  const url = new URL(request.url);
+
+  // Always fetch HTML pages fresh - never serve from cache
+  if (request.destination === 'document' || url.pathname.endsWith('.html')) {
     event.respondWith(
-      caches.match(request)
-        .then(cachedResponse => {
-          // Return cached version or fetch from network
-          if (cachedResponse) {
-            return cachedResponse;
-          }
-
-          return fetch(request).then(response => {
-            // Don't cache non-successful responses
-            if (!response || response.status !== 200 || response.type === 'error') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            caches.open(RUNTIME_CACHE).then(cache => {
-              cache.put(request, responseToCache);
-            });
-
-            return response;
-          });
-        })
-        .catch(() => {
-          // Return offline page or fallback
-          return response;
-        })
+      fetch(request).catch(() => caches.match(request))
     );
+    return;
   }
+
+  // For audio and images - serve from cache if available
+  if (request.destination === 'audio' || request.destination === 'image') {
+    event.respondWith(
+      caches.match(request).then(cached => {
+        return cached || fetch(request).then(response => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+          return response;
+        });
+      })
+    );
+    return;
+  }
+
+  // Everything else - network first
+  event.respondWith(fetch(request).catch(() => caches.match(request)));
 });
