@@ -1,297 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drive History – CalmDrive Plus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
-  <style type="text/tailwindcss">
-    :root {
-      --background:#0f172a; --foreground:#f1f5f9; --primary:#7dd3fc;
-      --primary-foreground:#0f172a; --muted:#1e293b; --muted-foreground:#94a3b8;
-      --card:#1e293b; --border:#334155;
-      --font-sans:"Manrope"; --font-heading:"Space Grotesk"; --font-mono:"JetBrains Mono";
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Drive History - CalmDrive Plus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+<style type="text/tailwindcss">
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --font-font-sans: var(--font-sans);
+  --font-font-heading: var(--font-heading);
+  --font-font-mono: var(--font-mono);
+  --radius-lg: var(--radius);
+}
+:root {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --primary: #7dd3fc;
+  --primary-foreground: #0f172a;
+  --secondary: #334155;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --card: #1e293b;
+  --border: #334155;
+  --font-sans: "Manrope";
+  --font-heading: "Space Grotesk";
+  --font-mono: "JetBrains Mono";
+  --radius: 0.75rem;
+}
+</style>
 </head>
 <body>
-<div class="flex flex-col bg-[#0f172a] font-['Manrope'] text-[#f1f5f9] relative overflow-hidden min-h-screen">
+<div class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden">
   <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-    <img src="../icon192x192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-[#7dd3fc]/20" />
-    <span class="text-sm font-['Space_Grotesk'] font-bold tracking-wide">Calm Drive</span>
+    <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
+    <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
   </div>
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-96 bg-[#7dd3fc]/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
 
   <header class="pt-16 px-6 pb-4 z-10">
-    <button onclick="window.location.href='../index.html'" class="mb-4 flex items-center gap-2 text-[#94a3b8] hover:text-[#f1f5f9] transition-colors">
+    <button onclick="goBack()" class="mb-4 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
       <iconify-icon icon="solar:arrow-left-linear" class="size-5"></iconify-icon>
       <span class="text-sm font-medium">Back</span>
     </button>
-    <h1 class="text-3xl font-['Space_Grotesk'] font-bold tracking-tight">Drive History</h1>
-    <p class="text-[#94a3b8] mt-1">Your real calm driving data</p>
+    <h1 class="text-3xl font-heading font-bold text-foreground tracking-tight">Drive History</h1>
+    <p class="text-muted-foreground mt-1">Your calm driving journey</p>
   </header>
 
   <main class="flex-1 overflow-y-auto px-6 space-y-3 pb-32 z-10">
-    <!-- Stats -->
+
+    <!-- Stats Overview -->
     <div class="grid grid-cols-3 gap-3 mb-4">
-      <div class="bg-[#1e293b] p-4 rounded-2xl border border-[#334155]/50 shadow-lg text-center">
-        <iconify-icon icon="solar:steering-wheel-bold" class="size-6 text-[#7dd3fc] mx-auto mb-2"></iconify-icon>
-        <div id="stat-total" class="text-2xl font-['JetBrains_Mono'] font-bold">0</div>
-        <div class="text-xs text-[#94a3b8] uppercase tracking-wider mt-1">Total Drives</div>
+      <div class="bg-card p-4 rounded-2xl border border-border/50 shadow-lg text-center">
+        <iconify-icon icon="solar:steering-wheel-bold" class="size-6 text-primary mx-auto mb-2"></iconify-icon>
+        <div id="totalDrives" class="text-2xl font-mono font-bold text-foreground">0</div>
+        <div class="text-xs text-muted-foreground uppercase tracking-wider mt-1">Total Drives</div>
       </div>
-      <div class="bg-[#1e293b] p-4 rounded-2xl border border-[#334155]/50 shadow-lg text-center">
-        <iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-[#7dd3fc] mx-auto mb-2"></iconify-icon>
-        <div id="stat-calm" class="text-2xl font-['JetBrains_Mono'] font-bold text-[#7dd3fc]">—</div>
-        <div class="text-xs text-[#94a3b8] uppercase tracking-wider mt-1">Avg Calm</div>
+      <div class="bg-card p-4 rounded-2xl border border-border/50 shadow-lg text-center">
+        <iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-primary mx-auto mb-2"></iconify-icon>
+        <div id="avgCalm" class="text-2xl font-mono font-bold text-primary">--</div>
+        <div class="text-xs text-muted-foreground uppercase tracking-wider mt-1">Avg Calm</div>
       </div>
-      <div class="bg-[#1e293b] p-4 rounded-2xl border border-[#334155]/50 shadow-lg text-center">
-        <iconify-icon icon="solar:fire-bold" class="size-6 text-[#7dd3fc] mx-auto mb-2"></iconify-icon>
-        <div id="stat-streak" class="text-2xl font-['JetBrains_Mono'] font-bold">0</div>
-        <div class="text-xs text-[#94a3b8] uppercase tracking-wider mt-1">Day Streak</div>
+      <div class="bg-card p-4 rounded-2xl border border-border/50 shadow-lg text-center">
+        <iconify-icon icon="solar:clock-circle-bold" class="size-6 text-primary mx-auto mb-2"></iconify-icon>
+        <div id="totalTime" class="text-2xl font-mono font-bold text-foreground">0</div>
+        <div class="text-xs text-muted-foreground uppercase tracking-wider mt-1">Total Mins</div>
       </div>
     </div>
 
     <div class="flex items-center justify-between mb-3">
-      <span class="text-xs font-bold text-[#94a3b8] uppercase tracking-widest">Recent Drives</span>
+      <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest">Recent Drives</span>
+      <select onchange="filterDrives(this.value)" class="bg-card border border-border/50 rounded-lg px-3 py-1.5 text-sm text-foreground">
+        <option value="all">All Time</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
     </div>
 
-    <div id="history-list"></div>
+    <!-- Drive List -->
+    <div id="driveList">
+      <!-- Drives will be loaded here -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden text-center py-16 space-y-3">
+      <iconify-icon icon="solar:steering-wheel-bold" class="size-16 text-muted-foreground mx-auto opacity-30"></iconify-icon>
+      <p class="text-muted-foreground">No drives yet!</p>
+      <p class="text-sm text-muted-foreground">Complete your first drive to see it here.</p>
+    </div>
+
   </main>
 
-  <div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/95 to-transparent z-20">
-    <button onclick="window.location.href='../index.html'" class="w-full h-14 bg-[#7dd3fc] text-[#0f172a] font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-[#7dd3fc]/20 active:scale-[0.98] transition-transform">
-      <iconify-icon icon="solar:steering-wheel-bold" class="size-5"></iconify-icon>New Drive
+  <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/95 to-transparent z-20">
+    <button onclick="startNewDrive()" class="w-full h-14 bg-primary text-primary-foreground font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
+      <iconify-icon icon="solar:steering-wheel-bold" class="size-5"></iconify-icon>
+      New Drive
     </button>
   </div>
 </div>
 
-<script>// CalmDrive Shared Data Layer
-const CD = {
-  // Save pre-drive setup
-  saveSetup(data) {
-    sessionStorage.setItem('cd_setup', JSON.stringify(data));
-  },
-  getSetup() {
-    try { return JSON.parse(sessionStorage.getItem('cd_setup') || '{}'); } catch { return {}; }
-  },
-
-  // Active drive state
-  startDrive() {
-    const drive = {
-      id: Date.now(),
-      startTime: Date.now(),
-      preStress: parseInt(sessionStorage.getItem('cd_preStress') || '5'),
-      destination: sessionStorage.getItem('cd_destination') || '',
-      checkins: [],
-      breathCount: 0,
-      deEscCount: 0,
-    };
-    sessionStorage.setItem('cd_activeDrive', JSON.stringify(drive));
-    return drive;
-  },
-  getActiveDrive() {
-    try { return JSON.parse(sessionStorage.getItem('cd_activeDrive') || 'null'); } catch { return null; }
-  },
-  updateActiveDrive(updates) {
-    const d = this.getActiveDrive();
-    if (!d) return;
-    Object.assign(d, updates);
-    sessionStorage.setItem('cd_activeDrive', JSON.stringify(d));
-    return d;
-  },
-  addCheckin(stressLevel) {
-    const d = this.getActiveDrive();
-    if (!d) return;
-    d.checkins.push({ time: Date.now(), stress: stressLevel });
-    sessionStorage.setItem('cd_activeDrive', JSON.stringify(d));
-  },
-  incrementBreath() {
-    const d = this.getActiveDrive();
-    if (!d) return;
-    d.breathCount = (d.breathCount || 0) + 1;
-    sessionStorage.setItem('cd_activeDrive', JSON.stringify(d));
-  },
-  incrementDeEsc() {
-    const d = this.getActiveDrive();
-    if (!d) return;
-    d.deEscCount = (d.deEscCount || 0) + 1;
-    sessionStorage.setItem('cd_activeDrive', JSON.stringify(d));
-  },
-
-  // End drive & compute summary
-  endDrive() {
-    const d = this.getActiveDrive();
-    if (!d) return null;
-    d.endTime = Date.now();
-    d.duration = Math.floor((d.endTime - d.startTime) / 1000);
-
-    // Calm score: average of preStress + all checkins, inverted
-    const allStress = [d.preStress, ...d.checkins.map(c => c.stress)];
-    const avgStress = allStress.reduce((a, b) => a + b, 0) / allStress.length;
-    d.calmScore = Math.round(100 - (avgStress - 1) * 10);
-    d.avgStress = Math.round(avgStress * 10) / 10;
-
-    // State label
-    d.state = d.calmScore >= 85 ? 'Flow' : d.calmScore >= 65 ? 'Calm' : 'Tense';
-
-    // Trend
-    if (d.checkins.length > 0) {
-      const last = d.checkins[d.checkins.length - 1].stress;
-      d.trend = last < d.preStress ? 'improved' : last > d.preStress ? 'worsened' : 'steady';
-    } else {
-      d.trend = 'steady';
-    }
-
-    // Save to history
-    const history = this.getHistory();
-    history.unshift(d);
-    localStorage.setItem('cd_history', JSON.stringify(history.slice(0, 100)));
-
-    // Save summary for summary page to read
-    sessionStorage.setItem('cd_lastDrive', JSON.stringify(d));
-    sessionStorage.removeItem('cd_activeDrive');
-    return d;
-  },
-
-  getLastDrive() {
-    try { return JSON.parse(sessionStorage.getItem('cd_lastDrive') || 'null'); } catch { return null; }
-  },
-
-  getHistory() {
-    try { return JSON.parse(localStorage.getItem('cd_history') || '[]'); } catch { return []; }
-  },
-
-  getStats() {
-    const h = this.getHistory();
-    if (!h.length) return { total: 0, avgCalm: null, streak: 0 };
-    const avgCalm = Math.round(h.reduce((a, b) => a + b.calmScore, 0) / h.length);
-    return { total: h.length, avgCalm, streak: this.calcStreak(h) };
-  },
-
-  calcStreak(history) {
-    let streak = 0;
-    let d = new Date();
-    for (let i = 0; i < 60; i++) {
-      const ds = d.toDateString();
-      if (history.some(h => new Date(h.endTime).toDateString() === ds)) {
-        streak++;
-        d.setDate(d.getDate() - 1);
-      } else if (i > 0) break;
-      else d.setDate(d.getDate() - 1);
-    }
-    return streak;
-  },
-
-  formatDuration(seconds) {
-    const m = Math.floor(seconds / 60);
-    const s = String(seconds % 60).padStart(2, '0');
-    return m + ':' + s;
-  },
-
-  formatDate(ts) {
-    const d = new Date(ts);
-    const now = new Date();
-    const diff = now - d;
-    if (diff < 86400000 && now.getDate() === d.getDate()) return 'Today, ' + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-    if (diff < 172800000) return 'Yesterday, ' + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-    return d.toLocaleDateString('en-GB', {day:'numeric', month:'short'}) + ', ' + d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-  },
-
-  generateInsight(drive) {
-    const pre = drive.preStress;
-    const score = drive.calmScore;
-    const checkins = drive.checkins || [];
-    const mins = Math.floor(drive.duration / 60);
-
-    if (checkins.length === 0) {
-      if (score >= 80) return `You started at ${pre}/10 stress and drove for ${mins} minutes without checking in — the data suggests a genuinely calm journey.`;
-      return `You started at ${pre}/10 and completed a ${mins}-minute drive. Try checking in mid-drive next time for richer data.`;
-    }
-    const last = checkins[checkins.length - 1].stress;
-    const peak = Math.max(pre, ...checkins.map(c => c.stress));
-    const direction = last < pre ? 'decreased as you drove' : last > pre ? 'built during the drive' : 'stayed consistent throughout';
-    return `Your stress ${direction}. You started at ${pre}/10 and peaked at ${peak}/10. ${score >= 70 ? 'The breathing exercises helped keep things manageable.' : 'The check-ins gave you real data to work with — that awareness is progress.'}`;
-  },
-
-  generateTip(drive) {
-    const pre = drive.preStress;
-    const score = drive.calmScore;
-    if (pre >= 7) return "You drove while already highly stressed. Next time, try one full minute of slow breathing before starting the engine — it measurably lowers your baseline.";
-    if ((drive.checkins || []).length === 0 && drive.duration > 600) return "This was a longer drive with no check-ins. Next time tap the check-in button halfway through — the pattern data becomes useful after 4-5 drives.";
-    if (score < 60) return "Lower calm score this drive. Look at the time of day and route — stress patterns tend to be consistent. Three more logged drives will start showing you where the pressure comes from.";
-    if (score >= 85) return "Strong result. Notice what made this drive different — same route, different time? Less rushing beforehand? Replicating the conditions is the goal.";
-    return "Consistent logging across several drives will show you which routes or times trigger your stress. Keep going.";
-  }
-};
-</script>
 <script>
-window.onload = () => {
-  const history = CD.getHistory();
-  const stats = CD.getStats();
+  let allDrives = [];
 
-  document.getElementById('stat-total').textContent = stats.total;
-  document.getElementById('stat-calm').textContent = stats.avgCalm ? stats.avgCalm + '%' : '—';
-  document.getElementById('stat-streak').textContent = stats.streak;
+  window.onload = function() {
+    allDrives = JSON.parse(localStorage.getItem('driveHistory') || '[]');
+    renderDrives(allDrives);
+    updateStats(allDrives);
+  };
 
-  const listEl = document.getElementById('history-list');
+  function updateStats(drives) {
+    document.getElementById('totalDrives').textContent = drives.length;
 
-  if (!history.length) {
-    listEl.innerHTML = `
-      <div class="text-center py-16 text-[#94a3b8]">
-        <iconify-icon icon="solar:steering-wheel-bold" class="size-16 mx-auto mb-4 opacity-30"></iconify-icon>
-        <p class="text-lg font-semibold mb-2">No drives yet</p>
-        <p class="text-sm">Start your first drive to see your data here.</p>
-      </div>`;
-    return;
+    if (drives.length > 0) {
+      const avgCalm = Math.round(drives.reduce((a, b) => a + b.calmScore, 0) / drives.length);
+      document.getElementById('avgCalm').textContent = avgCalm + '%';
+
+      // Calculate total minutes
+      let totalMins = 0;
+      drives.forEach(d => {
+        const parts = d.duration.split(':');
+        totalMins += parseInt(parts[0] || 0);
+      });
+      document.getElementById('totalTime').textContent = totalMins;
+    }
   }
 
-  listEl.innerHTML = history.map(drive => {
-    const score = drive.calmScore;
-    const stateColor = drive.state === 'Flow' ? 'text-emerald-400 bg-emerald-500/20' : drive.state === 'Calm' ? 'text-[#7dd3fc] bg-[#7dd3fc]/20' : 'text-yellow-400 bg-yellow-500/20';
-    const stateIcon = drive.state === 'Flow' ? 'solar:leaf-bold' : drive.state === 'Calm' ? 'solar:check-circle-bold' : 'solar:shield-warning-bold';
-    const dest = drive.destination ? drive.destination : 'Drive';
-    const mins = Math.floor(drive.duration / 60);
-    const secs = String(drive.duration % 60).padStart(2, '0');
+  function renderDrives(drives) {
+    const list = document.getElementById('driveList');
+    const empty = document.getElementById('emptyState');
 
-    return `
-    <div class="bg-[#1e293b] p-5 rounded-2xl border border-[#334155]/50 shadow-lg space-y-3 mb-3">
-      <div class="flex items-start justify-between">
-        <div>
-          <div class="text-xs text-[#94a3b8] mb-1">${CD.formatDate(drive.endTime)}</div>
-          <div class="font-semibold text-lg">${dest}</div>
+    if (drives.length === 0) {
+      list.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    empty.classList.add('hidden');
+    list.innerHTML = drives.map(drive => {
+      const stateColor = drive.state === 'Flow' ? 'text-emerald-400' : drive.state === 'Calm' ? 'text-primary' : 'text-yellow-400';
+      const stateBg = drive.state === 'Flow' ? 'bg-emerald-500/20' : drive.state === 'Calm' ? 'bg-primary/20' : 'bg-yellow-500/20';
+      const stateIcon = drive.state === 'Flow' ? 'solar:leaf-bold' : drive.state === 'Calm' ? 'solar:check-circle-bold' : 'solar:shield-warning-bold';
+
+      return `
+        <div class="bg-card p-5 rounded-2xl border border-border/50 shadow-lg space-y-3 mb-3">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-xs text-muted-foreground mb-1">${drive.date} at ${drive.time}</div>
+              <div class="font-semibold text-lg">${drive.destination !== 'Unknown' ? 'To: ' + drive.destination : 'No destination set'}</div>
+            </div>
+            <div class="flex items-center gap-1.5 ${stateBg} px-3 py-1.5 rounded-full">
+              <iconify-icon icon="${stateIcon}" class="size-4 ${stateColor}"></iconify-icon>
+              <span class="text-sm font-bold ${stateColor}">${drive.state}</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-4 gap-2 pt-2 border-t border-border/30">
+            <div class="text-center">
+              <div class="text-sm font-mono font-bold text-primary">${drive.calmScore}%</div>
+              <div class="text-[10px] text-muted-foreground uppercase tracking-wider">Calm</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm font-mono font-bold">${drive.duration}</div>
+              <div class="text-[10px] text-muted-foreground uppercase tracking-wider">Time</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm font-mono font-bold">${String(drive.breathCount).padStart(2, '0')}</div>
+              <div class="text-[10px] text-muted-foreground uppercase tracking-wider">Breaths</div>
+            </div>
+            <div class="text-center">
+              <div class="text-sm font-mono font-bold">${String(drive.deEscCount).padStart(2, '0')}</div>
+              <div class="text-[10px] text-muted-foreground uppercase tracking-wider">De-esc</div>
+            </div>
+          </div>
         </div>
-        <div class="flex items-center gap-1.5 ${stateColor} px-3 py-1.5 rounded-full">
-          <iconify-icon icon="${stateIcon}" class="size-4"></iconify-icon>
-          <span class="text-sm font-bold">${drive.state}</span>
-        </div>
-      </div>
-      <div class="grid grid-cols-4 gap-2 pt-2 border-t border-[#334155]/30">
-        <div class="text-center">
-          <div class="text-sm font-['JetBrains_Mono'] font-bold text-[#7dd3fc]">${score}%</div>
-          <div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Calm</div>
-        </div>
-        <div class="text-center">
-          <div class="text-sm font-['JetBrains_Mono'] font-bold">${mins}:${secs}</div>
-          <div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Time</div>
-        </div>
-        <div class="text-center">
-          <div class="text-sm font-['JetBrains_Mono'] font-bold">${String(drive.breathCount || 0).padStart(2,'0')}</div>
-          <div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Breaths</div>
-        </div>
-        <div class="text-center">
-          <div class="text-sm font-['JetBrains_Mono'] font-bold">${String((drive.checkins||[]).length).padStart(2,'0')}</div>
-          <div class="text-[10px] text-[#94a3b8] uppercase tracking-wider">Check-ins</div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-};
+      `;
+    }).join('');
+  }
+
+  function filterDrives(period) {
+    if (period === 'all') {
+      renderDrives(allDrives);
+      updateStats(allDrives);
+      return;
+    }
+
+    const now = new Date();
+    const filtered = allDrives.filter(drive => {
+      const driveDate = new Date(drive.id);
+      const diff = now - driveDate;
+      if (period === 'week') return diff < 7 * 24 * 60 * 60 * 1000;
+      if (period === 'month') return diff < 30 * 24 * 60 * 60 * 1000;
+      return true;
+    });
+
+    renderDrives(filtered);
+    updateStats(filtered);
+  }
+
+  function goBack() {
+    window.location.href = 'pre-drive-setup.html';
+  }
+
+  function startNewDrive() {
+    window.location.href = 'pre-drive-setup.html';
+  }
 </script>
 </body>
 </html>
