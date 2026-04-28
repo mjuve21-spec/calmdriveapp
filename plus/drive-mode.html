@@ -22,21 +22,12 @@
         --color-secondary-foreground: var(--secondary-foreground);
         --color-muted: var(--muted);
         --color-muted-foreground: var(--muted-foreground);
-        --color-accent: var(--accent);
-        --color-accent-foreground: var(--accent-foreground);
         --color-destructive: var(--destructive);
         --color-card: var(--card);
-        --color-card-foreground: var(--card-foreground);
-        --color-popover: var(--popover);
-        --color-popover-foreground: var(--popover-foreground);
         --color-border: var(--border);
-        --color-input: var(--input);
-        --color-ring: var(--ring);
         --font-font-sans: var(--font-sans);
         --font-font-heading: var(--font-heading);
-        --font-font-serif: var(--font-serif);
         --font-font-mono: var(--font-mono);
-        --radius-lg: var(--radius);
       }
 
       :root {
@@ -48,19 +39,12 @@
         --secondary-foreground: #f1f5f9;
         --muted: #1e293b;
         --muted-foreground: #94a3b8;
-        --accent: #334155;
-        --accent-foreground: #f1f5f9;
         --destructive: #ef4444;
         --card: #1e293b;
         --card-foreground: #f1f5f9;
-        --popover: #1e293b;
-        --popover-foreground: #f1f5f9;
         --border: #334155;
-        --input: #1e293b;
-        --ring: #7dd3fc;
         --font-sans: "Manrope";
         --font-heading: "Space Grotesk";
-        --font-serif: "Playfair Display";
         --font-mono: "JetBrains Mono";
         --radius: 0.75rem;
       }
@@ -94,14 +78,15 @@
       <header class="pt-12 px-6 flex justify-between items-start z-10">
         <div class="flex flex-col">
           <div class="flex items-baseline gap-3">
-            <h1 id="speedValue" class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">64</h1>
+            <h1 id="speedValue" class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">0</h1>
             <div class="flex flex-col gap-1">
               <button id="unitToggle" class="text-xl font-medium transition-colors cursor-pointer hover:text-primary">
                 <span id="currentUnit" class="text-primary">MPH</span>
               </button>
-              <span id="altSpeed" class="text-xs text-muted-foreground">103 KPH</span>
+              <span id="altSpeed" class="text-xs text-muted-foreground">0 KPH</span>
             </div>
           </div>
+          <span id="gpsStatus" class="text-xs text-muted-foreground mt-1">📡 Getting GPS...</span>
         </div>
         <div class="flex flex-col items-center justify-center p-3 rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm">
           <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">LIMIT</span>
@@ -177,7 +162,7 @@
     </div>
 
     <script>
-      // ─── Read Settings ─────────────────────────────────────────
+      // ─── Settings ──────────────────────────────────────────────
       const savedInterval = localStorage.getItem('breathInterval') || '4s';
       const breathSeconds = parseInt(savedInterval);
       const voicePreference = localStorage.getItem('voicePreference') || 'random';
@@ -191,6 +176,11 @@
       let driveTimerInterval;
       let driveSeconds = 0;
       let calmPoints = [100];
+      let totalDistanceKM = 0;
+      let lastPosition = null;
+      let isMPH = true;
+      let gpsWatchId = null;
+      let currentSpeedMPS = 0;
 
       // ─── Drive Timer ───────────────────────────────────────────
       function startDriveTimer() {
@@ -200,7 +190,7 @@
           const secs = String(driveSeconds % 60).padStart(2, '0');
           document.getElementById('driveTimer').textContent = mins + ':' + secs;
 
-          // Update calm score slightly randomly to simulate real data
+          // Simulate calm score variation
           const lastCalm = calmPoints[calmPoints.length - 1];
           const newCalm = Math.max(60, Math.min(100, lastCalm + (Math.random() * 6 - 2)));
           calmPoints.push(Math.round(newCalm));
@@ -209,14 +199,108 @@
         }, 1000);
       }
 
-      // ─── Save Drive to History ─────────────────────────────────
+      // ─── GPS Speed & Distance ──────────────────────────────────
+      function startGPS() {
+        if (!navigator.geolocation) {
+          document.getElementById('gpsStatus').textContent = '❌ GPS not supported';
+          return;
+        }
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+          (position) => {
+            currentSpeedMPS = position.coords.speed || 0;
+
+            // Update speed display
+            updateSpeedDisplay();
+
+            // Calculate distance
+            if (lastPosition) {
+              const dist = calculateDistance(
+                lastPosition.coords.latitude,
+                lastPosition.coords.longitude,
+                position.coords.latitude,
+                position.coords.longitude
+              );
+              totalDistanceKM += dist;
+              updateDistanceDisplay();
+            }
+
+            lastPosition = position;
+            document.getElementById('gpsStatus').textContent = '📡 GPS Active';
+          },
+          (error) => {
+            document.getElementById('gpsStatus').textContent = '❌ GPS unavailable';
+            console.log('GPS error:', error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 1000,
+            timeout: 10000
+          }
+        );
+      }
+
+      // ─── Speed Display ─────────────────────────────────────────
+      function updateSpeedDisplay() {
+        const speedMPH = Math.round(currentSpeedMPS * 2.237);
+        const speedKPH = Math.round(currentSpeedMPS * 3.6);
+
+        if (isMPH) {
+          document.getElementById('speedValue').textContent = speedMPH;
+          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
+        } else {
+          document.getElementById('speedValue').textContent = speedKPH;
+          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
+        }
+      }
+
+      // ─── Distance Display ──────────────────────────────────────
+      function updateDistanceDisplay() {
+        if (isMPH) {
+          const miles = (totalDistanceKM * 0.621371).toFixed(1);
+          document.getElementById('distance').textContent = miles;
+          document.getElementById('distanceUnit').textContent = 'Miles';
+        } else {
+          document.getElementById('distance').textContent = totalDistanceKM.toFixed(1);
+          document.getElementById('distanceUnit').textContent = 'KM';
+        }
+      }
+
+      // ─── Calculate Distance Between 2 GPS Points ──────────────
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth radius in KM
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      // ─── Unit Toggle ───────────────────────────────────────────
+      function toggleUnit() {
+        isMPH = !isMPH;
+        document.getElementById('currentUnit').textContent = isMPH ? 'MPH' : 'KPH';
+        document.getElementById('speedLimit').textContent = isMPH ? '60' : '97';
+        document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
+        updateSpeedDisplay();
+        updateDistanceDisplay();
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('unitToggle').addEventListener('click', toggleUnit);
+      });
+
+      // ─── Save Drive ────────────────────────────────────────────
       function saveDrive() {
-        const endTime = Date.now();
-        const durationSeconds = Math.floor((endTime - driveStartTime) / 1000);
+        const durationSeconds = Math.floor((Date.now() - driveStartTime) / 1000);
         const mins = Math.floor(durationSeconds / 60);
         const secs = String(durationSeconds % 60).padStart(2, '0');
         const avgCalm = Math.round(calmPoints.reduce((a, b) => a + b, 0) / calmPoints.length);
         const state = avgCalm >= 85 ? 'Flow' : avgCalm >= 70 ? 'Calm' : 'Tense';
+        const distanceMiles = (totalDistanceKM * 0.621371).toFixed(1);
 
         const drive = {
           id: driveStartTime,
@@ -227,19 +311,18 @@
           calmScore: avgCalm,
           state: state,
           breathCount: breathCount,
-          deEscCount: 0
+          deEscCount: 0,
+          distanceMiles: distanceMiles,
+          distanceKM: totalDistanceKM.toFixed(1)
         };
 
-        // Save to localStorage
         const history = JSON.parse(localStorage.getItem('driveHistory') || '[]');
         history.unshift(drive);
         localStorage.setItem('driveHistory', JSON.stringify(history.slice(0, 50)));
-
-        // Save last drive for summary page
         localStorage.setItem('lastDrive', JSON.stringify(drive));
       }
 
-      // ─── Audio Files ───────────────────────────────────────────
+      // ─── Audio ─────────────────────────────────────────────────
       const audioFiles = {
         start: {
           male: ['../audio/start of drive 1m.mp3','../audio/start of drive 2m.mp3','../audio/start of drive 3m.mp3','../audio/start of drive4m.mp3'],
@@ -261,8 +344,7 @@
       }
 
       function getRandomFile(type) {
-        const gender = getGender();
-        const files = audioFiles[type][gender];
+        const files = audioFiles[type][getGender()];
         return files[Math.floor(Math.random() * files.length)];
       }
 
@@ -293,27 +375,7 @@
         }
       }
 
-      // ─── Unit Toggle ───────────────────────────────────────────
-      let isMPH = true;
-      const speedMPH = 64, speedKPH = 103;
-      const limitMPH = 60, limitKPH = 97;
-      const distanceMiles = 0.0, distanceKM = 0.0;
-
-      function toggleUnit() {
-        isMPH = !isMPH;
-        document.getElementById('speedValue').textContent = isMPH ? speedMPH : speedKPH;
-        document.getElementById('currentUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        document.getElementById('altSpeed').textContent = isMPH ? speedKPH + ' KPH' : speedMPH + ' MPH';
-        document.getElementById('speedLimit').textContent = isMPH ? limitMPH : limitKPH;
-        document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        document.getElementById('distanceUnit').textContent = isMPH ? 'Miles' : 'KM';
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('unitToggle').addEventListener('click', toggleUnit);
-      });
-
-      // ─── Breathing Animation ───────────────────────────────────
+      // ─── Breathing ─────────────────────────────────────────────
       const circle = document.getElementById('breathingCircle');
       const breathText = document.getElementById('breathText');
       const breathTimer = document.getElementById('breathTimer');
@@ -322,7 +384,6 @@
       let countdown = breathSeconds;
       let phase = 'in';
       let countdownInterval;
-
       const messages = { in: 'Inhale', hold: 'Hold', out: 'Exhale' };
       const encouragements = ["You're doing great","Stay calm and focused","Breathe and relax","You've got this","Nice and easy"];
 
@@ -353,11 +414,12 @@
         }, 1000);
       }
 
-      // ─── Navigation ───────────────────────────────────────────
+      // ─── End Drive ─────────────────────────────────────────────
       function endDrive() {
         clearInterval(countdownInterval);
         clearInterval(midDriveInterval);
         clearInterval(driveTimerInterval);
+        if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
         if (currentAudio) currentAudio.pause();
         saveDrive();
         window.location.href = 'post-drive-summary.html';
@@ -370,9 +432,8 @@
       // ─── Start Everything ──────────────────────────────────────
       window.onload = function() {
         startDriveTimer();
-        if (voiceEnabled) {
-          setTimeout(() => playAudio(getRandomFile('start')), 1000);
-        }
+        startGPS();
+        if (voiceEnabled) setTimeout(() => playAudio(getRandomFile('start')), 1000);
         if (breathingEnabled) runPhase('in');
       };
     </script>
