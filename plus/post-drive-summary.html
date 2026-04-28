@@ -52,35 +52,29 @@
   </head>
   <body>
     <div class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden">
-
-      <!-- Icon -->
       <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
         <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
         <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
       </div>
-
-      <!-- Background glow -->
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <!-- Header -->
       <header class="pt-16 px-6 pb-6 text-center z-10">
         <div class="size-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
           <iconify-icon icon="solar:check-circle-bold" class="size-10 text-primary"></iconify-icon>
         </div>
         <h1 class="text-4xl font-heading font-bold text-foreground tracking-tight mb-2">Drive Complete</h1>
-        <p class="text-muted-foreground text-lg max-w-[280px] mx-auto">You maintained a peaceful state throughout your journey.</p>
+        <p id="summarySubtitle" class="text-muted-foreground text-lg max-w-[280px] mx-auto">You maintained a peaceful state throughout your journey.</p>
       </header>
 
-      <!-- Main content -->
       <main class="flex-1 overflow-y-auto px-6 space-y-4 pb-32 z-10">
 
-        <!-- Calmness chart -->
+        <!-- Calmness Score -->
         <div class="bg-card p-6 rounded-3xl border border-border/50 shadow-xl">
-          <div class="flex justify-between items-center mb-6">
+          <div class="flex justify-between items-center mb-4">
             <div>
               <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest">Average Calmness</span>
               <div class="flex items-baseline gap-1 mt-1">
-                <span class="text-4xl font-mono font-bold text-primary">92</span>
+                <span id="calmScore" class="text-4xl font-mono font-bold text-primary">--</span>
                 <span class="text-xl font-mono text-primary/70">%</span>
               </div>
             </div>
@@ -88,52 +82,40 @@
               <iconify-icon icon="solar:heart-pulse-bold" class="size-8 text-primary"></iconify-icon>
             </div>
           </div>
-          <div class="h-24 flex items-end justify-between gap-1 mb-2">
-            <div class="flex-1 bg-primary/20 rounded-t-sm h-12"></div>
-            <div class="flex-1 bg-primary/30 rounded-t-sm h-16"></div>
-            <div class="flex-1 bg-primary/20 rounded-t-sm h-14"></div>
-            <div class="flex-1 bg-primary/40 rounded-t-sm h-20"></div>
-            <div class="flex-1 bg-primary/60 rounded-t-sm h-24"></div>
-            <div class="flex-1 bg-primary/40 rounded-t-sm h-16"></div>
-            <div class="flex-1 bg-primary/20 rounded-t-sm h-12"></div>
-            <div class="flex-1 bg-primary/50 rounded-t-sm h-20"></div>
-            <div class="flex-1 bg-primary/30 rounded-t-sm h-16"></div>
-            <div class="flex-1 bg-primary/70 rounded-t-sm h-24"></div>
-            <div class="flex-1 bg-primary/40 rounded-t-sm h-14"></div>
-            <div class="flex-1 bg-primary/20 rounded-t-sm h-10"></div>
-          </div>
-          <div class="flex justify-between text-[10px] text-muted-foreground font-medium uppercase tracking-tighter">
-            <span>Start</span><span>Peak Traffic</span><span>Arrival</span>
+          <!-- Destination -->
+          <div class="flex items-center gap-2 mt-2">
+            <iconify-icon icon="solar:map-point-bold" class="size-4 text-muted-foreground"></iconify-icon>
+            <span id="destinationText" class="text-sm text-muted-foreground">Unknown destination</span>
           </div>
         </div>
 
-        <!-- Stats grid -->
+        <!-- Stats Grid -->
         <div class="grid grid-cols-2 gap-4">
           <div class="bg-card p-4 rounded-3xl border border-border/50 shadow-lg">
             <iconify-icon icon="solar:clock-circle-bold" class="size-6 text-primary mb-3"></iconify-icon>
             <div class="space-y-1">
-              <span class="block text-2xl font-mono font-bold">24:15</span>
+              <span id="driveDuration" class="block text-2xl font-mono font-bold">--:--</span>
               <span class="block text-xs text-muted-foreground uppercase tracking-wider">Drive Time</span>
             </div>
           </div>
           <div class="bg-card p-4 rounded-3xl border border-border/50 shadow-lg">
             <iconify-icon icon="solar:wind-bold" class="size-6 text-primary mb-3"></iconify-icon>
             <div class="space-y-1">
-              <span class="block text-2xl font-mono font-bold">04</span>
+              <span id="breathCount" class="block text-2xl font-mono font-bold">--</span>
               <span class="block text-xs text-muted-foreground uppercase tracking-wider">Exercises</span>
             </div>
           </div>
           <div class="bg-card p-4 rounded-3xl border border-border/50 shadow-lg">
-            <iconify-icon icon="solar:shield-check-bold" class="size-6 text-primary mb-3"></iconify-icon>
+            <iconify-icon icon="solar:calendar-bold" class="size-6 text-primary mb-3"></iconify-icon>
             <div class="space-y-1">
-              <span class="block text-2xl font-mono font-bold">02</span>
-              <span class="block text-xs text-muted-foreground uppercase tracking-wider">De-escalations</span>
+              <span id="driveDate" class="block text-lg font-mono font-bold">--</span>
+              <span class="block text-xs text-muted-foreground uppercase tracking-wider">Date</span>
             </div>
           </div>
           <div class="bg-card p-4 rounded-3xl border border-border/50 shadow-lg">
-            <iconify-icon icon="solar:leaf-bold" class="size-6 text-emerald-400 mb-3"></iconify-icon>
+            <iconify-icon id="stateIcon" icon="solar:leaf-bold" class="size-6 text-emerald-400 mb-3"></iconify-icon>
             <div class="space-y-1">
-              <span class="block text-2xl font-mono font-bold text-emerald-400">Flow</span>
+              <span id="driveState" class="block text-2xl font-mono font-bold text-emerald-400">--</span>
               <span class="block text-xs text-muted-foreground uppercase tracking-wider">Overall State</span>
             </div>
           </div>
@@ -145,24 +127,18 @@
             <iconify-icon icon="solar:magic-stick-3-bold" class="size-5 text-primary"></iconify-icon>
             <span class="font-semibold text-primary">Personal Insights</span>
           </div>
-          <p class="text-foreground leading-relaxed">"You handled that highway merge beautifully by choosing a calm breath over tension."</p>
+          <p id="insightText" class="text-foreground leading-relaxed">Loading your insights...</p>
           <div class="h-px bg-primary/10 w-full"></div>
-          <p class="text-muted-foreground text-sm leading-relaxed italic">Tip: Try extending your breathing intervals next time you hit stop-and-go traffic.</p>
+          <p id="tipText" class="text-muted-foreground text-sm leading-relaxed italic">Loading tip...</p>
         </div>
-
       </main>
 
-      <!-- Bottom buttons -->
       <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/95 to-transparent z-20">
         <div class="flex flex-col gap-3">
-          <button
-            onclick="finishDrive()"
-            class="w-full h-14 bg-primary text-primary-foreground font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
+          <button onclick="finishDrive()" class="w-full h-14 bg-primary text-primary-foreground font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
             Done
           </button>
-          <button
-            onclick="viewHistory()"
-            class="w-full h-14 bg-secondary text-secondary-foreground font-bold rounded-2xl flex items-center justify-center gap-2 border border-border/50 active:scale-[0.98] transition-transform">
+          <button onclick="viewHistory()" class="w-full h-14 bg-secondary text-secondary-foreground font-bold rounded-2xl flex items-center justify-center gap-2 border border-border/50 active:scale-[0.98] transition-transform">
             <iconify-icon icon="solar:history-bold" class="size-5"></iconify-icon>View History
           </button>
         </div>
@@ -170,6 +146,68 @@
     </div>
 
     <script>
+      // ─── Load Real Drive Data ──────────────────────────────────
+      window.onload = function() {
+        const drive = JSON.parse(localStorage.getItem('lastDrive') || 'null');
+
+        if (drive) {
+          document.getElementById('calmScore').textContent = drive.calmScore;
+          document.getElementById('driveDuration').textContent = drive.duration;
+          document.getElementById('breathCount').textContent = drive.breathCount;
+          document.getElementById('driveDate').textContent = drive.date;
+          document.getElementById('destinationText').textContent = drive.destination !== 'Unknown' ? 'To: ' + drive.destination : 'No destination set';
+
+          // State
+          const stateEl = document.getElementById('driveState');
+          const stateIcon = document.getElementById('stateIcon');
+          stateEl.textContent = drive.state;
+          if (drive.state === 'Flow') {
+            stateEl.className = 'block text-2xl font-mono font-bold text-emerald-400';
+            stateIcon.setAttribute('icon', 'solar:leaf-bold');
+            stateIcon.className = 'size-6 text-emerald-400 mb-3';
+          } else if (drive.state === 'Calm') {
+            stateEl.className = 'block text-2xl font-mono font-bold text-primary';
+            stateIcon.setAttribute('icon', 'solar:check-circle-bold');
+            stateIcon.className = 'size-6 text-primary mb-3';
+          } else {
+            stateEl.className = 'block text-2xl font-mono font-bold text-yellow-400';
+            stateIcon.setAttribute('icon', 'solar:shield-warning-bold');
+            stateIcon.className = 'size-6 text-yellow-400 mb-3';
+          }
+
+          // Subtitle
+          if (drive.calmScore >= 85) {
+            document.getElementById('summarySubtitle').textContent = 'You maintained a peaceful state throughout your journey.';
+          } else if (drive.calmScore >= 70) {
+            document.getElementById('summarySubtitle').textContent = 'Good drive! You stayed mostly calm throughout.';
+          } else {
+            document.getElementById('summarySubtitle').textContent = 'Challenging drive. Every drive is a chance to improve.';
+          }
+
+          // Insights
+          const score = drive.calmScore;
+          const mins = drive.duration;
+          if (score >= 85) {
+            document.getElementById('insightText').textContent = `Excellent drive! You scored ${score}% calmness over ${mins} minutes. Your breathing exercises made a real difference.`;
+            document.getElementById('tipText').textContent = 'Tip: Keep using the breathing exercises - they\'re clearly working for you!';
+          } else if (score >= 70) {
+            document.getElementById('insightText').textContent = `Good drive! You scored ${score}% calmness over ${mins} minutes. There were some tense moments but you handled them well.`;
+            document.getElementById('tipText').textContent = 'Tip: Try the 6s breathing interval next time for deeper relaxation.';
+          } else {
+            document.getElementById('insightText').textContent = `You scored ${score}% calmness over ${mins} minutes. It was a tough drive but you made it through.`;
+            document.getElementById('tipText').textContent = 'Tip: Try leaving a few minutes earlier next time to reduce rush-related stress.';
+          }
+        } else {
+          // No drive data found
+          document.getElementById('calmScore').textContent = '--';
+          document.getElementById('driveDuration').textContent = '--:--';
+          document.getElementById('breathCount').textContent = '--';
+          document.getElementById('driveDate').textContent = '--';
+          document.getElementById('insightText').textContent = 'Complete a drive to see your personal insights here.';
+          document.getElementById('tipText').textContent = 'Start your first drive to begin tracking your calmness journey.';
+        }
+      };
+
       function finishDrive() {
         window.location.href = 'pre-drive-setup.html';
       }
