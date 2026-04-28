@@ -32,25 +32,11 @@
         --color-border: var(--border);
         --color-input: var(--input);
         --color-ring: var(--ring);
-        --color-chart-1: var(--chart-1);
-        --color-chart-2: var(--chart-2);
-        --color-chart-3: var(--chart-3);
-        --color-chart-4: var(--chart-4);
-        --color-chart-5: var(--chart-5);
         --font-font-sans: var(--font-sans);
         --font-font-heading: var(--font-heading);
         --font-font-serif: var(--font-serif);
         --font-font-mono: var(--font-mono);
-        --radius-sm: calc(var(--radius) - 4px);
-        --radius-md: calc(var(--radius) - 2px);
         --radius-lg: var(--radius);
-        --radius-xl: calc(var(--radius) + 4px);
-        --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
-        --tracking-tight: calc(var(--tracking-normal) - 0.025em);
-        --tracking-wide: calc(var(--tracking-normal) + 0.025em);
-        --tracking-wider: calc(var(--tracking-normal) + 0.05em);
-        --tracking-widest: calc(var(--tracking-normal) + 0.1em);
-        --tracking-normal: var(--tracking-normal);
       }
 
       :root {
@@ -72,11 +58,6 @@
         --border: #334155;
         --input: #1e293b;
         --ring: #7dd3fc;
-        --chart-1: #7dd3fc;
-        --chart-2: #5eead4;
-        --chart-3: #a5b4fc;
-        --chart-4: #94a3b8;
-        --chart-5: #cbd5e1;
         --font-sans: "Manrope";
         --font-heading: "Space Grotesk";
         --font-serif: "Playfair Display";
@@ -88,16 +69,13 @@
         0% { transform: scale(1); box-shadow: 0 0 20px -10px rgba(125,211,252,0.3); }
         100% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
       }
-
       @keyframes breatheOut {
         0% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
         100% { transform: scale(1); box-shadow: 0 0 20px -10px rgba(125,211,252,0.3); }
       }
-
       @keyframes holdBreath {
         0%, 100% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
       }
-
       .breathing-circle { transition: all 0.3s ease; }
       .breathe-in { animation: breatheIn var(--breath-duration) ease-in-out forwards; }
       .breathe-out { animation: breatheOut var(--breath-duration) ease-in-out forwards; }
@@ -156,18 +134,18 @@
         <div class="grid grid-cols-3 gap-3">
           <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
             <iconify-icon icon="solar:routing-2-bold" class="size-6 text-primary mb-1"></iconify-icon>
-            <span id="distance" class="text-xl font-bold font-mono text-foreground">12.4</span>
+            <span id="distance" class="text-xl font-bold font-mono text-foreground">0.0</span>
             <span id="distanceUnit" class="text-xs text-muted-foreground uppercase tracking-wider">Miles</span>
           </div>
           <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
             <iconify-icon icon="solar:clock-circle-bold" class="size-6 text-primary mb-1"></iconify-icon>
-            <span class="text-xl font-bold font-mono text-foreground">5:42</span>
-            <span class="text-xs text-muted-foreground uppercase tracking-wider">Arrival</span>
+            <span id="driveTimer" class="text-xl font-bold font-mono text-foreground">0:00</span>
+            <span class="text-xs text-muted-foreground uppercase tracking-wider">Drive Time</span>
           </div>
           <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
-            <iconify-icon icon="solar:traffic-bold" class="size-6 text-emerald-400 mb-1"></iconify-icon>
-            <span class="text-xl font-bold text-emerald-400">Clear</span>
-            <span class="text-xs text-muted-foreground uppercase tracking-wider">Traffic</span>
+            <iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-primary mb-1"></iconify-icon>
+            <span id="calmScore" class="text-xl font-bold text-primary">100%</span>
+            <span class="text-xs text-muted-foreground uppercase tracking-wider">Calm</span>
           </div>
         </div>
       </div>
@@ -199,88 +177,101 @@
     </div>
 
     <script>
-      // ─── Read Settings from localStorage ──────────────────────
+      // ─── Read Settings ─────────────────────────────────────────
       const savedInterval = localStorage.getItem('breathInterval') || '4s';
       const breathSeconds = parseInt(savedInterval);
       const voicePreference = localStorage.getItem('voicePreference') || 'random';
       const breathingEnabled = localStorage.getItem('breathingEnabled') !== 'false';
       const voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
+      const destination = localStorage.getItem('destination') || 'Unknown';
+
+      // ─── Drive Data ────────────────────────────────────────────
+      const driveStartTime = Date.now();
+      let breathCount = 0;
+      let driveTimerInterval;
+      let driveSeconds = 0;
+      let calmPoints = [100];
+
+      // ─── Drive Timer ───────────────────────────────────────────
+      function startDriveTimer() {
+        driveTimerInterval = setInterval(() => {
+          driveSeconds++;
+          const mins = Math.floor(driveSeconds / 60);
+          const secs = String(driveSeconds % 60).padStart(2, '0');
+          document.getElementById('driveTimer').textContent = mins + ':' + secs;
+
+          // Update calm score slightly randomly to simulate real data
+          const lastCalm = calmPoints[calmPoints.length - 1];
+          const newCalm = Math.max(60, Math.min(100, lastCalm + (Math.random() * 6 - 2)));
+          calmPoints.push(Math.round(newCalm));
+          const avgCalm = Math.round(calmPoints.reduce((a, b) => a + b, 0) / calmPoints.length);
+          document.getElementById('calmScore').textContent = avgCalm + '%';
+        }, 1000);
+      }
+
+      // ─── Save Drive to History ─────────────────────────────────
+      function saveDrive() {
+        const endTime = Date.now();
+        const durationSeconds = Math.floor((endTime - driveStartTime) / 1000);
+        const mins = Math.floor(durationSeconds / 60);
+        const secs = String(durationSeconds % 60).padStart(2, '0');
+        const avgCalm = Math.round(calmPoints.reduce((a, b) => a + b, 0) / calmPoints.length);
+        const state = avgCalm >= 85 ? 'Flow' : avgCalm >= 70 ? 'Calm' : 'Tense';
+
+        const drive = {
+          id: driveStartTime,
+          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+          destination: destination,
+          duration: mins + ':' + secs,
+          calmScore: avgCalm,
+          state: state,
+          breathCount: breathCount,
+          deEscCount: 0
+        };
+
+        // Save to localStorage
+        const history = JSON.parse(localStorage.getItem('driveHistory') || '[]');
+        history.unshift(drive);
+        localStorage.setItem('driveHistory', JSON.stringify(history.slice(0, 50)));
+
+        // Save last drive for summary page
+        localStorage.setItem('lastDrive', JSON.stringify(drive));
+      }
 
       // ─── Audio Files ───────────────────────────────────────────
       const audioFiles = {
         start: {
-          male: [
-            '../audio/start of drive 1m.mp3',
-            '../audio/start of drive 2m.mp3',
-            '../audio/start of drive 3m.mp3',
-            '../audio/start of drive4m.mp3'
-          ],
-          female: [
-            '../audio/start of drive 1w.mp3',
-            '../audio/start of drive 2 w.mp3',
-            '../audio/start of drive 3w.mp3',
-            '../audio/start of drive 4w.mp3'
-          ]
+          male: ['../audio/start of drive 1m.mp3','../audio/start of drive 2m.mp3','../audio/start of drive 3m.mp3','../audio/start of drive4m.mp3'],
+          female: ['../audio/start of drive 1w.mp3','../audio/start of drive 2 w.mp3','../audio/start of drive 3w.mp3','../audio/start of drive 4w.mp3']
         },
         mid: {
-          male: [
-            '../audio/mid-drive 1w.mp3',
-            '../audio/mid-drive 2w.mp3',
-            '../audio/mid-drive 3w.mp3',
-            '../audio/mid-drive 4w.mp3'
-          ],
-          female: [
-            '../audio/mid drive 1m.mp3',
-            '../audio/mid drive 2m.mp3',
-            '../audio/mid drive 3m.mp3',
-            '../audio/mid drive 4m.mp3'
-          ]
+          male: ['../audio/mid drive 1m.mp3','../audio/mid drive 2m.mp3','../audio/mid drive 3m.mp3','../audio/mid drive 4m.mp3'],
+          female: ['../audio/mid-drive 1w.mp3','../audio/mid-drive 2w.mp3','../audio/mid-drive 3w.mp3','../audio/mid-drive 4w.mp3']
         },
         reminder: {
-          male: [
-            '../audio/reminder1.mp3',
-            '../audio/reminder2.mp3',
-            '../audio/reminder3.mp3',
-            '../audio/reminder4.mp3',
-            '../audio/reminder5.mp3',
-            '../audio/reminder6.mp3'
-          ],
-          female: [
-            '../audio/reminder1.mp3',
-            '../audio/reminder2.mp3',
-            '../audio/reminder3.mp3',
-            '../audio/reminder4.mp3',
-            '../audio/reminder5.mp3',
-            '../audio/reminder6.mp3'
-          ]
+          male: ['../audio/reminder1.mp3','../audio/reminder2.mp3','../audio/reminder3.mp3','../audio/reminder4.mp3','../audio/reminder5.mp3','../audio/reminder6.mp3'],
+          female: ['../audio/reminder1.mp3','../audio/reminder2.mp3','../audio/reminder3.mp3','../audio/reminder4.mp3','../audio/reminder5.mp3','../audio/reminder6.mp3']
         }
       };
 
-      // ─── Get Voice Gender ──────────────────────────────────────
       function getGender() {
-        if (voicePreference === 'random') {
-          return Math.random() > 0.5 ? 'male' : 'female';
-        }
+        if (voicePreference === 'random') return Math.random() > 0.5 ? 'male' : 'female';
         return voicePreference;
       }
 
-      // ─── Get Random File ───────────────────────────────────────
       function getRandomFile(type) {
         const gender = getGender();
         const files = audioFiles[type][gender];
         return files[Math.floor(Math.random() * files.length)];
       }
 
-      // ─── Audio Player ──────────────────────────────────────────
       let currentAudio = null;
       let audioPlaying = false;
       let midDriveInterval = null;
 
       function playAudio(file) {
-        if (currentAudio) {
-          currentAudio.pause();
-          currentAudio = null;
-        }
+        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
         currentAudio = new Audio(file);
         currentAudio.play().catch(e => console.log('Audio error:', e));
       }
@@ -289,23 +280,15 @@
         audioPlaying = !audioPlaying;
         const label = document.getElementById('audioLabel');
         const btn = document.getElementById('audioBtn');
-
         if (audioPlaying) {
           label.textContent = 'Pause Audio';
           btn.classList.add('bg-primary/20');
           playAudio(getRandomFile('reminder'));
-
-          // Play reminder every 3 minutes
-          midDriveInterval = setInterval(() => {
-            playAudio(getRandomFile('mid'));
-          }, 180000);
+          midDriveInterval = setInterval(() => playAudio(getRandomFile('mid')), 180000);
         } else {
           label.textContent = 'Calm Audio';
           btn.classList.remove('bg-primary/20');
-          if (currentAudio) {
-            currentAudio.pause();
-            currentAudio = null;
-          }
+          if (currentAudio) { currentAudio.pause(); currentAudio = null; }
           clearInterval(midDriveInterval);
         }
       }
@@ -314,7 +297,7 @@
       let isMPH = true;
       const speedMPH = 64, speedKPH = 103;
       const limitMPH = 60, limitKPH = 97;
-      const distanceMiles = 12.4, distanceKM = 20.0;
+      const distanceMiles = 0.0, distanceKM = 0.0;
 
       function toggleUnit() {
         isMPH = !isMPH;
@@ -323,7 +306,6 @@
         document.getElementById('altSpeed').textContent = isMPH ? speedKPH + ' KPH' : speedMPH + ' MPH';
         document.getElementById('speedLimit').textContent = isMPH ? limitMPH : limitKPH;
         document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        document.getElementById('distance').textContent = isMPH ? distanceMiles : distanceKM;
         document.getElementById('distanceUnit').textContent = isMPH ? 'Miles' : 'KM';
       }
 
@@ -342,13 +324,7 @@
       let countdownInterval;
 
       const messages = { in: 'Inhale', hold: 'Hold', out: 'Exhale' };
-      const encouragements = [
-        "You're doing great",
-        "Stay calm and focused",
-        "Breathe and relax",
-        "You've got this",
-        "Nice and easy"
-      ];
+      const encouragements = ["You're doing great","Stay calm and focused","Breathe and relax","You've got this","Nice and easy"];
 
       function runPhase(p) {
         phase = p;
@@ -357,7 +333,7 @@
         breathTimer.textContent = countdown;
         circle.classList.remove('breathe-in', 'breathe-out', 'breathe-hold');
         void circle.offsetWidth;
-        if (phase === 'in') circle.classList.add('breathe-in');
+        if (phase === 'in') { circle.classList.add('breathe-in'); breathCount++; }
         else if (phase === 'out') circle.classList.add('breathe-out');
         else circle.classList.add('breathe-hold');
 
@@ -370,8 +346,7 @@
             if (phase === 'in') runPhase('hold');
             else if (phase === 'hold') runPhase('out');
             else {
-              const msg = encouragements[Math.floor(Math.random() * encouragements.length)];
-              document.getElementById('encouragement').textContent = msg;
+              document.getElementById('encouragement').textContent = encouragements[Math.floor(Math.random() * encouragements.length)];
               runPhase('in');
             }
           }
@@ -382,8 +357,10 @@
       function endDrive() {
         clearInterval(countdownInterval);
         clearInterval(midDriveInterval);
+        clearInterval(driveTimerInterval);
         if (currentAudio) currentAudio.pause();
-        window.location.href = 'https://mjuve21-spec.github.io/calmdriveapp/plus/post-drive-summary.html';
+        saveDrive();
+        window.location.href = 'post-drive-summary.html';
       }
 
       function openSettings() {
@@ -392,17 +369,11 @@
 
       // ─── Start Everything ──────────────────────────────────────
       window.onload = function() {
-        // Play start of drive audio
+        startDriveTimer();
         if (voiceEnabled) {
-          setTimeout(() => {
-            playAudio(getRandomFile('start'));
-          }, 1000);
+          setTimeout(() => playAudio(getRandomFile('start')), 1000);
         }
-
-        // Start breathing if enabled
-        if (breathingEnabled) {
-          runPhase('in');
-        }
+        if (breathingEnabled) runPhase('in');
       };
     </script>
   </body>
