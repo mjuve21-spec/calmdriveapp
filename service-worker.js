@@ -1,17 +1,17 @@
-const CACHE_NAME = 'calmdrive-v2';
+// Force fresh install by incrementing version
+const CACHE_NAME = 'calmdrive-v4';
 
-// Assets to cache on install
+// Only cache audio files - NEVER cache HTML pages
 const PRECACHE_URLS = [
-  './icon192x192.png',
-  './audio/reminder1.mp3',
-  './audio/reminder2.mp3',
-  './audio/reminder3.mp3',
-  './audio/reminder4.mp3',
-  './audio/reminder5.mp3',
-  './audio/reminder6.mp3'
+  '../audio/reminder1.mp3',
+  '../audio/reminder2.mp3',
+  '../audio/reminder3.mp3',
+  '../audio/reminder4.mp3',
+  '../audio/reminder5.mp3',
+  '../audio/reminder6.mp3'
 ];
 
-// Install event - cache only audio and images
+// Install - cache only audio
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -21,13 +21,15 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate event - clean up old caches
+// Activate - delete ALL old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
+          // Delete everything that isn't current cache
           if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -36,26 +38,28 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - ALWAYS get HTML pages fresh from network
+// Fetch - ALWAYS get HTML fresh, never from cache
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+  const url = new URL(event.request.url);
 
-  // Always fetch HTML pages fresh - never serve from cache
-  if (request.destination === 'document' || url.pathname.endsWith('.html')) {
+  // ALWAYS fetch HTML pages fresh from network - NO EXCEPTIONS
+  if (event.request.destination === 'document' || 
+      url.pathname.endsWith('.html') || 
+      url.pathname.endsWith('/')) {
     event.respondWith(
-      fetch(request).catch(() => caches.match(request))
+      fetch(event.request, { cache: 'no-store' })
+        .catch(() => fetch(event.request))
     );
     return;
   }
 
-  // For audio and images - serve from cache if available
-  if (request.destination === 'audio' || request.destination === 'image') {
+  // For audio files only - use cache
+  if (event.request.destination === 'audio') {
     event.respondWith(
-      caches.match(request).then(cached => {
-        return cached || fetch(request).then(response => {
+      caches.match(event.request).then(cached => {
+        return cached || fetch(event.request).then(response => {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           return response;
         });
       })
@@ -63,6 +67,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Everything else - network first
-  event.respondWith(fetch(request).catch(() => caches.match(request)));
+  // Everything else - always network first
+  event.respondWith(
+    fetch(event.request, { cache: 'no-store' })
+      .catch(() => caches.match(event.request))
+  );
 });
