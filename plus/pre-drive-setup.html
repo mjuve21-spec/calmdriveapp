@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ActiveDrive</title>
+    <title>PreDriveSetup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -22,12 +22,24 @@
         --color-secondary-foreground: var(--secondary-foreground);
         --color-muted: var(--muted);
         --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
         --color-destructive: var(--destructive);
         --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
         --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
         --font-font-sans: var(--font-sans);
         --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
         --font-font-mono: var(--font-mono);
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
       }
 
       :root {
@@ -39,403 +51,290 @@
         --secondary-foreground: #f1f5f9;
         --muted: #1e293b;
         --muted-foreground: #94a3b8;
+        --accent: #334155;
+        --accent-foreground: #f1f5f9;
         --destructive: #ef4444;
         --card: #1e293b;
         --card-foreground: #f1f5f9;
+        --popover: #1e293b;
+        --popover-foreground: #f1f5f9;
         --border: #334155;
+        --input: #1e293b;
+        --ring: #7dd3fc;
         --font-sans: "Manrope";
         --font-heading: "Space Grotesk";
+        --font-serif: "Playfair Display";
         --font-mono: "JetBrains Mono";
         --radius: 0.75rem;
       }
-
-      @keyframes breatheIn {
-        0% { transform: scale(1); box-shadow: 0 0 20px -10px rgba(125,211,252,0.3); }
-        100% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
-      }
-      @keyframes breatheOut {
-        0% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
-        100% { transform: scale(1); box-shadow: 0 0 20px -10px rgba(125,211,252,0.3); }
-      }
-      @keyframes holdBreath {
-        0%, 100% { transform: scale(1.2); box-shadow: 0 0 60px -5px rgba(125,211,252,0.6); }
-      }
-      .breathing-circle { transition: all 0.3s ease; }
-      .breathe-in { animation: breatheIn var(--breath-duration) ease-in-out forwards; }
-      .breathe-out { animation: breatheOut var(--breath-duration) ease-in-out forwards; }
-      .breathe-hold { animation: holdBreath var(--breath-duration) ease-in-out forwards; }
     </style>
   </head>
   <body>
     <div class="flex flex-col h-full bg-background font-sans text-foreground relative overflow-hidden">
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-
       <div class="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
         <img src="icon-plus-192.png" alt="CalmDrive" class="size-8 rounded-lg shadow-lg shadow-primary/20" />
         <span class="text-sm font-heading font-bold text-foreground tracking-wide">Calm Drive</span>
       </div>
+      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <header class="pt-12 px-6 flex justify-between items-start z-10">
-        <div class="flex flex-col">
-          <div class="flex items-baseline gap-3">
-            <h1 id="speedValue" class="text-8xl font-mono font-bold tracking-tighter text-foreground leading-none">0</h1>
-            <div class="flex flex-col gap-1">
-              <button id="unitToggle" class="text-xl font-medium transition-colors cursor-pointer hover:text-primary">
-                <span id="currentUnit" class="text-primary">MPH</span>
-              </button>
-              <span id="altSpeed" class="text-xs text-muted-foreground">0 KPH</span>
-            </div>
-          </div>
-          <span id="gpsStatus" class="text-xs text-muted-foreground mt-1">📡 Getting GPS...</span>
-        </div>
-        <div class="flex flex-col items-center justify-center p-3 rounded-2xl border border-white/10 bg-card/50 backdrop-blur-sm">
-          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">LIMIT</span>
-          <div class="size-10 rounded-full border-2 border-destructive flex items-center justify-center bg-white/5">
-            <span id="speedLimit" class="text-lg font-bold font-mono">60</span>
-          </div>
-          <span id="limitUnit" class="text-[10px] text-muted-foreground mt-0.5">MPH</span>
+      <header class="pt-14 px-6 pb-8 z-10">
+        <div class="flex flex-col space-y-1">
+          <h1 class="text-3xl font-heading font-bold text-foreground tracking-tight">Prepare Your Drive</h1>
+          <p class="text-lg text-muted-foreground">Set your focus and choose your peace.</p>
         </div>
       </header>
 
-      <main class="flex-1 flex flex-col items-center justify-center relative z-10 px-6 space-y-10">
-        <div class="relative flex items-center justify-center py-8">
-          <div class="absolute size-72 rounded-full border border-primary/20 scale-110 opacity-20"></div>
-          <div class="absolute size-64 rounded-full border border-primary/30 scale-105 opacity-40"></div>
-          <div id="breathingCircle" class="breathing-circle size-56 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/40 backdrop-blur-md flex items-center justify-center" style="--breath-duration: 4s">
-            <div class="text-center space-y-1">
-              <span id="breathText" class="block text-sm font-medium text-primary uppercase tracking-widest">Inhale</span>
-              <iconify-icon icon="solar:wind-bold" class="size-10 text-primary mx-auto opacity-80"></iconify-icon>
-              <span id="breathTimer" class="block text-2xl font-mono font-bold text-primary">4</span>
+      <main class="flex-1 px-6 space-y-6 overflow-y-auto pb-32 z-10">
+
+        <!-- Destination -->
+        <div class="relative">
+          <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <iconify-icon icon="solar:magnifer-linear" class="size-5 text-muted-foreground"></iconify-icon>
+          </div>
+          <input type="text" id="destination" placeholder="Where are we heading?"
+            class="w-full bg-input h-14 pl-12 pr-4 rounded-2xl text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/50 outline-none transition-all shadow-sm" />
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <span class="text-xs font-bold text-muted-foreground uppercase tracking-widest">Calming Preferences</span>
+        </div>
+
+        <!-- Breathing Exercises -->
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-xl bg-primary/10">
+                <iconify-icon icon="solar:wind-bold" class="size-6 text-primary"></iconify-icon>
+              </div>
+              <span class="font-semibold text-lg">Breathing Exercises</span>
+            </div>
+            <div id="breathingToggle" onclick="toggleBreathing()" class="w-12 h-6 bg-primary rounded-full relative cursor-pointer transition-colors">
+              <div id="breathingKnob" class="absolute right-1 top-1 size-4 bg-primary-foreground rounded-full transition-all"></div>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button id="interval4s" onclick="selectInterval('4s', 'interval4s')" class="interval-btn flex-1 py-2 bg-primary/20 text-primary rounded-lg text-sm font-bold border border-primary/30 transition-colors">4s Interval</button>
+            <button id="interval6s" onclick="selectInterval('6s', 'interval6s')" class="interval-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">6s Interval</button>
+            <button id="interval8s" onclick="selectInterval('8s', 'interval8s')" class="interval-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">8s Interval</button>
+          </div>
+        </div>
+
+        <!-- Voice Preference -->
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-primary/10">
+              <iconify-icon icon="solar:microphone-bold" class="size-6 text-primary"></iconify-icon>
+            </div>
+            <span class="font-semibold text-lg">Voice Preference</span>
+          </div>
+          <div class="flex gap-2">
+            <button id="voiceMale" onclick="selectVoice('male')" class="voice-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">👨 Male</button>
+            <button id="voiceFemale" onclick="selectVoice('female')" class="voice-btn flex-1 py-2 bg-background/50 text-muted-foreground rounded-lg text-sm font-medium border border-border/30 transition-colors">👩 Female</button>
+            <button id="voiceRandom" onclick="selectVoice('random')" class="voice-btn flex-1 py-2 bg-primary/20 text-primary rounded-lg text-sm font-bold border border-primary/30 transition-colors">🎲 Random</button>
+          </div>
+        </div>
+
+        <!-- Alert Sensitivity -->
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="p-2.5 rounded-xl bg-primary/10">
+                <iconify-icon icon="solar:bell-bing-bold" class="size-6 text-primary"></iconify-icon>
+              </div>
+              <span class="font-semibold text-lg">Alert Sensitivity</span>
+            </div>
+            <span id="sensitivityLabel" class="text-xs font-mono font-bold text-primary uppercase">Vigilant</span>
+          </div>
+          <div class="px-1 py-4">
+            <div class="h-1.5 w-full bg-background rounded-full relative" id="sliderTrack">
+              <div id="sensitivityFill" class="absolute inset-y-0 left-0 w-3/4 bg-primary rounded-full"></div>
+              <div id="sensitivitySlider" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-5 bg-foreground border-4 border-primary rounded-full shadow-lg cursor-pointer" style="left: 75%"></div>
+            </div>
+            <div class="flex justify-between mt-3">
+              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Minimal</span>
+              <span class="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">Balanced</span>
+              <span class="text-[10px] text-primary uppercase font-bold tracking-tighter">Vigilant</span>
             </div>
           </div>
         </div>
-        <div class="text-center space-y-2">
-          <h2 id="encouragement" class="text-3xl font-heading font-medium text-foreground tracking-tight">You're doing great</h2>
-          <p class="text-lg text-muted-foreground">Traffic is light. Relax your shoulders.</p>
+
+        <!-- Voice Guidance -->
+        <div class="bg-card p-5 rounded-2xl shadow-lg border border-border/50 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-primary/10">
+              <iconify-icon icon="solar:user-speak-rounded-bold" class="size-6 text-primary"></iconify-icon>
+            </div>
+            <span class="font-semibold text-lg">Voice Guidance</span>
+          </div>
+          <div id="voiceToggle" onclick="toggleVoice()" class="w-12 h-6 bg-muted rounded-full relative cursor-pointer transition-colors">
+            <div id="voiceKnob" class="absolute left-1 top-1 size-4 bg-muted-foreground rounded-full transition-all"></div>
+          </div>
         </div>
+
       </main>
 
-      <div class="px-6 pb-8 z-10">
-        <div class="grid grid-cols-3 gap-3">
-          <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
-            <iconify-icon icon="solar:routing-2-bold" class="size-6 text-primary mb-1"></iconify-icon>
-            <span id="distance" class="text-xl font-bold font-mono text-foreground">0.0</span>
-            <span id="distanceUnit" class="text-xs text-muted-foreground uppercase tracking-wider">Miles</span>
-          </div>
-          <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
-            <iconify-icon icon="solar:clock-circle-bold" class="size-6 text-primary mb-1"></iconify-icon>
-            <span id="driveTimer" class="text-xl font-bold font-mono text-foreground">0:00</span>
-            <span class="text-xs text-muted-foreground uppercase tracking-wider">Drive Time</span>
-          </div>
-          <div class="bg-card p-4 rounded-2xl flex flex-col items-center justify-center text-center space-y-1 shadow-lg border border-border/50">
-            <iconify-icon icon="solar:heart-pulse-bold" class="size-6 text-primary mb-1"></iconify-icon>
-            <span id="calmScore" class="text-xl font-bold text-primary">100%</span>
-            <span class="text-xs text-muted-foreground uppercase tracking-wider">Calm</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="px-6 pb-8 z-10">
-        <div class="h-20 bg-card rounded-3xl flex items-center justify-between px-2 shadow-xl border border-border/50">
-          <button onclick="toggleAudio()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group">
-            <div id="audioBtn" class="p-2 rounded-full bg-background/50 group-hover:bg-primary/20 transition-colors">
-              <iconify-icon icon="solar:music-library-2-bold" class="size-6 text-primary"></iconify-icon>
-            </div>
-            <span id="audioLabel" class="text-[10px] font-medium text-muted-foreground">Calm Audio</span>
-          </button>
-          <div class="w-px h-8 bg-border/50"></div>
-          <button onclick="endDrive()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors">
-            <div class="size-14 rounded-full bg-destructive flex items-center justify-center shadow-lg shadow-destructive/20 border-4 border-card -mt-8">
-              <iconify-icon icon="solar:stop-bold" class="size-6 text-white"></iconify-icon>
-            </div>
-            <span class="text-[10px] font-medium text-destructive mt-1">End Drive</span>
-          </button>
-          <div class="w-px h-8 bg-border/50"></div>
-          <button onclick="openSettings()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group">
-            <div class="p-2 rounded-full bg-background/50 group-hover:bg-primary/20 transition-colors">
-              <iconify-icon icon="solar:settings-bold" class="size-6 text-primary"></iconify-icon>
-            </div>
-            <span class="text-[10px] font-medium text-muted-foreground">Settings</span>
-          </button>
-        </div>
+      <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background/90 to-transparent pt-10 z-20">
+        <button onclick="startDrive()" class="w-full h-16 bg-primary text-primary-foreground rounded-2xl font-heading font-bold text-xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 active:scale-[0.98] transition-transform">
+          <iconify-icon icon="solar:steering-wheel-bold" class="size-6"></iconify-icon>Start Drive
+        </button>
       </div>
     </div>
 
     <script>
-      // ─── Settings ──────────────────────────────────────────────
-      const savedInterval = localStorage.getItem('breathInterval') || '4s';
-      const breathSeconds = parseInt(savedInterval);
-      const voicePreference = localStorage.getItem('voicePreference') || 'random';
-      const breathingEnabled = localStorage.getItem('breathingEnabled') !== 'false';
-      const voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
-      const destination = localStorage.getItem('destination') || 'Unknown';
+      const BASE = 'https://mjuve21-spec.github.io/calmdriveapp/plus/';
+      let breathingEnabled = true;
+      let voiceEnabled = false;
+      let selectedInterval = '4s';
+      let selectedVoice = 'random';
+      let sensitivity = 75;
 
-      // ─── Drive Data ────────────────────────────────────────────
-      const driveStartTime = Date.now();
-      let breathCount = 0;
-      let driveTimerInterval;
-      let driveSeconds = 0;
-      let calmPoints = [100];
-      let totalDistanceKM = 0;
-      let lastPosition = null;
-      let isMPH = true;
-      let gpsWatchId = null;
-      let currentSpeedMPS = 0;
-
-      // ─── Drive Timer ───────────────────────────────────────────
-      function startDriveTimer() {
-        driveTimerInterval = setInterval(() => {
-          driveSeconds++;
-          const mins = Math.floor(driveSeconds / 60);
-          const secs = String(driveSeconds % 60).padStart(2, '0');
-          document.getElementById('driveTimer').textContent = mins + ':' + secs;
-
-          // Simulate calm score variation
-          const lastCalm = calmPoints[calmPoints.length - 1];
-          const newCalm = Math.max(60, Math.min(100, lastCalm + (Math.random() * 6 - 2)));
-          calmPoints.push(Math.round(newCalm));
-          const avgCalm = Math.round(calmPoints.reduce((a, b) => a + b, 0) / calmPoints.length);
-          document.getElementById('calmScore').textContent = avgCalm + '%';
-        }, 1000);
-      }
-
-      // ─── GPS Speed & Distance ──────────────────────────────────
-      function startGPS() {
-        if (!navigator.geolocation) {
-          document.getElementById('gpsStatus').textContent = '❌ GPS not supported';
-          return;
-        }
-
-        gpsWatchId = navigator.geolocation.watchPosition(
-          (position) => {
-            currentSpeedMPS = position.coords.speed || 0;
-
-            // Update speed display
-            updateSpeedDisplay();
-
-            // Calculate distance
-            if (lastPosition) {
-              const dist = calculateDistance(
-                lastPosition.coords.latitude,
-                lastPosition.coords.longitude,
-                position.coords.latitude,
-                position.coords.longitude
-              );
-              totalDistanceKM += dist;
-              updateDistanceDisplay();
-            }
-
-            lastPosition = position;
-            document.getElementById('gpsStatus').textContent = '📡 GPS Active';
-          },
-          (error) => {
-            document.getElementById('gpsStatus').textContent = '❌ GPS unavailable';
-            console.log('GPS error:', error);
-          },
-          {
-            enableHighAccuracy: true,
-            maximumAge: 1000,
-            timeout: 10000
-          }
-        );
-      }
-
-      // ─── Speed Display ─────────────────────────────────────────
-      function updateSpeedDisplay() {
-        const speedMPH = Math.round(currentSpeedMPS * 2.237);
-        const speedKPH = Math.round(currentSpeedMPS * 3.6);
-
-        if (isMPH) {
-          document.getElementById('speedValue').textContent = speedMPH;
-          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
-        } else {
-          document.getElementById('speedValue').textContent = speedKPH;
-          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
-        }
-      }
-
-      // ─── Distance Display ──────────────────────────────────────
-      function updateDistanceDisplay() {
-        if (isMPH) {
-          const miles = (totalDistanceKM * 0.621371).toFixed(1);
-          document.getElementById('distance').textContent = miles;
-          document.getElementById('distanceUnit').textContent = 'Miles';
-        } else {
-          document.getElementById('distance').textContent = totalDistanceKM.toFixed(1);
-          document.getElementById('distanceUnit').textContent = 'KM';
-        }
-      }
-
-      // ─── Calculate Distance Between 2 GPS Points ──────────────
-      function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Earth radius in KM
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-          Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
-      }
-
-      // ─── Unit Toggle ───────────────────────────────────────────
-      function toggleUnit() {
-        isMPH = !isMPH;
-        document.getElementById('currentUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        document.getElementById('speedLimit').textContent = isMPH ? '60' : '97';
-        document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        updateSpeedDisplay();
-        updateDistanceDisplay();
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('unitToggle').addEventListener('click', toggleUnit);
-      });
-
-      // ─── Save Drive ────────────────────────────────────────────
-      function saveDrive() {
-        const durationSeconds = Math.floor((Date.now() - driveStartTime) / 1000);
-        const mins = Math.floor(durationSeconds / 60);
-        const secs = String(durationSeconds % 60).padStart(2, '0');
-        const avgCalm = Math.round(calmPoints.reduce((a, b) => a + b, 0) / calmPoints.length);
-        const state = avgCalm >= 85 ? 'Flow' : avgCalm >= 70 ? 'Calm' : 'Tense';
-        const distanceMiles = (totalDistanceKM * 0.621371).toFixed(1);
-
-        const drive = {
-          id: driveStartTime,
-          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-          time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
-          destination: destination,
-          duration: mins + ':' + secs,
-          calmScore: avgCalm,
-          state: state,
-          breathCount: breathCount,
-          deEscCount: 0,
-          distanceMiles: distanceMiles,
-          distanceKM: totalDistanceKM.toFixed(1)
-        };
-
-        const history = JSON.parse(localStorage.getItem('driveHistory') || '[]');
-        history.unshift(drive);
-        localStorage.setItem('driveHistory', JSON.stringify(history.slice(0, 50)));
-        localStorage.setItem('lastDrive', JSON.stringify(drive));
-      }
-
-      // ─── Audio ─────────────────────────────────────────────────
-      const audioFiles = {
-        start: {
-          male: ['../audio/start of drive 1m.mp3','../audio/start of drive 2m.mp3','../audio/start of drive 3m.mp3','../audio/start of drive4m.mp3'],
-          female: ['../audio/start of drive 1w.mp3','../audio/start of drive 2 w.mp3','../audio/start of drive 3w.mp3','../audio/start of drive 4w.mp3']
-        },
-        mid: {
-          male: ['../audio/mid drive 1m.mp3','../audio/mid drive 2m.mp3','../audio/mid drive 3m.mp3','../audio/mid drive 4m.mp3'],
-          female: ['../audio/mid-drive 1w.mp3','../audio/mid-drive 2w.mp3','../audio/mid-drive 3w.mp3','../audio/mid-drive 4w.mp3']
-        },
-        reminder: {
-          male: ['../audio/reminder1.mp3','../audio/reminder2.mp3','../audio/reminder3.mp3','../audio/reminder4.mp3','../audio/reminder5.mp3','../audio/reminder6.mp3'],
-          female: ['../audio/reminder1.mp3','../audio/reminder2.mp3','../audio/reminder3.mp3','../audio/reminder4.mp3','../audio/reminder5.mp3','../audio/reminder6.mp3']
-        }
-      };
-
-      function getGender() {
-        if (voicePreference === 'random') return Math.random() > 0.5 ? 'male' : 'female';
-        return voicePreference;
-      }
-
-      function getRandomFile(type) {
-        const files = audioFiles[type][getGender()];
-        return files[Math.floor(Math.random() * files.length)];
-      }
-
-      let currentAudio = null;
-      let audioPlaying = false;
-      let midDriveInterval = null;
-
-      function playAudio(file) {
-        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-        currentAudio = new Audio(file);
-        currentAudio.play().catch(e => console.log('Audio error:', e));
-      }
-
-      function toggleAudio() {
-        audioPlaying = !audioPlaying;
-        const label = document.getElementById('audioLabel');
-        const btn = document.getElementById('audioBtn');
-        if (audioPlaying) {
-          label.textContent = 'Pause Audio';
-          btn.classList.add('bg-primary/20');
-          playAudio(getRandomFile('reminder'));
-          midDriveInterval = setInterval(() => playAudio(getRandomFile('mid')), 180000);
-        } else {
-          label.textContent = 'Calm Audio';
-          btn.classList.remove('bg-primary/20');
-          if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-          clearInterval(midDriveInterval);
-        }
-      }
-
-      // ─── Breathing ─────────────────────────────────────────────
-      const circle = document.getElementById('breathingCircle');
-      const breathText = document.getElementById('breathText');
-      const breathTimer = document.getElementById('breathTimer');
-      circle.style.setProperty('--breath-duration', breathSeconds + 's');
-
-      let countdown = breathSeconds;
-      let phase = 'in';
-      let countdownInterval;
-      const messages = { in: 'Inhale', hold: 'Hold', out: 'Exhale' };
-      const encouragements = ["You're doing great","Stay calm and focused","Breathe and relax","You've got this","Nice and easy"];
-
-      function runPhase(p) {
-        phase = p;
-        countdown = breathSeconds;
-        breathText.textContent = messages[phase];
-        breathTimer.textContent = countdown;
-        circle.classList.remove('breathe-in', 'breathe-out', 'breathe-hold');
-        void circle.offsetWidth;
-        if (phase === 'in') { circle.classList.add('breathe-in'); breathCount++; }
-        else if (phase === 'out') circle.classList.add('breathe-out');
-        else circle.classList.add('breathe-hold');
-
-        clearInterval(countdownInterval);
-        countdownInterval = setInterval(() => {
-          countdown--;
-          breathTimer.textContent = countdown;
-          if (countdown <= 0) {
-            clearInterval(countdownInterval);
-            if (phase === 'in') runPhase('hold');
-            else if (phase === 'hold') runPhase('out');
-            else {
-              document.getElementById('encouragement').textContent = encouragements[Math.floor(Math.random() * encouragements.length)];
-              runPhase('in');
-            }
-          }
-        }, 1000);
-      }
-
-      // ─── End Drive ─────────────────────────────────────────────
-      function endDrive() {
-        clearInterval(countdownInterval);
-        clearInterval(midDriveInterval);
-        clearInterval(driveTimerInterval);
-        if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-        if (currentAudio) currentAudio.pause();
-        saveDrive();
-        window.location.href = 'post-drive-summary.html';
-      }
-
-      function openSettings() {
-        alert('Settings coming soon!');
-      }
-
-      // ─── Start Everything ──────────────────────────────────────
       window.onload = function() {
-        startDriveTimer();
-        startGPS();
-        if (voiceEnabled) setTimeout(() => playAudio(getRandomFile('start')), 1000);
-        if (breathingEnabled) runPhase('in');
+        const savedInterval = localStorage.getItem('breathInterval') || '4s';
+        selectInterval(savedInterval, 'interval' + savedInterval);
+
+        const savedVoice = localStorage.getItem('voicePreference') || 'random';
+        selectVoice(savedVoice);
+
+        breathingEnabled = localStorage.getItem('breathingEnabled') !== 'false';
+        if (!breathingEnabled) {
+          document.getElementById('breathingToggle').classList.remove('bg-primary');
+          document.getElementById('breathingToggle').classList.add('bg-muted');
+          document.getElementById('breathingKnob').classList.add('left-1');
+          document.getElementById('breathingKnob').classList.remove('right-1');
+        }
+
+        voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
+        if (voiceEnabled) {
+          document.getElementById('voiceToggle').classList.add('bg-primary');
+          document.getElementById('voiceToggle').classList.remove('bg-muted');
+          document.getElementById('voiceKnob').classList.remove('left-1');
+          document.getElementById('voiceKnob').classList.add('right-1');
+        }
+
+        sensitivity = parseInt(localStorage.getItem('sensitivity') || '75');
+        updateSensitivity(sensitivity);
+        setupSlider();
       };
+
+      function startDrive() {
+        localStorage.setItem('breathInterval', selectedInterval);
+        localStorage.setItem('voicePreference', selectedVoice);
+        localStorage.setItem('breathingEnabled', breathingEnabled);
+        localStorage.setItem('voiceEnabled', voiceEnabled);
+        localStorage.setItem('sensitivity', sensitivity);
+        localStorage.setItem('destination', document.getElementById('destination').value);
+        localStorage.setItem('driveStartTime', new Date().toISOString());
+        window.location.href = BASE + 'drive-mode.html';
+      }
+
+      function toggleBreathing() {
+        breathingEnabled = !breathingEnabled;
+        const toggle = document.getElementById('breathingToggle');
+        const knob = document.getElementById('breathingKnob');
+        if (breathingEnabled) {
+          toggle.classList.add('bg-primary');
+          toggle.classList.remove('bg-muted');
+          knob.classList.remove('left-1');
+          knob.classList.add('right-1');
+        } else {
+          toggle.classList.remove('bg-primary');
+          toggle.classList.add('bg-muted');
+          knob.classList.add('left-1');
+          knob.classList.remove('right-1');
+        }
+      }
+
+      function toggleVoice() {
+        voiceEnabled = !voiceEnabled;
+        const toggle = document.getElementById('voiceToggle');
+        const knob = document.getElementById('voiceKnob');
+        if (voiceEnabled) {
+          toggle.classList.add('bg-primary');
+          toggle.classList.remove('bg-muted');
+          knob.classList.remove('left-1');
+          knob.classList.add('right-1');
+          knob.classList.remove('bg-muted-foreground');
+          knob.classList.add('bg-primary-foreground');
+        } else {
+          toggle.classList.remove('bg-primary');
+          toggle.classList.add('bg-muted');
+          knob.classList.add('left-1');
+          knob.classList.remove('right-1');
+          knob.classList.add('bg-muted-foreground');
+          knob.classList.remove('bg-primary-foreground');
+        }
+      }
+
+      function selectInterval(interval, buttonId) {
+        selectedInterval = interval;
+        document.querySelectorAll('.interval-btn').forEach(btn => {
+          btn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.add('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        });
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+          btn.classList.add('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.remove('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        }
+      }
+
+      function selectVoice(voice) {
+        selectedVoice = voice;
+        document.querySelectorAll('.voice-btn').forEach(btn => {
+          btn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.add('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        });
+        const btn = document.getElementById('voice' + voice.charAt(0).toUpperCase() + voice.slice(1));
+        if (btn) {
+          btn.classList.add('bg-primary/20', 'text-primary', 'border-primary/30', 'font-bold');
+          btn.classList.remove('bg-background/50', 'text-muted-foreground', 'border-border/30', 'font-medium');
+        }
+      }
+
+      function updateSensitivity(value) {
+        sensitivity = value;
+        const label = document.getElementById('sensitivityLabel');
+        const fill = document.getElementById('sensitivityFill');
+        const slider = document.getElementById('sensitivitySlider');
+        slider.style.left = value + '%';
+        fill.style.width = value + '%';
+        if (value < 33) {
+          label.textContent = 'Minimal';
+          label.className = 'text-xs font-mono font-bold text-muted-foreground uppercase';
+        } else if (value < 66) {
+          label.textContent = 'Balanced';
+          label.className = 'text-xs font-mono font-bold text-muted-foreground uppercase';
+        } else {
+          label.textContent = 'Vigilant';
+          label.className = 'text-xs font-mono font-bold text-primary uppercase';
+        }
+      }
+
+      function setupSlider() {
+        const slider = document.getElementById('sensitivitySlider');
+        const track = document.getElementById('sliderTrack');
+        let isDragging = false;
+        slider.addEventListener('mousedown', () => isDragging = true);
+        slider.addEventListener('touchstart', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('touchend', () => isDragging = false);
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const rect = track.getBoundingClientRect();
+          let percent = ((e.clientX - rect.left) / rect.width) * 100;
+          percent = Math.max(0, Math.min(100, percent));
+          updateSensitivity(percent);
+        });
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const touch = e.touches[0];
+          const rect = track.getBoundingClientRect();
+          let percent = ((touch.clientX - rect.left) / rect.width) * 100;
+          percent = Math.max(0, Math.min(100, percent));
+          updateSensitivity(percent);
+        });
+      }
     </script>
   </body>
 </html>
