@@ -429,8 +429,11 @@
       };
 
       function getGender() {
+        // Handle both old format ('m'/'w') and new format ('male'/'female')
         if (voicePreference === 'random') return Math.random() > 0.5 ? 'male' : 'female';
-        return voicePreference;
+        if (voicePreference === 'm') return 'male';
+        if (voicePreference === 'w') return 'female';
+        return voicePreference; // 'male' or 'female'
       }
 
       function getRandomFile(type) {
