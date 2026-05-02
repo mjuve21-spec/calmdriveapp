@@ -135,7 +135,6 @@
         </div>
       </div>
 
-      <!-- Bottom bar - NO Settings button -->
       <div class="px-6 pb-8 z-10">
         <div class="h-20 bg-card rounded-3xl flex items-center justify-between px-2 shadow-xl border border-border/50">
           <button onclick="toggleAudio()" class="flex-1 flex flex-col items-center justify-center gap-1 h-full rounded-2xl active:bg-white/5 transition-colors group">
@@ -165,10 +164,9 @@
     <script>
       const BASE = 'https://mjuve21-spec.github.io/calmdriveapp/plus/';
 
-      // ─── Settings ──────────────────────────────────────────────
+      // ─── Read ALL settings fresh from localStorage ─────────────
       const savedInterval = localStorage.getItem('breathInterval') || '4s';
       const breathSeconds = parseInt(savedInterval);
-      const voicePreference = localStorage.getItem('voicePreference') || 'random';
       const breathingEnabled = localStorage.getItem('breathingEnabled') !== 'false';
       const voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
       const destination = localStorage.getItem('destination') || 'Unknown';
@@ -183,195 +181,22 @@
       let isMPH = true;
       let gpsWatchId = null;
       let currentSpeedMPS = 0;
-
-      // ─── Calmness Algorithm ────────────────────────────────────
-      // Real calmness based on:
-      // 1. Breathing exercises completed (boosts calm)
-      // 2. Speed consistency (smooth = calm)
-      // 3. Speeding (reduces calm)
       let calmScore = 100;
       let speedHistory = [];
       let speedingCount = 0;
-      let speedLimitMPS = 26.8; // 60 MPH in m/s
+      let speedLimitMPS = 26.8;
 
-      function calculateCalmness() {
-        let score = 100;
-
-        // Boost for breathing exercises (+2 per exercise, max +20)
-        score += Math.min(breathCount * 2, 20);
-
-        // Penalty for speeding (-5 per speeding event)
-        score -= speedingCount * 5;
-
-        // Penalty for aggressive speed changes
-        if (speedHistory.length > 3) {
-          const recent = speedHistory.slice(-5);
-          const maxChange = Math.max(...recent.map((s, i) => 
-            i > 0 ? Math.abs(s - recent[i-1]) : 0
-          ));
-          // If speed changed by more than 10 MPH suddenly
-          if (maxChange > 4.5) score -= 10;
-        }
-
-        // Keep between 0 and 100
-        calmScore = Math.max(0, Math.min(100, Math.round(score)));
-
-        // Update display
-        const el = document.getElementById('calmScore');
-        el.textContent = calmScore + '%';
-
-        // Change color based on score
-        if (calmScore >= 80) {
-          el.className = 'text-xl font-bold text-primary';
-        } else if (calmScore >= 60) {
-          el.className = 'text-xl font-bold text-yellow-400';
-        } else {
-          el.className = 'text-xl font-bold text-destructive';
-        }
-
-        // Update message
-        updateCalmMessage();
+      // ─── Get Gender FRESH every time ───────────────────────────
+      function getGender() {
+        const pref = localStorage.getItem('voicePreference') || 'random';
+        console.log('Voice preference from localStorage:', pref);
+        if (pref === 'random') return Math.random() > 0.5 ? 'male' : 'female';
+        if (pref === 'male' || pref === 'm') return 'male';
+        if (pref === 'female' || pref === 'w') return 'female';
+        return 'random';
       }
 
-      function updateCalmMessage() {
-        const msg = document.getElementById('calmMessage');
-        if (calmScore >= 85) {
-          msg.textContent = 'You\'re driving beautifully. Keep it up!';
-        } else if (calmScore >= 70) {
-          msg.textContent = 'Good drive. Stay steady and breathe.';
-        } else if (calmScore >= 50) {
-          msg.textContent = 'Take a deep breath. Slow down a little.';
-        } else {
-          msg.textContent = 'Try a breathing exercise. You\'ve got this.';
-        }
-      }
-
-      // ─── Drive Timer ───────────────────────────────────────────
-      function startDriveTimer() {
-        driveTimerInterval = setInterval(() => {
-          driveSeconds++;
-          const mins = Math.floor(driveSeconds / 60);
-          const secs = String(driveSeconds % 60).padStart(2, '0');
-          document.getElementById('driveTimer').textContent = mins + ':' + secs;
-
-          // Recalculate calmness every 5 seconds
-          if (driveSeconds % 5 === 0) calculateCalmness();
-        }, 1000);
-      }
-
-      // ─── GPS ───────────────────────────────────────────────────
-      function startGPS() {
-        if (!navigator.geolocation) {
-          document.getElementById('gpsStatus').textContent = '❌ GPS not supported';
-          return;
-        }
-
-        gpsWatchId = navigator.geolocation.watchPosition(
-          (position) => {
-            currentSpeedMPS = position.coords.speed || 0;
-            speedHistory.push(currentSpeedMPS);
-            if (speedHistory.length > 20) speedHistory.shift();
-
-            // Check if speeding
-            if (currentSpeedMPS > speedLimitMPS) speedingCount++;
-
-            updateSpeedDisplay();
-
-            if (lastPosition) {
-              const dist = calculateDistance(
-                lastPosition.coords.latitude,
-                lastPosition.coords.longitude,
-                position.coords.latitude,
-                position.coords.longitude
-              );
-              totalDistanceKM += dist;
-              updateDistanceDisplay();
-            }
-
-            lastPosition = position;
-            document.getElementById('gpsStatus').textContent = '📡 GPS Active';
-          },
-          (error) => {
-            document.getElementById('gpsStatus').textContent = '❌ GPS unavailable';
-          },
-          { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-        );
-      }
-
-      function updateSpeedDisplay() {
-        const speedMPH = Math.round(currentSpeedMPS * 2.237);
-        const speedKPH = Math.round(currentSpeedMPS * 3.6);
-        if (isMPH) {
-          document.getElementById('speedValue').textContent = speedMPH;
-          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
-        } else {
-          document.getElementById('speedValue').textContent = speedKPH;
-          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
-        }
-      }
-
-      function updateDistanceDisplay() {
-        if (isMPH) {
-          document.getElementById('distance').textContent = (totalDistanceKM * 0.621371).toFixed(1);
-          document.getElementById('distanceUnit').textContent = 'Miles';
-        } else {
-          document.getElementById('distance').textContent = totalDistanceKM.toFixed(1);
-          document.getElementById('distanceUnit').textContent = 'KM';
-        }
-      }
-
-      function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
-          Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      }
-
-      function toggleUnit() {
-        isMPH = !isMPH;
-        document.getElementById('currentUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        document.getElementById('speedLimit').textContent = isMPH ? '60' : '97';
-        document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
-        speedLimitMPS = isMPH ? 26.8 : 26.8; // always same in m/s
-        updateSpeedDisplay();
-        updateDistanceDisplay();
-      }
-
-      document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('unitToggle').addEventListener('click', toggleUnit);
-      });
-
-      // ─── Save Drive ────────────────────────────────────────────
-      function saveDrive() {
-        const durationSeconds = Math.floor((Date.now() - driveStartTime) / 1000);
-        const mins = Math.floor(durationSeconds / 60);
-        const secs = String(durationSeconds % 60).padStart(2, '0');
-        const state = calmScore >= 85 ? 'Flow' : calmScore >= 70 ? 'Calm' : 'Tense';
-
-        const drive = {
-          id: driveStartTime,
-          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-          time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
-          destination: destination,
-          duration: mins + ':' + secs,
-          calmScore: calmScore,
-          state: state,
-          breathCount: breathCount,
-          deEscCount: speedingCount,
-          distanceMiles: (totalDistanceKM * 0.621371).toFixed(1),
-          distanceKM: totalDistanceKM.toFixed(1)
-        };
-
-        const history = JSON.parse(localStorage.getItem('driveHistory') || '[]');
-        history.unshift(drive);
-        localStorage.setItem('driveHistory', JSON.stringify(history.slice(0, 50)));
-        localStorage.setItem('lastDrive', JSON.stringify(drive));
-      }
-
-      // ─── Audio ─────────────────────────────────────────────────
+      // ─── Audio Files ───────────────────────────────────────────
       const audioFiles = {
         start: {
           male: [
@@ -428,32 +253,20 @@
         }
       };
 
-      function getGender() {
-        const pref = localStorage.getItem('voicePreference') || 'random';
-        if (pref === 'random') return Math.random() > 0.5 ? 'male' : 'female';
-        if (pref === 'male' || pref === 'm') return 'male';
-        if (pref === 'female' || pref === 'w') return 'female';
-        return 'male';
-      }
-
-      function getGender() {
-        // Handle both old format ('m'/'w') and new format ('male'/'female')
-        if (voicePreference === 'random') return Math.random() > 0.5 ? 'male' : 'female';
-        if (voicePreference === 'm') return 'male';
-        if (voicePreference === 'w') return 'female';
-        return voicePreference; // 'male' or 'female'
-      }
-
       function getRandomFile(type) {
-        const files = audioFiles[type][getGender()];
+        const gender = getGender();
+        console.log('Playing gender:', gender, 'type:', type);
+        const files = audioFiles[type][gender] || audioFiles[type]['male'];
         return files[Math.floor(Math.random() * files.length)];
       }
 
+      // ─── Audio Player ──────────────────────────────────────────
       let currentAudio = null;
       let audioPlaying = false;
       let midDriveInterval = null;
 
       function playAudio(file) {
+        console.log('Playing file:', file);
         if (currentAudio) { currentAudio.pause(); currentAudio = null; }
         currentAudio = new Audio(file);
         currentAudio.play().catch(e => console.log('Audio error:', e));
@@ -474,6 +287,142 @@
           if (currentAudio) { currentAudio.pause(); currentAudio = null; }
           clearInterval(midDriveInterval);
         }
+      }
+
+      // ─── Calmness Algorithm ────────────────────────────────────
+      function calculateCalmness() {
+        let score = 100;
+        score += Math.min(breathCount * 2, 20);
+        score -= speedingCount * 5;
+        if (speedHistory.length > 3) {
+          const recent = speedHistory.slice(-5);
+          const maxChange = Math.max(...recent.map((s, i) => i > 0 ? Math.abs(s - recent[i-1]) : 0));
+          if (maxChange > 4.5) score -= 10;
+        }
+        calmScore = Math.max(0, Math.min(100, Math.round(score)));
+        const el = document.getElementById('calmScore');
+        el.textContent = calmScore + '%';
+        if (calmScore >= 80) el.className = 'text-xl font-bold text-primary';
+        else if (calmScore >= 60) el.className = 'text-xl font-bold text-yellow-400';
+        else el.className = 'text-xl font-bold text-destructive';
+        updateCalmMessage();
+      }
+
+      function updateCalmMessage() {
+        const msg = document.getElementById('calmMessage');
+        if (calmScore >= 85) msg.textContent = 'You\'re driving beautifully. Keep it up!';
+        else if (calmScore >= 70) msg.textContent = 'Good drive. Stay steady and breathe.';
+        else if (calmScore >= 50) msg.textContent = 'Take a deep breath. Slow down a little.';
+        else msg.textContent = 'Try a breathing exercise. You\'ve got this.';
+      }
+
+      // ─── Drive Timer ───────────────────────────────────────────
+      function startDriveTimer() {
+        driveTimerInterval = setInterval(() => {
+          driveSeconds++;
+          const mins = Math.floor(driveSeconds / 60);
+          const secs = String(driveSeconds % 60).padStart(2, '0');
+          document.getElementById('driveTimer').textContent = mins + ':' + secs;
+          if (driveSeconds % 5 === 0) calculateCalmness();
+        }, 1000);
+      }
+
+      // ─── GPS ───────────────────────────────────────────────────
+      function startGPS() {
+        if (!navigator.geolocation) {
+          document.getElementById('gpsStatus').textContent = '❌ GPS not supported';
+          return;
+        }
+        gpsWatchId = navigator.geolocation.watchPosition(
+          (position) => {
+            currentSpeedMPS = position.coords.speed || 0;
+            speedHistory.push(currentSpeedMPS);
+            if (speedHistory.length > 20) speedHistory.shift();
+            if (currentSpeedMPS > speedLimitMPS) speedingCount++;
+            updateSpeedDisplay();
+            if (lastPosition) {
+              totalDistanceKM += calculateDistance(
+                lastPosition.coords.latitude, lastPosition.coords.longitude,
+                position.coords.latitude, position.coords.longitude
+              );
+              updateDistanceDisplay();
+            }
+            lastPosition = position;
+            document.getElementById('gpsStatus').textContent = '📡 GPS Active';
+          },
+          (error) => { document.getElementById('gpsStatus').textContent = '❌ GPS unavailable'; },
+          { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+        );
+      }
+
+      function updateSpeedDisplay() {
+        const speedMPH = Math.round(currentSpeedMPS * 2.237);
+        const speedKPH = Math.round(currentSpeedMPS * 3.6);
+        if (isMPH) {
+          document.getElementById('speedValue').textContent = speedMPH;
+          document.getElementById('altSpeed').textContent = speedKPH + ' KPH';
+        } else {
+          document.getElementById('speedValue').textContent = speedKPH;
+          document.getElementById('altSpeed').textContent = speedMPH + ' MPH';
+        }
+      }
+
+      function updateDistanceDisplay() {
+        if (isMPH) {
+          document.getElementById('distance').textContent = (totalDistanceKM * 0.621371).toFixed(1);
+          document.getElementById('distanceUnit').textContent = 'Miles';
+        } else {
+          document.getElementById('distance').textContent = totalDistanceKM.toFixed(1);
+          document.getElementById('distanceUnit').textContent = 'KM';
+        }
+      }
+
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      function toggleUnit() {
+        isMPH = !isMPH;
+        document.getElementById('currentUnit').textContent = isMPH ? 'MPH' : 'KPH';
+        document.getElementById('speedLimit').textContent = isMPH ? '60' : '97';
+        document.getElementById('limitUnit').textContent = isMPH ? 'MPH' : 'KPH';
+        updateSpeedDisplay();
+        updateDistanceDisplay();
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('unitToggle').addEventListener('click', toggleUnit);
+      });
+
+      // ─── Save Drive ────────────────────────────────────────────
+      function saveDrive() {
+        const durationSeconds = Math.floor((Date.now() - driveStartTime) / 1000);
+        const mins = Math.floor(durationSeconds / 60);
+        const secs = String(durationSeconds % 60).padStart(2, '0');
+        const state = calmScore >= 85 ? 'Flow' : calmScore >= 70 ? 'Calm' : 'Tense';
+        const drive = {
+          id: driveStartTime,
+          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+          destination: destination,
+          duration: mins + ':' + secs,
+          calmScore: calmScore,
+          state: state,
+          breathCount: breathCount,
+          deEscCount: speedingCount,
+          distanceMiles: (totalDistanceKM * 0.621371).toFixed(1),
+          distanceKM: totalDistanceKM.toFixed(1)
+        };
+        const history = JSON.parse(localStorage.getItem('driveHistory') || '[]');
+        history.unshift(drive);
+        localStorage.setItem('driveHistory', JSON.stringify(history.slice(0, 50)));
+        localStorage.setItem('lastDrive', JSON.stringify(drive));
       }
 
       // ─── Breathing ─────────────────────────────────────────────
@@ -518,7 +467,6 @@
         }, 1000);
       }
 
-      // Manual breathing trigger from bottom bar
       function toggleBreathingManual() {
         breathingActive = !breathingActive;
         if (breathingActive) {
