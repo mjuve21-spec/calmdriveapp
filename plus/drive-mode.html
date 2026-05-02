@@ -186,14 +186,20 @@
       let speedingCount = 0;
       let speedLimitMPS = 26.8;
 
-      // ─── Get Gender FRESH every time ───────────────────────────
-      function getGender() {
+      // ─── Get Gender ONCE at start ──────────────────────────────
+      function resolveGender() {
         const pref = localStorage.getItem('voicePreference') || 'random';
-        console.log('Voice preference from localStorage:', pref);
-        if (pref === 'random') return Math.random() > 0.5 ? 'male' : 'female';
         if (pref === 'male' || pref === 'm') return 'male';
         if (pref === 'female' || pref === 'w') return 'female';
-        return 'random';
+        return Math.random() > 0.5 ? 'male' : 'female';
+      }
+
+      // Lock gender for entire drive session
+      const sessionGender = resolveGender();
+      console.log('Session gender locked to:', sessionGender);
+
+      function getGender() {
+        return sessionGender;
       }
 
       // ─── Audio Files ───────────────────────────────────────────
