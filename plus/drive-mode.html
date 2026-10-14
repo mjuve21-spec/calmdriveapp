@@ -64,6 +64,92 @@
       .breathe-in { animation: breatheIn var(--breath-duration) ease-in-out forwards; }
       .breathe-out { animation: breatheOut var(--breath-duration) ease-in-out forwards; }
       .breathe-hold { animation: holdBreath var(--breath-duration) ease-in-out forwards; }
+      
+      /* CalmDrive Plus — premium visual refresh */
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(ellipse at 50% 35%, rgba(14, 116, 144, 0.24), transparent 48%),
+          linear-gradient(160deg, #071321 0%, #0b1c2c 52%, #102d3a 100%);
+        color: #f1f5f9;
+        font-family: "Manrope", sans-serif;
+      }
+
+      body > div {
+        min-height: 100vh;
+        min-height: 100dvh;
+        background: transparent;
+      }
+
+      #speedValue {
+        text-shadow: 0 0 32px rgba(103, 232, 249, 0.16);
+        letter-spacing: -0.08em;
+      }
+
+      #currentUnit,
+      #gpsStatus {
+        color: #67e8f9;
+      }
+
+      #breathingCircle {
+        background: radial-gradient(circle at 35% 25%,
+          rgba(165, 243, 252, 0.22),
+          rgba(34, 211, 238, 0.09) 48%,
+          rgba(8, 47, 73, 0.3) 100%);
+        border: 1px solid rgba(103, 232, 249, 0.5);
+        box-shadow:
+          0 0 45px rgba(34, 211, 238, 0.12),
+          inset 0 0 35px rgba(103, 232, 249, 0.06);
+      }
+
+      #encouragement {
+        font-family: "Space Grotesk", sans-serif;
+        letter-spacing: -0.035em;
+      }
+
+      #calmMessage {
+        max-width: 340px;
+        margin-inline: auto;
+        line-height: 1.65;
+      }
+
+      #speedLimit {
+        color: #fff;
+      }
+
+      #audioBtn,
+      #breathingCircle {
+        transition: box-shadow 0.35s ease, border-color 0.35s ease;
+      }
+
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button:focus-visible {
+        outline: 2px solid #67e8f9;
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 380px) {
+        #speedValue {
+          font-size: 4.5rem;
+        }
+
+        #breathingCircle {
+          width: 13rem;
+          height: 13rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
     </style>
   </head>
   <body>
